@@ -56,9 +56,10 @@ class ArcTweetNLP:
         else:
             return None
 
-    def parse(self, sample_sents, case_sensitive=False):
+    def parse(self, sentences, tagged=False, case_sensitive=False):
         # tag sentences
-        sentences = self.tag(sample_sents)
+        if not tagged:
+            sentences = self.tag(sentences)
         # extract and appendextra features
         fsents = []
         for sentence in sentences:
@@ -68,8 +69,7 @@ class ArcTweetNLP:
                 word = line[0]
                 tag = line[1]
                 s = u""
-                line = [str(ind), word, '_', tag, tag,
-                        '_', '0', '_', '_', '_']
+                line = [str(ind), word, '_', tag, tag, '_', '0', '_', '_', '_']
                 brown = self.get_cluster(
                     word if case_sensitive else word.lower())
                 brown = 'OOV' if brown == [] else ''.join(map(str, brown))
@@ -85,6 +85,7 @@ class ArcTweetNLP:
         tdpath = mkdtemp()
 
         def tfpath(x): return '{}/{}'.format(tdpath.replace('\\', '/'), x)
+        result = []
         try:
             os.mkdir(tfpath('test_score'))
             save_tokens(fsents, self.weights_path, tfpath('test'))
@@ -100,10 +101,19 @@ class ArcTweetNLP:
                 '--posterior_dir={}'.format(tfpath('test_score')))
             _ = run(args, stdout=PIPE, stderr=PIPE)
             with open(tfpath('test_predict'), 'r', encoding='utf-8') as f:
+                temp = []
                 for line in f.readlines():
-                    print(line.strip())
+                    line = line.strip()
+                    if line == '':
+                        result.append(temp)
+                        temp = []
+                        continue
+                    temp.append(line.split('\t'))
         finally:
             shutil.rmtree(tdpath, ignore_errors=True)
+        if len(result) != len(sentences):
+            raise RuntimeError('Mismatch output and input length. Configure CMU ARC Tweet NLP properly.')
+        return result
 
     def get_cluster(self, word, output=1):
         """
