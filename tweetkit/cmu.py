@@ -6,6 +6,7 @@ import shutil
 
 from tweetkit.token_selection.pipeline import save_tokens
 
+ROOT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'tools')
 
 class ArcTweetNLP:
     """
@@ -15,15 +16,11 @@ class ArcTweetNLP:
     TAGGER_CMD = 'java -XX:ParallelGCThreads=2 -Xmx500m -jar'
     CLUSTERS_PATH = ['..', 'data', 'wordtypes-v0.1', '50mpaths2.txt']
 
-    def __init__(self, root_path):
-        self.tagger_path = \
-            '{}\\TweetTagger\\ark-tweet-nlp-0.3.2.jar'.format(root_path)
-        self.parser_path = \
-            '{}\\TweeboParser\\bin\\TurboParser.exe'.format(root_path)
-        self.parser_model_path = \
-            '{}\\TweeboParser\\models\\parsing_model'.format(root_path)
-        self.weights_path = \
-            '{}\\TweeboParser\\models\\tokensel_weights'.format(root_path)
+    def __init__(self, root_path=ROOT_PATH):
+        self.tagger_path = '{}\\TweetTagger\\ark-tweet-nlp-0.3.2.jar'.format(root_path)
+        self.parser_path = '{}\\TweeboParser\\bin\\TurboParser.exe'.format(root_path)
+        self.parser_model_path = '{}\\TweeboParser\\models\\parsing_model'.format(root_path)
+        self.weights_path = '{}\\TweeboParser\\models\\tokensel_weights'.format(root_path)
         self._initialize()
 
     def _initialize(self):
