@@ -107,3 +107,4 @@ venv.bak/
 output.txt
 tools/
 .vscode/
+.idea/
