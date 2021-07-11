@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='tweetkit',
-    version='0.2.0-pre',
+    version='0.0.1',
     packages=['tweetkit'],
     description='tweetkit library',
     install_requires=[],
