@@ -108,3 +108,6 @@ output.txt
 tools/
 .vscode/
 .idea/
+venvl/
+venv/
+examples/secrets
