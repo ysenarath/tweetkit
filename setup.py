@@ -1,9 +1,9 @@
-from setuptools import setup
+import setuptools
 
-setup(
+setuptools.setup(
     name='tweetkit',
-    version='0.0.2',
-    packages=['tweetkit'],
-    description='tweetkit library',
+    version='0.0.3',
+    packages=setuptools.find_packages(),
+    description='TweetKit library',
     install_requires=[],
 )
