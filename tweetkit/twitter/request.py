@@ -7,6 +7,7 @@ from tweetkit.twitter.errors import TwitterException
 __all__ = [
     'UserRequest',
     'TweetRequest',
+    'TweetStreamRequest',
 ]
 
 MEDIA_FIELDS = {
@@ -47,11 +48,15 @@ DEFAULT_TWEET_FIELDS = {
 
 class Request:
     def __init__(self, client):
-        self.client = weakref.ref(client)
+        self._client = weakref.ref(client)
 
     @property
     def request(self):
-        return self.client().request
+        return self.client.request
+
+    @property
+    def client(self) -> 'TwitterClient':
+        return self._client()
 
 
 class UserRequest(Request):
@@ -161,6 +166,7 @@ class TweetSearchOptions:
 class TweetRequest(Request):
     @property
     def search(self):
+        self.client._request_wait = 3
         return TweetSearchOptions(self._search)
 
     def _search(self, query=None, **kwargs):
@@ -173,36 +179,100 @@ class TweetRequest(Request):
         search_mode = kwargs.pop('search_mode', 'recent')
         max_retry_count = kwargs.pop('max_retry_count', 3)
         retry_wait_time = kwargs.pop('retry_wait_time', 60)
-        self.client().request_wait = 3
-        if search_mode == 'recent':
+        if search_mode == 'stream':
+            url = 'https://api.twitter.com/2/tweets/search/stream'
+        elif search_mode == 'sample':
+            url = 'https://api.twitter.com/2/tweets/sample/stream'
+        elif search_mode == 'recent':
             url = 'https://api.twitter.com/2/tweets/search/recent'
         else:
             url = 'https://api.twitter.com/2/tweets/search/all'
-        kwargs['query'] = query
-        if ('max_results' not in kwargs) and (search_mode == 'recent'):
-            kwargs['max_results'] = 100
-        elif 'max_results' not in kwargs:
-            kwargs['max_results'] = 500
+        if search_mode not in ['stream', 'sample']:
+            kwargs['query'] = query
+            if ('max_results' not in kwargs) and (search_mode == 'recent'):
+                kwargs['max_results'] = 100
+            elif 'max_results' not in kwargs:
+                kwargs['max_results'] = 500
         retry_count = 0
         for k, v in DEFAULT_TWEET_FIELDS.items():
             if k not in kwargs:
                 kwargs[k] = v
         while True:
             try:
-                response = self.request(url, kwargs)
-                if ('meta' in response) and ('result_count' in response['meta']):
-                    if not (response['meta']['result_count'] > 0):
-                        return
-                if 'data' in response:
-                    for tweet in response['data']:
-                        yield tweet
-                if ('meta' in response) and ('next_token' in response['meta']):
-                    kwargs['next_token'] = response['meta']['next_token']
+                if search_mode in ['stream', 'sample']:
+                    responses = self.request(url, kwargs, stream=True)
+                    for response in responses():
+                        if response is None:
+                            return
+                        yield response['data']
                 else:
-                    return
+                    response = self.request(url, kwargs)
+                    if ('meta' in response) and ('result_count' in response['meta']):
+                        if not (response['meta']['result_count'] > 0):
+                            return
+                    if 'data' in response:
+                        for tweet in response['data']:
+                            yield tweet
+                    if ('meta' in response) and ('next_token' in response['meta']):
+                        kwargs['next_token'] = response['meta']['next_token']
+                    else:
+                        return
             except TwitterException as e:
                 if retry_count < max_retry_count:
                     time.sleep(retry_count * retry_wait_time)
                     retry_count += 1
                 else:
                     raise e
+            finally:
+                pass
+
+
+class TweetStreamRulesRequest(Request):
+    def get(self, id=None, **kwargs):
+        request_url = 'https://api.twitter.com/2/tweets/search/stream/rules'
+        if id is not None:
+            if isinstance(id, (string_types, int)):
+                kwargs['ids'] = str(id)
+            elif isinstance(id, list):
+                kwargs['ids'] = ','.join([str(x) for x in id])
+            else:
+                raise AttributeError(
+                    'Invalid type for attribute id. Expected one of {}, found {}.'.format((int, str, list), type(id)))
+        payload = self.request(request_url, kwargs)
+        if 'data' in payload:
+            return payload['data']
+        else:
+            return []
+
+    def _post(self, data, dry_run=False, **kwargs):
+        request_url = 'https://api.twitter.com/2/tweets/search/stream/rules'
+        if dry_run:
+            kwargs['dry_run'] = True
+        payload = self.request(request_url, kwargs, method='POST', data=data)
+        return payload
+
+    def add(self, data, dry_run=False, **kwargs):
+        payload = self._post({'add': data}, dry_run=dry_run, **kwargs)
+        return payload['data']
+
+    def delete(self, data=None, dry_run=False, **kwargs):
+        if data is None:
+            data = dict(ids=list(map(lambda rule: rule['id'], self.get())))
+        payload = self._post({'delete': data}, dry_run=dry_run, **kwargs)
+        return payload['meta']
+
+
+class TweetStreamRequest(TweetRequest):
+    def __init__(self, client):
+        super().__init__(client)
+        self.rules = TweetStreamRulesRequest(self)
+
+    def __call__(self, max_retry_count=1, retry_wait_time=1):
+        self.client._request_wait = 18
+        search_mode = ['stream', 'sample'][0]
+        kwargs = dict(
+            search_mode=search_mode,
+            max_retry_count=max_retry_count,
+            retry_wait_time=retry_wait_time
+        )
+        return self._search(**kwargs)
