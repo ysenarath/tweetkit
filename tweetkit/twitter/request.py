@@ -169,6 +169,25 @@ class TweetRequest(Request):
         self.client._request_wait = 3
         return TweetSearchOptions(self._search)
 
+    def get(self, id, **kwargs):
+        """Get tweet by it's id
+
+        :param id: id of the tweet
+        :param kwargs: other args for request
+        :return: tweet object
+        """
+        if (isinstance(id, string_types) and (',' not in id)) or isinstance(id, int):
+            id = str(id)
+            request_url = 'https://api.twitter.com/2/tweets/{id}'.format(id=id)
+        else:
+            raise TypeError('Invalid type for attribute \'id\'. Expected {}, found {}.'.format(str, type(id)))
+        for k, v in DEFAULT_TWEET_FIELDS.items():
+            if k not in kwargs:
+                kwargs[k] = v
+        self.client._request_wait = 3
+        payload = self.request(request_url, kwargs)
+        return payload['data']
+
     def _search(self, query=None, **kwargs):
         """The recent search endpoint returns Tweets from the last seven days that match a search query.
 
