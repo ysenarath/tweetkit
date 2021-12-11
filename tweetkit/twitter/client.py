@@ -56,7 +56,7 @@ class TwitterClient:
         else:
             raise ValueError('Invalid method type. Found {}, Expected one of \'GET\' or \'POST\''.format(str(method)))
         self._last_request = time.time()
-        if response.status_code != 200:
+        if 200 <= response.status_code < 300:
             try:
                 payload = response.json()
                 if 'errors' in payload:
