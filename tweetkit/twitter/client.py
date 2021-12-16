@@ -32,11 +32,11 @@ class TwitterClient:
     def stream_response(self, response):
         def _generator():
             for response_line in response.iter_lines():
-                payload_data = None
                 if response_line:
                     payload_data = json.loads(response_line)
-                self.response = payload_data
-                yield payload_data
+                    self.response = payload_data
+                    yield payload_data
+            return
 
         return _generator
 
@@ -63,7 +63,9 @@ class TwitterClient:
                     errors = list(payload['errors'])
                     first_error = errors[0] if len(errors) > 0 else {}
                     error_title = first_error.get('title', 'Twitter Exception')
-                    if 'value' in first_error:
+                    if 'message' in first_error:
+                        error_detail = str(first_error['message'])
+                    elif 'value' in first_error:
                         error_detail = 'Error found in value=\'{}\'.'.format(first_error['value'])
                     else:
                         error_detail = first_error.get('detail', 'Details not provided.')
