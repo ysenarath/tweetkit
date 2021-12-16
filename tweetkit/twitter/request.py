@@ -59,7 +59,7 @@ def denormalize(payload):
             for user in payload['includes']['users']:
                 included_users[user['id']] = user
                 if 'username' in user:
-                    included_users_by_username[user['username']] = included_users_by_username
+                    included_users_by_username[user['username']] = user
         if 'tweets' in payload['includes']:
             for tweet in payload['includes']['tweets']:
                 included_tweets[tweet['id']] = tweet
