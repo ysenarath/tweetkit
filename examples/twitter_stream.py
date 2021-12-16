@@ -1,4 +1,7 @@
 from tweetkit.twitter import *
+from tweetkit.twitter.errors import TwitterException
+
+import pprint
 
 with open('secrets/bearer_token.txt', 'r') as fp:
     bearer_token = fp.read().strip()
@@ -6,18 +9,10 @@ with open('secrets/bearer_token.txt', 'r') as fp:
 if __name__ == '__main__':
     auth = dict(bearer_token=bearer_token)
     client = TwitterClient(auth=auth)
-    # status = client.stream.rules.add([
-    #     # {"value": "cat has:media", "tag": "cats with media"},
-    #     # {"value": "cat has:media -grumpy", "tag": "happy cats with media"},
-    #     # {"value": "meme", "tag": "funny things"},
-    #     # {"value": "meme has:images"}
-    # ])
-    # print(status)
-    status = client.stream.rules.get()
-    print(status)
+    try:
+        client.stream.rules.delete()
+        client.stream.rules.add({"value": "cat has:media", "tag": "cats with media"})
+    except TwitterException as ex:
+        pass
     for tweet in client.stream():
-        assert client.response['data'] == tweet
-        print(tweet)
-        break
-    status = client.stream.rules.delete()
-    print(status)
+        pprint.pprint(tweet)

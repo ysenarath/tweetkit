@@ -1,3 +1,4 @@
+import collections
 import time
 import weakref
 
@@ -39,11 +40,93 @@ TWEET_FIELDS = {
 }
 
 DEFAULT_TWEET_FIELDS = {
-    **TWEET_FIELDS,
     **EXPANSIONS,
+    **TWEET_FIELDS,
     **USER_FIELDS,
     **PLACE_FIELDS,
 }
+
+
+def denormalize(payload):
+    included_users = {}
+    included_users_by_username = {}
+    included_tweets = {}
+    included_places = {}
+    included_media = {}
+    included_polls = {}
+    if 'includes' in payload:
+        if 'users' in payload['includes']:
+            for user in payload['includes']['users']:
+                included_users[user['id']] = user
+                if 'username' in user:
+                    included_users_by_username[user['username']] = included_users_by_username
+        if 'tweets' in payload['includes']:
+            for tweet in payload['includes']['tweets']:
+                included_tweets[tweet['id']] = tweet
+        if 'places' in payload['includes']:
+            for place in payload['includes']['places']:
+                included_places[place['id']] = place
+        if 'media' in payload['includes']:
+            for media in payload['includes']['media']:
+                included_media[media['media_key']] = media
+        if 'polls' in payload['includes']:
+            for poll in payload['includes']['polls']:
+                included_polls[poll['id']] = poll
+    many = True
+    payload_data = payload.get('data', [])
+    if not isinstance(payload_data, collections.Sequence):
+        many = False
+        payload_data = [payload_data]
+    for item in payload_data:
+        if 'author_id' in item and item['author_id'] in included_users:
+            item['author'] = included_users[item['author_id']]
+        if 'referenced_tweets' in item:
+            for referenced_tweet in item['referenced_tweets']:
+                referenced_tweet_id = referenced_tweet['id']
+                if referenced_tweet_id in included_tweets:
+                    referenced_tweet_obj = included_tweets[referenced_tweet_id]
+                    if 'author_id' in referenced_tweet_obj and referenced_tweet_obj['author_id'] in included_users:
+                        referenced_tweet_obj['author'] = included_users[referenced_tweet_obj['author_id']]
+                    referenced_tweet['tweet'] = referenced_tweet_obj
+        if 'in_reply_to_user_id' in item and item['in_reply_to_user_id'] in included_users:
+            in_reply_to_user_id = item['in_reply_to_user_id']
+            item['in_reply_to_user'] = included_users[in_reply_to_user_id]
+        # attachments.media_keys
+        if 'attachments' in item and 'media_keys' in item['attachments']:
+            media_attachments = []
+            for media_key in item['attachments']['media_keys']:
+                if media_key in included_media:
+                    media_obj = included_media[media_key]
+                    media_attachments.append(media_obj)
+            item['attachments']['media'] = media_attachments
+        # attachments.poll_ids
+        if 'attachments' in item and 'poll_ids' in item['attachments']:
+            for poll_id in item['attachments']['poll_ids']:
+                poll_attachments = []
+                if poll_id in included_polls:
+                    poll_obj = included_polls[poll_id]
+                    poll_attachments.append(poll_obj)
+                item['attachments']['polls'] = poll_attachments
+        if 'geo' in item and 'place_id' in item['geo']:
+            place_id = item['geo']['place_id']
+            if place_id in included_places:
+                item['geo']['place'] = included_places[place_id]
+        if 'entities' in item and 'mentions' in item['entities']:
+            for mention in item['entities']['mentions']:
+                if 'username' in mention and mention['username'] in included_users_by_username:
+                    mentioned_user = included_users_by_username[mention['username']]
+                    mention['user'] = mentioned_user
+                elif 'tag' in mention and mention['tag'] in included_users_by_username:
+                    mentioned_user = included_users_by_username[mention['tag']]
+                    mention['user'] = mentioned_user
+        # referenced_tweets.id.author_id (^above)
+        if 'pinned_tweet_id' in item:
+            pinned_tweet_id = item['pinned_tweet_id']
+            if pinned_tweet_id in included_tweets:
+                item['pinned_tweet'] = included_tweets[pinned_tweet_id]
+    if many:
+        return payload_data
+    return payload_data[0]
 
 
 class Request:
@@ -60,6 +143,9 @@ class Request:
 
 
 class UserRequest(Request):
+    def __getitem__(self, item):
+        return self.get(id=item)
+
     def get(self, id=None, **kwargs):
         """Returns a variety of information about one or more users specified by the requested IDs.
 
@@ -75,11 +161,8 @@ class UserRequest(Request):
                 id = ','.join([str(x) for x in id])
             request_url = 'https://api.twitter.com/2/users'
             kwargs['ids'] = id
-        response = self.request(request_url, kwargs)
-        return response['data']
-
-    def __getitem__(self, item):
-        return self.get(id=item)
+        payload = self.request(request_url, kwargs)
+        return denormalize(payload)
 
     def by(self, username=None, **kwargs):
         """Returns a variety of information about one or more users specified by their usernames.
@@ -95,8 +178,8 @@ class UserRequest(Request):
             if not isinstance(username, string_types):
                 username = ','.join([str(x) for x in username])
             kwargs['usernames'] = username
-        response = self.request(request_url, kwargs)
-        return response['data']
+        payload = self.request(request_url, kwargs)
+        return denormalize(payload)
 
     def tweets(self, id, **kwargs):
         """Returns Tweets composed by a single user, specified by the requested user ID.
@@ -121,7 +204,7 @@ class UserRequest(Request):
                 kwargs[k] = v
         while True:
             try:
-                response = self.request(request_url, kwargs)
+                payload = self.request(request_url, kwargs)
             except TwitterException as e:
                 if retry_count < 3:  # retry three times before raising the error
                     time.sleep(retry_count * 60)
@@ -130,14 +213,14 @@ class UserRequest(Request):
                     raise e
             else:
                 retry_count = 0
-                if ('meta' in response) and ('result_count' in response['meta']):
-                    if not (response['meta']['result_count'] > 0):
+                if ('meta' in payload) and ('result_count' in payload['meta']):
+                    if not (payload['meta']['result_count'] > 0):
                         return
-                if 'data' in response:
-                    for tweet in response['data']:
+                if 'data' in payload:
+                    for tweet in denormalize(payload):
                         yield tweet
-                if ('meta' in response) and ('next_token' in response['meta']):
-                    kwargs['pagination_token'] = response['meta']['next_token']
+                if ('meta' in payload) and ('next_token' in payload['meta']):
+                    kwargs['pagination_token'] = payload['meta']['next_token']
                 else:
                     return
 
@@ -186,7 +269,7 @@ class TweetRequest(Request):
                 kwargs[k] = v
         self.client._request_wait = 3
         payload = self.request(request_url, kwargs)
-        return payload['data']
+        return denormalize(payload)
 
     def _search(self, query=None, **kwargs):
         """The recent search endpoint returns Tweets from the last seven days that match a search query.
@@ -220,20 +303,20 @@ class TweetRequest(Request):
             try:
                 if search_mode in ['stream', 'sample']:
                     responses = self.request(url, kwargs, stream=True)
-                    for response in responses():
-                        if response is None:
+                    for payload in responses():
+                        if payload is None:
                             return
-                        yield response['data']
+                        yield denormalize(payload)
                 else:
-                    response = self.request(url, kwargs)
-                    if ('meta' in response) and ('result_count' in response['meta']):
-                        if not (response['meta']['result_count'] > 0):
+                    payload = self.request(url, kwargs)
+                    if ('meta' in payload) and ('result_count' in payload['meta']):
+                        if not (payload['meta']['result_count'] > 0):
                             return
-                    if 'data' in response:
-                        for tweet in response['data']:
+                    if 'data' in payload:
+                        for tweet in denormalize(payload):
                             yield tweet
-                    if ('meta' in response) and ('next_token' in response['meta']):
-                        kwargs['next_token'] = response['meta']['next_token']
+                    if ('meta' in payload) and ('next_token' in payload['meta']):
+                        kwargs['next_token'] = payload['meta']['next_token']
                     else:
                         return
             except TwitterException as e:
@@ -255,13 +338,10 @@ class TweetStreamRulesRequest(Request):
             elif isinstance(id, list):
                 kwargs['ids'] = ','.join([str(x) for x in id])
             else:
-                raise AttributeError(
-                    'Invalid type for attribute id. Expected one of {}, found {}.'.format((int, str, list), type(id)))
+                error_message = 'Invalid type for attribute id. Expected one of {}, found {}.'
+                raise TypeError(error_message.format((int, str, list), type(id)))
         payload = self.request(request_url, kwargs)
-        if 'data' in payload:
-            return payload['data']
-        else:
-            return []
+        return denormalize(payload)
 
     def _post(self, data, dry_run=False, **kwargs):
         request_url = 'https://api.twitter.com/2/tweets/search/stream/rules'
@@ -271,14 +351,18 @@ class TweetStreamRulesRequest(Request):
         return payload
 
     def add(self, data, dry_run=False, **kwargs):
+        if data is None:
+            raise ValueError('Data not found.')
+        if isinstance(data, list):
+            data = list(data)
         payload = self._post({'add': data}, dry_run=dry_run, **kwargs)
-        return payload['data']
+        return payload
 
     def delete(self, data=None, dry_run=False, **kwargs):
         if data is None:
             data = dict(ids=list(map(lambda rule: rule['id'], self.get())))
         payload = self._post({'delete': data}, dry_run=dry_run, **kwargs)
-        return payload['meta']
+        return payload
 
 
 class TweetStreamRequest(TweetRequest):
@@ -286,11 +370,12 @@ class TweetStreamRequest(TweetRequest):
         super().__init__(client)
         self.rules = TweetStreamRulesRequest(self)
 
-    def __call__(self, max_retry_count=1, retry_wait_time=1):
+    def __call__(self, mode='sample', max_retry_count=1, retry_wait_time=1):
         self.client._request_wait = 18
-        search_mode = ['stream', 'sample'][0]
+        if mode not in ['stream', 'sample']:
+            raise ValueError('Invalid search mode, expected {} found (stream, sample)'.format(mode))
         kwargs = dict(
-            search_mode=search_mode,
+            search_mode=mode,
             max_retry_count=max_retry_count,
             retry_wait_time=retry_wait_time
         )
