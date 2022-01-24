@@ -1,0 +1,13 @@
+{% extends "layouts/default.html" %}
+{% from "helpers/form.html" import render_field %}
+
+{% block content %}
+    <h1>Log in</h1>
+    <form method="post" action="{{ url_for('auth.login') }}" up-submit up-target="#content">
+        <dl>
+            {{ render_field(form.username) }}
+            {{ render_field(form.password) }}
+        </dl>
+        <input type="submit" value="Log In">
+    </form>
+{% endblock %}

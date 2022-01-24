@@ -1,0 +1,28 @@
+{% extends "layouts/default.html" %}
+{% from "helpers/form.html" import render_field %}
+
+{% block content %}
+    <h1>Tasks</h1>
+    <form method="POST" action="{{ url_for('base.tasks') }}" up-autosubmit up-target="#taskTypeForm">
+        {{ render_field(task_type_form.type) }}
+    </form>
+    {% if task_form %}
+        {% set form = task_form %}
+        <form id="taskTypeForm" method="POST" action="{{ url_for('base.task', task_id='new') }}" up-submit
+              up-target="#content">
+            <dl>
+                {{ render_field(form.name) }}
+                {{ render_field(form.description) }}
+                {% if form.query %}{{ render_field(form.query) }}{% endif %}
+                {% if form.rules %}{{ render_field(form.rules) }}{% endif %}
+                {% if form.end_time %}{{ render_field(form.end_time) }}{% endif %}
+                {% if form.start_time %}{{ render_field(form.start_time) }}{% endif %}
+                {% if form.expansions %}{{ render_field(form.expansions) }}{% endif %}
+                {% if form.max_results %}{{ render_field(form.max_results) }}{% endif %}
+                {% if form.media_fields %}{{ render_field(form.media_fields) }}{% endif %}
+                {% if form.next_token %}{{ render_field(form.next_token) }}{% endif %}
+            </dl>
+            <input type="submit" value="Add">
+        </form>
+    {% endif %}
+{% endblock %}

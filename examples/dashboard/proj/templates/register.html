@@ -1,0 +1,16 @@
+{% extends "layouts/default.html" %}
+{% from "helpers/form.html" import render_field %}
+
+{% block content %}
+    <h1>Register</h1>
+    <form method="post" action="{{ url_for('auth.register') }}" up-submit up-target="#content">
+        <dl>
+            {{ render_field(form.username) }}
+            {{ render_field(form.email) }}
+            {{ render_field(form.password) }}
+            {{ render_field(form.confirm) }}
+            {{ render_field(form.accept_tos) }}
+        </dl>
+        <input type="submit" value="Register">
+    </form>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" style="min-height: 100vh;">
+<head>
+    {% block head %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='packages/bulma/css/bulma.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='packages/unpoly/unpoly.min.css') }}">
+        <script src="{{ url_for('static', filename='packages/unpoly/unpoly.min.js') }}"></script>
+        <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+</head>
+<body style="min-height: 100vh;">
+{% include 'includes/header.html' %}
+<div class="is-flex is-flex-direction-column" style="min-height: calc(100vh - 3.25rem);">
+    <section class="section is-flex-grow-3">
+        <div id="content" class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </section>
+    <div id="footer">
+        {% block footer %}
+            &copy; Copyright 2010 by <a href="https://domain.invalid/">you</a>.
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>

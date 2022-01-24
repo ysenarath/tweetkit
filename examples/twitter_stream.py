@@ -11,8 +11,8 @@ if __name__ == '__main__':
     client = TwitterClient(auth=auth)
     try:
         client.stream.rules.delete()
-        client.stream.rules.add({"value": "cat has:media", "tag": "cats with media"})
     except TwitterException as ex:
         pass
+    client.stream.rules.add({"value": "cat has:media", "tag": "cats with media"})
     for tweet in client.stream():
         pprint.pprint(tweet)
