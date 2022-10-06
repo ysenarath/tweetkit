@@ -1,36 +1,9 @@
 """Twitter API v2"""
+from __future__ import absolute_import
 
-from tweetkit.twitter.requests import Bookmarks, Compliance, General, Lists, Spaces, Tweets, Users
+import requests
 
-
-class Request(object):
-    """Request"""
-
-    def __init__(self, url):
-        """Initialize a new request object.
-
-        Parameters
-        ----------
-        url: str
-            The base url to use for sending new requests.
-        """
-        self.url = url
-
-    def __call__(self, path, method='get', query=None, params=None, data=None):
-        """Send the request.
-
-        Parameters
-        ----------
-        path: str
-        method: str
-        query: dict, optional
-        params: dict, optional
-
-        Returns
-        -------
-
-        """
-        pass
+from tweetkit.operations import Bookmarks, Compliance, General, Lists, Spaces, Tweets, Users
 
 
 class TwitterClient(object):
@@ -48,7 +21,8 @@ class TwitterClient(object):
     url = 'https://api.twitter.com'
     version = '2.51'
 
-    def __init__(self):
+    def __init__(self, auth):
+        self.auth = auth
         self.bookmarks = Bookmarks(self)
         self.compliance = Compliance(self)
         self.general = General(self)
@@ -57,17 +31,24 @@ class TwitterClient(object):
         self.tweets = Tweets(self)
         self.users = Users(self)
 
-    @property
-    def request(self):
+    def request(self, path, method='get', query=None, params=None, data=None, stream=False):
         """Create a request object and return.
 
         Parameters
         ----------
-
+        path: str
+        method: str
+        query: dict, optional
+        params: dict, optional
+        data: dict, optional
+        stream: bool, optional
 
         Returns
         -------
         request: Request
             Request object.
         """
-        return Request(url=self.url)
+        formatted_path = path.format(**params)
+        url = '{}/{}'.format(self.url.rstrip('/'), formatted_path.lstrip('/'))
+        r = requests.request(method.upper(), url, params=query, json=data, stream=stream, auth=self.auth)
+        return r
