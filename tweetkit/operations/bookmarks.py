@@ -1,6 +1,6 @@
 """All methods related to bookmarks."""
-from tweetkit.twitter.exceptions import TwitterException, TwitterError, TwitterProblem
-from tweetkit.twitter.response import Response
+from tweetkit.exceptions import TwitterError, TwitterProblem, RequestException
+from tweetkit.schema import TwitterObject
 
 __all__ = [
     'Bookmarks'
@@ -39,7 +39,7 @@ class Bookmarks(object):
             A comma separated list of User fields to display.
         place_fields: list of string, optional
             A comma separated list of Place fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/tweets/bookmarks/api-reference/get-users-id-bookmarks>`__.
@@ -49,36 +49,38 @@ class Bookmarks(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
+            request_query['tweet.fields'] = tweet_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if media_fields is not None:
-            query['media.fields'] = media_fields
+            request_query['media.fields'] = media_fields
         if poll_fields is not None:
-            query['poll.fields'] = poll_fields
+            request_query['poll.fields'] = poll_fields
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if place_fields is not None:
-            query['place.fields'] = place_fields
-        r = self.client.request('/2/users/{id}/bookmarks', method='get', query=query, params=params)
+            request_query['place.fields'] = place_fields
+        r = self.client.request('/2/users/{id}/bookmarks', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def post_users_id_bookmarks(self, id):
         """Add Tweet to Bookmarks.
@@ -89,7 +91,7 @@ class Bookmarks(object):
         ----------
         id: string
             The ID of the authenticated source User for whom to add bookmarks.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/tweets/bookmarks/api-reference/post-users-id-bookmarks>`__.
@@ -99,20 +101,22 @@ class Bookmarks(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
-        r = self.client.request('/2/users/{id}/bookmarks', method='post', query=query, params=params)
+        request_params, request_query = {}, {}
+        request_params['id'] = id
+        r = self.client.request('/2/users/{id}/bookmarks', method='post', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_bookmarks_delete(self, id, tweet_id):
         """Remove a bookmarked Tweet.
@@ -125,7 +129,7 @@ class Bookmarks(object):
             The ID of the authenticated source User whose bookmark is to be removed.
         tweet_id: string
             The ID of the Tweet that the source User is removing from bookmarks.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/tweets/bookmarks/api-reference/delete-users-id-bookmarks-tweet_id>`__.
@@ -135,19 +139,21 @@ class Bookmarks(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
-        if tweet_id is not None:
-            params['tweet_id'] = tweet_id
-        r = self.client.request('/2/users/{id}/bookmarks/{tweet_id}', method='delete', query=query, params=params)
+        request_params, request_query = {}, {}
+        request_params['id'] = id
+        request_params['tweet_id'] = tweet_id
+        r = self.client.request('/2/users/{id}/bookmarks/{tweet_id}', method='delete', query=request_query,
+                                params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)

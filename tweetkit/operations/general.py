@@ -1,6 +1,6 @@
 """All methods related to general."""
-from tweetkit.twitter.exceptions import TwitterException
-from tweetkit.twitter.response import Response
+from tweetkit.exceptions import RequestException
+from tweetkit.schema import TwitterObject
 
 __all__ = [
     'General'
@@ -18,8 +18,6 @@ class General(object):
 
         Full OpenAPI Specification in JSON format. (See https://github.com/OAI/OpenAPI-Specification/blob/master/README.md).
 
-        
-
         Notes
         -----
         For more information, see: `here <None>`__.
@@ -29,10 +27,11 @@ class General(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        r = self.client.request('/2/openapi.json', method='get', query=query, params=params)
+        request_params, request_query = {}, {}
+        r = self.client.request('/2/openapi.json', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request was successful')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request was successful
+                return TwitterObject(r)
+        raise RequestException(r)

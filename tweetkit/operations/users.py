@@ -1,6 +1,6 @@
 """All methods related to users."""
-from tweetkit.twitter.exceptions import TwitterException, TwitterError, TwitterProblem
-from tweetkit.twitter.response import Response
+from tweetkit.exceptions import TwitterError, TwitterProblem, RequestException
+from tweetkit.schema import TwitterObject
 
 __all__ = [
     'Users'
@@ -33,7 +33,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/follows/api-reference/get-users-id-followers>`__.
@@ -43,30 +43,32 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/lists/{id}/followers', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/lists/{id}/followers', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def list_get_members(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                          tweet_fields=None):
@@ -88,7 +90,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/lists/list-members/api-reference/get-users-id-list_memberships>`__.
@@ -98,30 +100,32 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/lists/{id}/members', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/lists/{id}/members', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def tweets_id_liking_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                                tweet_fields=None):
@@ -143,7 +147,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/tweets/likes/api-reference/get-tweets-id-liking_users>`__.
@@ -153,30 +157,32 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/tweets/{id}/liking_users', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/tweets/{id}/liking_users', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def tweets_id_retweeting_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                                    tweet_fields=None):
@@ -198,7 +204,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/tweets/retweets/api-reference/get-tweets-id-retweeted_by>`__.
@@ -208,30 +214,32 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def find_users_by_id(self, ids, user_fields=None, expansions=None, tweet_fields=None):
         """User lookup by IDs.
@@ -248,7 +256,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/lookup/api-reference/get-users>`__.
@@ -258,26 +266,28 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if ids is not None:
-            query['ids'] = ids
+        request_params, request_query = {}, {}
+        request_query['ids'] = ids
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def find_users_by_username(self, usernames, user_fields=None, expansions=None, tweet_fields=None):
         """User lookup by usernames.
@@ -294,7 +304,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/lookup/api-reference/get-users-by>`__.
@@ -304,26 +314,28 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if usernames is not None:
-            query['usernames'] = usernames
+        request_params, request_query = {}, {}
+        request_query['usernames'] = usernames
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users/by', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users/by', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def find_user_by_username(self, username, user_fields=None, expansions=None, tweet_fields=None):
         """User lookup by username.
@@ -340,7 +352,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/lookup/api-reference/get-users-by-username-username>`__.
@@ -350,26 +362,29 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if username is not None:
-            params['username'] = username
+        request_params, request_query = {}, {}
+        request_params['username'] = username
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users/by/username/{username}', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users/by/username/{username}', method='get', query=request_query,
+                                params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def find_my_user(self, user_fields=None, expansions=None, tweet_fields=None):
         """User lookup me.
@@ -384,7 +399,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/lookup/api-reference/get-users-me>`__.
@@ -394,24 +409,27 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
+        request_params, request_query = {}, {}
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users/me', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users/me', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def find_user_by_id(self, id, user_fields=None, expansions=None, tweet_fields=None):
         """User lookup by ID.
@@ -428,7 +446,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/lookup/api-reference/get-users-id>`__.
@@ -438,26 +456,28 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users/{id}', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_blocking(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                           tweet_fields=None):
@@ -479,7 +499,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/blocks/api-reference/get-users-blocking>`__.
@@ -489,30 +509,32 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users/{id}/blocking', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users/{id}/blocking', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_block(self, id):
         """Block User by User ID.
@@ -523,7 +545,7 @@ class Users(object):
         ----------
         id: string
             The ID of the authenticated source User that is requesting to block the target User.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/blocks/api-reference/post-users-user_id-blocking>`__.
@@ -533,20 +555,22 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
-        r = self.client.request('/2/users/{id}/blocking', method='post', query=query, params=params)
+        request_params, request_query = {}, {}
+        request_params['id'] = id
+        r = self.client.request('/2/users/{id}/blocking', method='post', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                            tweet_fields=None):
@@ -568,7 +592,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/follows/api-reference/get-users-id-followers>`__.
@@ -578,30 +602,32 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users/{id}/followers', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users/{id}/followers', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_following(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                            tweet_fields=None):
@@ -623,7 +649,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/follows/api-reference/get-users-id-following>`__.
@@ -633,30 +659,32 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users/{id}/following', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users/{id}/following', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_follow(self, id):
         """Follow User.
@@ -667,7 +695,7 @@ class Users(object):
         ----------
         id: string
             The ID of the authenticated source User that is requesting to follow the target User.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/follows/api-reference/post-users-source_user_id-following>`__.
@@ -677,20 +705,22 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
-        r = self.client.request('/2/users/{id}/following', method='post', query=query, params=params)
+        request_params, request_query = {}, {}
+        request_params['id'] = id
+        r = self.client.request('/2/users/{id}/following', method='post', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_muting(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                         tweet_fields=None):
@@ -712,7 +742,7 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list of string, optional
             A comma separated list of Tweet fields to display.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/mutes/api-reference/get-users-muting>`__.
@@ -722,30 +752,32 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
+        request_params, request_query = {}, {}
+        request_params['id'] = id
         if max_results is not None:
-            query['max_results'] = max_results
+            request_query['max_results'] = max_results
         if pagination_token is not None:
-            query['pagination_token'] = pagination_token
+            request_query['pagination_token'] = pagination_token
         if user_fields is not None:
-            query['user.fields'] = user_fields
+            request_query['user.fields'] = user_fields
         if expansions is not None:
-            query['expansions'] = expansions
+            request_query['expansions'] = expansions
         if tweet_fields is not None:
-            query['tweet.fields'] = tweet_fields
-        r = self.client.request('/2/users/{id}/muting', method='get', query=query, params=params)
+            request_query['tweet.fields'] = tweet_fields
+        r = self.client.request('/2/users/{id}/muting', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_mute(self, id):
         """Mute User by User ID.
@@ -756,7 +788,7 @@ class Users(object):
         ----------
         id: string
             The ID of the authenticated source User that is requesting to mute the target User.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/mutes/api-reference/post-users-user_id-muting>`__.
@@ -766,20 +798,22 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if id is not None:
-            params['id'] = id
-        r = self.client.request('/2/users/{id}/muting', method='post', query=query, params=params)
+        request_params, request_query = {}, {}
+        request_params['id'] = id
+        r = self.client.request('/2/users/{id}/muting', method='post', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_unblock(self, source_user_id, target_user_id):
         """Unblock User by User ID.
@@ -792,7 +826,7 @@ class Users(object):
             The ID of the authenticated source User that is requesting to unblock the target User.
         target_user_id: string
             The ID of the User that the source User is requesting to unblock.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/blocks/api-reference/delete-users-user_id-blocking>`__.
@@ -802,23 +836,24 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if source_user_id is not None:
-            params['source_user_id'] = source_user_id
-        if target_user_id is not None:
-            params['target_user_id'] = target_user_id
-        r = self.client.request('/2/users/{source_user_id}/blocking/{target_user_id}', method='delete', query=query,
-                                params=params)
+        request_params, request_query = {}, {}
+        request_params['source_user_id'] = source_user_id
+        request_params['target_user_id'] = target_user_id
+        r = self.client.request('/2/users/{source_user_id}/blocking/{target_user_id}', method='delete',
+                                query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_unfollow(self, source_user_id, target_user_id):
         """Unfollow User.
@@ -831,7 +866,7 @@ class Users(object):
             The ID of the authenticated source User that is requesting to unfollow the target User.
         target_user_id: string
             The ID of the User that the source User is requesting to unfollow.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/follows/api-reference/delete-users-source_id-following>`__.
@@ -841,23 +876,24 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if source_user_id is not None:
-            params['source_user_id'] = source_user_id
-        if target_user_id is not None:
-            params['target_user_id'] = target_user_id
-        r = self.client.request('/2/users/{source_user_id}/following/{target_user_id}', method='delete', query=query,
-                                params=params)
+        request_params, request_query = {}, {}
+        request_params['source_user_id'] = source_user_id
+        request_params['target_user_id'] = target_user_id
+        r = self.client.request('/2/users/{source_user_id}/following/{target_user_id}', method='delete',
+                                query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
 
     def users_id_unmute(self, source_user_id, target_user_id):
         """Unmute User by User ID.
@@ -870,7 +906,7 @@ class Users(object):
             The ID of the authenticated source User that is requesting to unmute the target User.
         target_user_id: string
             The ID of the User that the source User is requesting to unmute.
-
+        
         Notes
         -----
         For more information, see: `here <https://developer.twitter.com/en/docs/twitter-api/users/mutes/api-reference/delete-users-user_id-muting>`__.
@@ -880,20 +916,21 @@ class Users(object):
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        if source_user_id is not None:
-            params['source_user_id'] = source_user_id
-        if target_user_id is not None:
-            params['target_user_id'] = target_user_id
-        r = self.client.request('/2/users/{source_user_id}/muting/{target_user_id}', method='delete', query=query,
-                                params=params)
+        request_params, request_query = {}, {}
+        request_params['source_user_id'] = source_user_id
+        request_params['target_user_id'] = target_user_id
+        r = self.client.request('/2/users/{source_user_id}/muting/{target_user_id}', method='delete',
+                                query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
-            if content_type == 'application/json':
-                return Response(data=r.json(), message='The request has succeeded.')
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has succeeded.
+                return TwitterObject(r)
         else:
-            if content_type == 'application/json':
-                raise TwitterError(message='The request has failed.')
-            if content_type == 'application/problem+json':
-                raise TwitterProblem(message='The request has failed.')
-        raise TwitterException()
+            if content_type is not None and content_type.startswith('application/json'):
+                # The request has failed.
+                raise TwitterError(r)
+            if content_type is not None and content_type.startswith('application/problem+json'):
+                # The request has failed.
+                raise TwitterProblem(r)
+        raise RequestException(r)
