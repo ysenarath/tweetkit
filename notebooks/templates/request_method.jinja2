@@ -2,7 +2,7 @@
         """{{ request.summary }}{%- if not request.summary.endswith('.') -%}.{%- endif %}
 
         {% if request.description -%}
-        {{ request.description }}{%- if not request.description.endswith('.') -%}.{%- endif %}
+        {{ request.description }}{% if not request.description.endswith('.') %}.{% endif %}
         {%- endif %}
 
         {% if request.parameters -%}
@@ -11,8 +11,9 @@
         {%- for p in request.parameters %}
         {{ p.name.replace('.', '_') }}: {{ p.schema.complete_type }}{% if not p.required %}, optional{% endif %}
             {{ p.description }}{%- if p.example -%} Example: {{ p.example }}.{%- endif %}
-        {%- endfor -%}
-        {%- endif %}
+        {%- endfor %}
+        
+        {% endif -%}
 
         Notes
         -----
@@ -23,46 +24,52 @@
         response: Response
             The response object of the request.
         """
-        params, query = {}, {}
-        {% for p in request.parameters %}
+        request_params, request_query = {}, {}
+        {% for p in request.parameters -%}
         {%- if p.in_ == 'path' -%}
+        {%- if not p.required -%}
         if {{ p.name.replace('.', '_') }} is not None:
-            params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
+            request_params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
+        {% else -%}
+        request_params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
         {% endif -%}
+        {%- endif -%}
         {%- endfor -%}
-        {% for p in request.parameters %}
+        {%- for p in request.parameters -%}
         {%- if p.in_ == 'query' -%}
+        {%- if not p.required -%}
         if {{ p.name.replace('.', '_') }} is not None:
-            query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
+            request_query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
+        {% else -%}
+        request_query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
         {% endif -%}
+        {%- endif -%}
         {%- endfor -%}
-        r = self.client.request('{{ path }}', method='{{ request.method }}', query=query, params=params)
+        r = self.client.request('{{ path }}', method='{{ request.method }}', query=request_query, params=request_params{% if request.x_twitter_streaming %}, stream={{ request.x_twitter_streaming }}{% endif %})
         content_type = r.headers.get('content-type')
-        {% for response in request.responses -%}
-        {%- if response.status_code != 'default' -%}
+        {%- for response in request.responses -%}
+        {%- if response.status_code != 'default' %}
         if r.status_code == {{ response.status_code }}:
-            {% for content_type in response.content -%}
-            if content_type == '{{ content_type }}':
-                {% if response.content[content_type].name == 'Error' -%}
-                raise TwitterError(message='{{ response.description }}')
-                {%- elif response.content[content_type].name == 'Problem' -%}
-                raise TwitterProblem(message='{{ response.description }}')
-                {%- else -%}
-                return Response(data=r.json(), message='{{ response.description }}') {# {{ response.content[content_type].name }} #}
-                {%- endif %}
-            {%- endfor -%}
         {%- else %}
         else:
-        {%- for content_type in response.content %}
-            if content_type == '{{ content_type }}':
-                {% if response.content[content_type].name == 'Error' -%}
-                raise TwitterError(message='{{ response.description }}')
-                {%- elif response.content[content_type].name == 'Problem' -%}
-                raise TwitterProblem(message='{{ response.description }}')
-                {%- else -%}
-                return Response(data=r.json(), message='{{ response.description }}') {# {{ response.content[content_type].name }} #}
-                {%- endif -%}
-        {% endfor -%}
         {%- endif -%}
+            {% if request.x_twitter_streaming %}
+            if content_type is None:
+                # {{ response.description }}
+                return TwitterObjectStream(r)
+            {%- endif -%}
+            {%- for content_type in response.content %}
+            if content_type is not None and content_type.startswith('{{ content_type }}'):
+                {% if response.content[content_type].name == 'Error' -%}
+                # {{ response.description }}
+                raise TwitterError(r)
+                {%- elif response.content[content_type].name == 'Problem' -%}
+                # {{ response.description }}
+                raise TwitterProblem(r)
+                {%- else -%}
+                # {{ response.description }}
+                return TwitterObject(r)
+                {%- endif %}
+            {%- endfor -%}
         {%- endfor %}
-        raise TwitterException()
+        raise RequestException(r)

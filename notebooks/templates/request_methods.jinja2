@@ -1,6 +1,6 @@
 """All methods related to {{ tag.name | lower }}."""
-from tweetkit.twitter.exceptions import TwitterException, TwitterError, TwitterProblem
-from tweetkit.twitter.response import Response
+from tweetkit.exceptions import TwitterError, TwitterProblem, RequestException
+from tweetkit.schema import TwitterObject, TwitterObjectStream
 
 __all__ = [
     '{{ tag.name }}'
