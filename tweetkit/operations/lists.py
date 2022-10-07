@@ -117,18 +117,18 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_params['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count',
-                                             'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['owner_id']
+            request_query['expansions'] = ['owner_id']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         r = self.client.request('/2/lists/{id}', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -311,18 +311,18 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_params['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count',
-                                             'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['owner_id']
+            request_query['expansions'] = ['owner_id']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         r = self.client.request('/2/users/{id}/followed_lists', method='get', query=request_query,
                                 params=request_params)
         content_type = r.headers.get('content-type')
@@ -467,18 +467,18 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_params['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count',
-                                             'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['owner_id']
+            request_query['expansions'] = ['owner_id']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         r = self.client.request('/2/users/{id}/list_memberships', method='get', query=request_query,
                                 params=request_params)
         content_type = r.headers.get('content-type')
@@ -538,18 +538,18 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_params['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count',
-                                             'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['owner_id']
+            request_query['expansions'] = ['owner_id']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         r = self.client.request('/2/users/{id}/owned_lists', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -599,18 +599,18 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_params['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count',
-                                             'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['owner_id']
+            request_query['expansions'] = ['owner_id']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         r = self.client.request('/2/users/{id}/pinned_lists', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:

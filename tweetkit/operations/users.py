@@ -52,22 +52,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/lists/{id}/followers', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -126,22 +126,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/lists/{id}/members', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -200,22 +200,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/tweets/{id}/liking_users', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -274,22 +274,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -335,26 +335,26 @@ class Users(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        request_params['ids'] = ids
+        request_query['ids'] = ids
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -400,26 +400,26 @@ class Users(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        request_params['usernames'] = usernames
+        request_query['usernames'] = usernames
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users/by', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -469,22 +469,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users/by/username/{username}', method='get', query=request_query,
                                 params=request_params)
         content_type = r.headers.get('content-type')
@@ -532,22 +532,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users/me', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -597,22 +597,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -671,22 +671,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users/{id}/blocking', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -785,22 +785,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users/{id}/followers', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -859,22 +859,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users/{id}/following', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -973,22 +973,22 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/users/{id}/muting', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:

@@ -37,15 +37,14 @@ class Compliance(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        request_params['type'] = type
+        request_query['type'] = type
         if status is not None:
             request_query['status'] = status
         if compliance_job_fields is not None:
             request_query['compliance_job.fields'] = compliance_job_fields
         else:
-            request_params['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id',
-                                                       'name', 'resumable', 'status', 'type', 'upload_expires_at',
-                                                       'upload_url']
+            request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name',
+                                                      'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
         r = self.client.request('/2/compliance/jobs', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -125,9 +124,8 @@ class Compliance(object):
         if compliance_job_fields is not None:
             request_query['compliance_job.fields'] = compliance_job_fields
         else:
-            request_params['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id',
-                                                       'name', 'resumable', 'status', 'type', 'upload_expires_at',
-                                                       'upload_url']
+            request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name',
+                                                      'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
         r = self.client.request('/2/compliance/jobs/{id}', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -173,7 +171,7 @@ class Compliance(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        request_params['partition'] = partition
+        request_query['partition'] = partition
         if backfill_minutes is not None:
             request_query['backfill_minutes'] = backfill_minutes
         if start_time is not None:
@@ -232,7 +230,7 @@ class Compliance(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        request_params['partition'] = partition
+        request_query['partition'] = partition
         if backfill_minutes is not None:
             request_query['backfill_minutes'] = backfill_minutes
         if start_time is not None:

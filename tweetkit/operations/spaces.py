@@ -41,28 +41,28 @@ class Spaces(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        request_params['ids'] = ids
+        request_query['ids'] = ids
         if space_fields is not None:
             request_query['space.fields'] = space_fields
         else:
-            request_params['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
-                                              'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
-                                              'scheduled_start', 'speaker_ids', 'started_at', 'state',
-                                              'subscriber_count', 'title', 'topic_ids', 'updated_at']
+            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
+                                             'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
+                                             'scheduled_start', 'speaker_ids', 'started_at', 'state',
+                                             'subscriber_count', 'title', 'topic_ids', 'updated_at']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['creator_id', 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids']
+            request_query['expansions'] = ['creator_id', 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if topic_fields is not None:
             request_query['topic.fields'] = topic_fields
         else:
-            request_params['topic.fields'] = ['description', 'id', 'name']
+            request_query['topic.fields'] = ['description', 'id', 'name']
         r = self.client.request('/2/spaces', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -111,28 +111,28 @@ class Spaces(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        request_params['user_ids'] = user_ids
+        request_query['user_ids'] = user_ids
         if space_fields is not None:
             request_query['space.fields'] = space_fields
         else:
-            request_params['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
-                                              'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
-                                              'scheduled_start', 'speaker_ids', 'started_at', 'state',
-                                              'subscriber_count', 'title', 'topic_ids', 'updated_at']
+            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
+                                             'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
+                                             'scheduled_start', 'speaker_ids', 'started_at', 'state',
+                                             'subscriber_count', 'title', 'topic_ids', 'updated_at']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['creator_id', 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids']
+            request_query['expansions'] = ['creator_id', 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if topic_fields is not None:
             request_query['topic.fields'] = topic_fields
         else:
-            request_params['topic.fields'] = ['description', 'id', 'name']
+            request_query['topic.fields'] = ['description', 'id', 'name']
         r = self.client.request('/2/spaces/by/creator_ids', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -185,7 +185,7 @@ class Spaces(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        request_params['query'] = query
+        request_query['query'] = query
         if state is not None:
             request_query['state'] = state
         if max_results is not None:
@@ -193,24 +193,24 @@ class Spaces(object):
         if space_fields is not None:
             request_query['space.fields'] = space_fields
         else:
-            request_params['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
-                                              'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
-                                              'scheduled_start', 'speaker_ids', 'started_at', 'state',
-                                              'subscriber_count', 'title', 'topic_ids', 'updated_at']
+            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
+                                             'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
+                                             'scheduled_start', 'speaker_ids', 'started_at', 'state',
+                                             'subscriber_count', 'title', 'topic_ids', 'updated_at']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['creator_id', 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids']
+            request_query['expansions'] = ['creator_id', 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if topic_fields is not None:
             request_query['topic.fields'] = topic_fields
         else:
-            request_params['topic.fields'] = ['description', 'id', 'name']
+            request_query['topic.fields'] = ['description', 'id', 'name']
         r = self.client.request('/2/spaces/search', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -262,24 +262,24 @@ class Spaces(object):
         if space_fields is not None:
             request_query['space.fields'] = space_fields
         else:
-            request_params['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
-                                              'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
-                                              'scheduled_start', 'speaker_ids', 'started_at', 'state',
-                                              'subscriber_count', 'title', 'topic_ids', 'updated_at']
+            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
+                                             'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
+                                             'scheduled_start', 'speaker_ids', 'started_at', 'state',
+                                             'subscriber_count', 'title', 'topic_ids', 'updated_at']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['creator_id', 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids']
+            request_query['expansions'] = ['creator_id', 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if topic_fields is not None:
             request_query['topic.fields'] = topic_fields
         else:
-            request_params['topic.fields'] = ['description', 'id', 'name']
+            request_query['topic.fields'] = ['description', 'id', 'name']
         r = self.client.request('/2/spaces/{id}', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -338,22 +338,22 @@ class Spaces(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['pinned_tweet_id']
+            request_query['expansions'] = ['pinned_tweet_id']
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         r = self.client.request('/2/spaces/{id}/buyers', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
@@ -414,40 +414,40 @@ class Spaces(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_params['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities',
-                                              'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                              'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
-                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                              'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
+                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_params['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
-                                            'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
-                                            'in_reply_to_user_id', 'referenced_tweets.id',
-                                            'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_params['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                              'organic_metrics', 'preview_image_url', 'promoted_metrics',
-                                              'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
+                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
-            request_params['poll.fields'] = ['duration_minutes', 'end_datetime', 'id', 'options', 'voting_status']
+            request_query['poll.fields'] = ['duration_minutes', 'end_datetime', 'id', 'options', 'voting_status']
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_params['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                             'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_params['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
-                                              'name', 'place_type']
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
         r = self.client.request('/2/spaces/{id}/tweets', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
