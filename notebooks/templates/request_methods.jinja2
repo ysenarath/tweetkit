@@ -1,18 +1,17 @@
 """All methods related to {{ tag.name | lower }}."""
-from tweetkit.exceptions import TwitterError, TwitterProblem, RequestException
-from tweetkit.schema import TwitterObject, TwitterObjectStream
+from tweetkit.exceptions import ProblemOrError, RequestException
+from tweetkit.models import TwitterObject, TwitterObjectStream
 
 __all__ = [
     '{{ tag.name }}'
 ]
+
 
 class {{ tag.name }}(object):
     """{{ tag.description }}"""
     
     def __init__(self, client):
         self.client = client
-
 {% for method in methods %}
 {{ method }}
-
 {% endfor %}

@@ -10,7 +10,10 @@
         ----------
         {%- for p in request.parameters %}
         {{ p.name.replace('.', '_') }}: {{ p.schema.complete_type }}{% if not p.required %}, optional{% endif %}
-            {{ p.description }}{%- if p.example -%} Example: {{ p.example }}.{%- endif %}
+            {{ p.description }}
+            {%- if p.example -%}
+            Example: {{ p.example }}.
+            {%- endif %}
         {%- endfor %}
         
         {% endif -%}
@@ -21,8 +24,8 @@
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: {% if request.x_twitter_streaming %}TwitterObjectStream{% else %}TwitterObject{% endif %}
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         {% for p in request.parameters -%}
@@ -30,7 +33,11 @@
         {%- if not p.required -%}
         if {{ p.name.replace('.', '_') }} is not None:
             request_params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
-        {% else -%}
+        {% if p.schema.type == 'list' and p.schema.items.enum is not none -%}
+        else:
+            request_params['{{ p.name }}'] = ['{{ p.schema.items.enum | join('\', \'') }}']
+        {% endif -%}
+        {%- else -%}
         request_params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
         {% endif -%}
         {%- endif -%}
@@ -40,8 +47,12 @@
         {%- if not p.required -%}
         if {{ p.name.replace('.', '_') }} is not None:
             request_query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
+        {% if p.schema.type == 'list' and p.name != 'exclude' and p.schema.items.enum is not none -%}
+        else:
+            request_params['{{ p.name }}'] = [{% if p.schema.items.type == 'string' %}'{{ p.schema.items.enum | join('\', \'') }}'{% else %}{{ p.schema.items.enum | join(', ') }}{% endif %}]
+        {% endif -%}
         {% else -%}
-        request_query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
+        request_params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
         {% endif -%}
         {%- endif -%}
         {%- endfor -%}
@@ -62,10 +73,14 @@
             if content_type is not None and content_type.startswith('{{ content_type }}'):
                 {% if response.content[content_type].name == 'Error' -%}
                 # {{ response.description }}
-                raise TwitterError(r)
+                error = ProblemOrError(r)
+                if error is not None:
+                    raise error
                 {%- elif response.content[content_type].name == 'Problem' -%}
                 # {{ response.description }}
-                raise TwitterProblem(r)
+                problem = ProblemOrError(r)
+                if problem is not None:
+                    raise problem
                 {%- else -%}
                 # {{ response.description }}
                 return TwitterObject(r)
