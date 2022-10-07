@@ -17,16 +17,15 @@ class TwitterObject(object):
 
     def __init__(self, data):
         data = json.loads(data)
+        errors = data.pop('errors', [])
         try:
             self._data = data['data']
         except KeyError as ex:
             # for loading result of endpoint '/2/openapi.json'
             self._data = data
-        else:
-            errors = data.get('errors', [])
-            if isinstance(errors, collections.Mapping):
-                errors = [errors]
-            self._errors = list(map(TwitterProblem, errors))
+        if isinstance(errors, collections.Mapping):
+            errors = [errors]
+        self._errors = list(map(TwitterProblem, errors))
 
     @property
     def errors(self):
