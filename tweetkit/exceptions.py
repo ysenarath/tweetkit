@@ -9,11 +9,16 @@ __all__ = {
     'TwitterProblem',
     'RequestException',
     'JSONDecodeError',
+    'ProblemOrError',
 }
 
 
-def process_args(*args, **kwargs):
+def extract_request_info(*args, **kwargs):
     """Extract response from arguments and try to decode it and add as args.
+
+    Example
+    -------
+    response, request = extract_request_info(*args, **kwargs)
 
     Parameters
     ----------
@@ -34,13 +39,11 @@ def process_args(*args, **kwargs):
         response = kwargs.pop('response')
     elif len(args) > 0 and isinstance(args[0], requests.Response):
         response, args = args[0], args[1:]
-    kwargs['response'] = response
     # process request
     request = kwargs.pop('request', None)
     if response is not None and not request and hasattr(response, 'request'):
         request = response.request
-    kwargs['request'] = request
-    return args, kwargs
+    return response, request
 
 
 class TwitterException(Exception):
@@ -96,14 +99,13 @@ class TwitterError(TwitterException):
 
     def __init__(self, *args, **kwargs):
         # process args
-        args, kwargs = process_args(*args, **kwargs)
-        response = kwargs.get('response')
+        response, _ = extract_request_info(*args, **kwargs)
         if response is not None:
             for key, value in json.loads(response).items():
                 if key not in kwargs:
                     kwargs[key] = value
         # process args
-        args, kwargs = process_args(*args, **kwargs)
+        response, request = extract_request_info(*args, **kwargs)
         default_message = args[0] if len(args) > 0 else self.default_message
         message = kwargs.get('message', default_message)
         default_code = args[1] if len(args) > 1 else None
@@ -119,14 +121,13 @@ class TwitterProblem(TwitterException):
 
     def __init__(self, *args, **kwargs):
         # process args
-        args, kwargs = process_args(*args, **kwargs)
-        response = kwargs.get('response')
+        response, _ = extract_request_info(*args, **kwargs)
         if response is not None:
             for key, value in json.loads(response).items():
                 if key not in kwargs:
                     kwargs[key] = value
         # extract message from detail
-        message = kwargs.get('detail', args[0] if len(args) > 0 else self.default_message)
+        message = kwargs.get('detail', kwargs.get('title', args[0] if len(args) > 0 else self.default_message))
         # extract status
         code = kwargs.get('status', args[1] if len(args) > 1 else None)
         # twitter problem
@@ -137,7 +138,26 @@ class RequestException(TwitterException, requests.exceptions.RequestException):
     """There was an ambiguous exception that occurred while handling your request."""
 
     def __init__(self, *args, **kwargs):
-        """ Initialize RequestException with `request` and `response` objects."""
+        """Initialize RequestException with `request` and `response` objects."""
         # process args
-        args, kwargs = process_args(*args, **kwargs)
-        super(RequestException, self).__init__(*args, **kwargs)
+        response, request = extract_request_info(*args, **kwargs)
+        super(RequestException, self).__init__(response=response, request=request)
+
+
+def ProblemOrError(*args, **kwargs):
+    """Create Problem or Error.
+
+    Returns
+    -------
+    error: TwitterError or TwitterProblem
+        Returns error or problem.
+    """
+    response, request = extract_request_info(*args, **kwargs)
+    content_type = response.headers.get('content-type')
+    if content_type.startswith(('application/json', 'application/problem+json')):
+        data = json.loads(response)
+        if 'code' in data and 'message' in data:
+            return TwitterError(response)
+        if 'type' in data and 'title' in data:
+            return TwitterProblem(response)
+    return None
