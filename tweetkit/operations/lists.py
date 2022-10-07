@@ -1,6 +1,6 @@
 """All methods related to lists."""
 from tweetkit.exceptions import TwitterError, TwitterProblem, RequestException
-from tweetkit.schema import TwitterObject
+from tweetkit.schema import TwitterObject, TwitterObjectStream
 
 __all__ = [
     'Lists'
@@ -9,7 +9,7 @@ __all__ = [
 
 class Lists(object):
     """Endpoints related to retrieving, managing Lists"""
-
+    
     def __init__(self, client):
         self.client = client
 
@@ -24,8 +24,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         r = self.client.request('/2/lists', method='post', query=request_query, params=request_params)
@@ -59,8 +59,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -88,11 +88,11 @@ class Lists(object):
         ----------
         id: string
             The ID of the List.
-        list_fields: list of string, optional
+        list_fields: list of {'created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private'}, optional
             A comma separated list of List fields to display.
-        expansions: list of string, optional
+        expansions: list of {'owner_id'}, optional
             A comma separated list of fields to expand.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
         
         Notes
@@ -101,8 +101,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -143,8 +143,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -179,8 +179,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -217,14 +217,13 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['user_id'] = user_id
-        r = self.client.request('/2/lists/{id}/members/{user_id}', method='delete', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/lists/{id}/members/{user_id}', method='delete', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -239,8 +238,7 @@ class Lists(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def user_followed_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                            user_fields=None):
+    def user_followed_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None, user_fields=None):
         """Get User's Followed Lists.
 
         Returns a User's followed Lists.
@@ -253,11 +251,11 @@ class Lists(object):
             The maximum number of results.
         pagination_token: string, optional
             This parameter is used to get a specified 'page' of results.
-        list_fields: list of string, optional
+        list_fields: list of {'created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private'}, optional
             A comma separated list of List fields to display.
-        expansions: list of string, optional
+        expansions: list of {'owner_id'}, optional
             A comma separated list of fields to expand.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
         
         Notes
@@ -266,8 +264,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -281,8 +279,7 @@ class Lists(object):
             request_query['expansions'] = expansions
         if user_fields is not None:
             request_query['user.fields'] = user_fields
-        r = self.client.request('/2/users/{id}/followed_lists', method='get', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/users/{id}/followed_lists', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -313,13 +310,12 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/users/{id}/followed_lists', method='post', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/users/{id}/followed_lists', method='post', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -352,14 +348,13 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['list_id'] = list_id
-        r = self.client.request('/2/users/{id}/followed_lists/{list_id}', method='delete', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/users/{id}/followed_lists/{list_id}', method='delete', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -374,8 +369,7 @@ class Lists(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def get_user_list_memberships(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                                  user_fields=None):
+    def get_user_list_memberships(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None, user_fields=None):
         """Get a User's List Memberships.
 
         Get a User's List Memberships.
@@ -388,11 +382,11 @@ class Lists(object):
             The maximum number of results.
         pagination_token: string, optional
             This parameter is used to get a specified 'page' of results.
-        list_fields: list of string, optional
+        list_fields: list of {'created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private'}, optional
             A comma separated list of List fields to display.
-        expansions: list of string, optional
+        expansions: list of {'owner_id'}, optional
             A comma separated list of fields to expand.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
         
         Notes
@@ -401,8 +395,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -416,8 +410,7 @@ class Lists(object):
             request_query['expansions'] = expansions
         if user_fields is not None:
             request_query['user.fields'] = user_fields
-        r = self.client.request('/2/users/{id}/list_memberships', method='get', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/users/{id}/list_memberships', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -432,8 +425,7 @@ class Lists(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def list_user_owned_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                              user_fields=None):
+    def list_user_owned_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None, user_fields=None):
         """Get a User's Owned Lists.
 
         Get a User's Owned Lists.
@@ -446,11 +438,11 @@ class Lists(object):
             The maximum number of results.
         pagination_token: string, optional
             This parameter is used to get a specified 'page' of results.
-        list_fields: list of string, optional
+        list_fields: list of {'created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private'}, optional
             A comma separated list of List fields to display.
-        expansions: list of string, optional
+        expansions: list of {'owner_id'}, optional
             A comma separated list of fields to expand.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
         
         Notes
@@ -459,8 +451,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -498,11 +490,11 @@ class Lists(object):
         ----------
         id: string
             The ID of the authenticated source User for whom to return results.
-        list_fields: list of string, optional
+        list_fields: list of {'created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private'}, optional
             A comma separated list of List fields to display.
-        expansions: list of string, optional
+        expansions: list of {'owner_id'}, optional
             A comma separated list of fields to expand.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
         
         Notes
@@ -511,8 +503,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -553,8 +545,8 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -591,14 +583,13 @@ class Lists(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['list_id'] = list_id
-        r = self.client.request('/2/users/{id}/pinned_lists/{list_id}', method='delete', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/users/{id}/pinned_lists/{list_id}', method='delete', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):

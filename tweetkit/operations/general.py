@@ -1,6 +1,6 @@
 """All methods related to general."""
-from tweetkit.exceptions import RequestException
-from tweetkit.schema import TwitterObject
+from tweetkit.exceptions import TwitterError, TwitterProblem, RequestException
+from tweetkit.schema import TwitterObject, TwitterObjectStream
 
 __all__ = [
     'General'
@@ -9,7 +9,7 @@ __all__ = [
 
 class General(object):
     """Miscellaneous endpoints for general API functionality"""
-
+    
     def __init__(self, client):
         self.client = client
 
@@ -24,8 +24,8 @@ class General(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         r = self.client.request('/2/openapi.json', method='get', query=request_query, params=request_params)

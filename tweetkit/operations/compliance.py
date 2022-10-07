@@ -9,7 +9,7 @@ __all__ = [
 
 class Compliance(object):
     """Endpoints related to keeping Twitter data in your systems compliant"""
-
+    
     def __init__(self, client):
         self.client = client
 
@@ -20,11 +20,11 @@ class Compliance(object):
 
         Parameters
         ----------
-        type: string
+        type: {'tweets', 'users'}
             Type of Compliance Job to list.
-        status: string, optional
+        status: {'created', 'in_progress', 'failed', 'complete'}, optional
             Status of Compliance Job to list.
-        compliance_job_fields: list of string, optional
+        compliance_job_fields: list of {'created_at', 'download_expires_at', 'download_url', 'id', 'name', 'resumable', 'status', 'type', 'upload_expires_at', 'upload_url'}, optional
             A comma separated list of ComplianceJob fields to display.
         
         Notes
@@ -33,8 +33,8 @@ class Compliance(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['type'] = type
@@ -68,8 +68,8 @@ class Compliance(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         r = self.client.request('/2/compliance/jobs', method='post', query=request_query, params=request_params)
@@ -96,7 +96,7 @@ class Compliance(object):
         ----------
         id: string
             The ID of the Compliance Job to retrieve.
-        compliance_job_fields: list of string, optional
+        compliance_job_fields: list of {'created_at', 'download_expires_at', 'download_url', 'id', 'name', 'resumable', 'status', 'type', 'upload_expires_at', 'upload_url'}, optional
             A comma separated list of ComplianceJob fields to display.
         
         Notes
@@ -105,8 +105,8 @@ class Compliance(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -149,8 +149,8 @@ class Compliance(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObjectStream
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['partition'] = partition
@@ -160,8 +160,7 @@ class Compliance(object):
             request_query['start_time'] = start_time
         if end_time is not None:
             request_query['end_time'] = end_time
-        r = self.client.request('/2/tweets/compliance/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
+        r = self.client.request('/2/tweets/compliance/stream', method='get', query=request_query, params=request_params, stream=True)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is None:
@@ -204,8 +203,8 @@ class Compliance(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObjectStream
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['partition'] = partition
@@ -215,8 +214,7 @@ class Compliance(object):
             request_query['start_time'] = start_time
         if end_time is not None:
             request_query['end_time'] = end_time
-        r = self.client.request('/2/users/compliance/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
+        r = self.client.request('/2/users/compliance/stream', method='get', query=request_query, params=request_params, stream=True)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is None:

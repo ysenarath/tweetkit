@@ -9,12 +9,11 @@ __all__ = [
 
 class Tweets(object):
     """Endpoints related to retrieving, searching, and modifying Tweets"""
-
+    
     def __init__(self, client):
         self.client = client
 
-    def lists_id_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None,
-                        media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
+    def lists_id_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """List Tweets timeline by List ID.
 
         Returns a list of Tweets associated with the provided List ID.
@@ -27,17 +26,17 @@ class Tweets(object):
             The maximum number of results.
         pagination_token: string, optional
             This parameter is used to get the next 'page' of results.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -46,8 +45,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -82,8 +81,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def find_tweets_by_id(self, ids, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                          user_fields=None, place_fields=None):
+    def find_tweets_by_id(self, ids, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Tweet lookup by Tweet IDs.
 
         Returns a variety of information about the Tweet specified by the requested ID.
@@ -92,17 +90,17 @@ class Tweets(object):
         ----------
         ids: list of string
             A comma separated list of Tweet IDs. Up to 100 are allowed in a single request.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -111,8 +109,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['ids'] = ids
@@ -154,8 +152,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         r = self.client.request('/2/tweets', method='post', query=request_query, params=request_params)
@@ -173,9 +171,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def tweet_counts_full_archive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
-                                         next_token=None, pagination_token=None, granularity=None,
-                                         search_count_fields=None):
+    def tweet_counts_full_archive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None, next_token=None, pagination_token=None, granularity=None, search_count_fields=None):
         """Full archive search counts.
 
         Returns Tweet Counts that match a search query.
@@ -196,9 +192,9 @@ class Tweets(object):
             This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
         pagination_token: string, optional
             This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-        granularity: string, optional
+        granularity: {'minute', 'hour', 'day'}, optional
             The granularity for the search counts results.
-        search_count_fields: list of string, optional
+        search_count_fields: list of {'end', 'start', 'tweet_count'}, optional
             A comma separated list of SearchCount fields to display.
         
         Notes
@@ -207,8 +203,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['query'] = query
@@ -243,8 +239,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def tweet_counts_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
-                                   next_token=None, pagination_token=None, granularity=None, search_count_fields=None):
+    def tweet_counts_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None, next_token=None, pagination_token=None, granularity=None, search_count_fields=None):
         """Recent search counts.
 
         Returns Tweet Counts from the last 7 days that match a search query.
@@ -265,9 +260,9 @@ class Tweets(object):
             This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
         pagination_token: string, optional
             This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-        granularity: string, optional
+        granularity: {'minute', 'hour', 'day'}, optional
             The granularity for the search counts results.
-        search_count_fields: list of string, optional
+        search_count_fields: list of {'end', 'start', 'tweet_count'}, optional
             A comma separated list of SearchCount fields to display.
         
         Notes
@@ -276,8 +271,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['query'] = query
@@ -312,9 +307,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def get_tweets_firehose_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None,
-                                   tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                                   user_fields=None, place_fields=None):
+    def get_tweets_firehose_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Firehose stream.
 
         Streams 100% of public Tweets.
@@ -329,17 +322,17 @@ class Tweets(object):
             YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Tweets will be provided.Example: 2021-02-14T18:40:40.000Z.
         end_time: string, optional
             YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Tweets will be provided.Example: 2021-02-14T18:40:40.000Z.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -348,8 +341,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObjectStream
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['partition'] = partition
@@ -371,8 +364,7 @@ class Tweets(object):
             request_query['user.fields'] = user_fields
         if place_fields is not None:
             request_query['place.fields'] = place_fields
-        r = self.client.request('/2/tweets/firehose/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
+        r = self.client.request('/2/tweets/firehose/stream', method='get', query=request_query, params=request_params, stream=True)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is None:
@@ -393,8 +385,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def sample_stream(self, backfill_minutes=None, tweet_fields=None, expansions=None, media_fields=None,
-                      poll_fields=None, user_fields=None, place_fields=None):
+    def sample_stream(self, backfill_minutes=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Sample stream.
 
         Streams a deterministic 1% of public Tweets.
@@ -403,17 +394,17 @@ class Tweets(object):
         ----------
         backfill_minutes: integer, optional
             The number of minutes of backfill requested.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -422,8 +413,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObjectStream
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         if backfill_minutes is not None:
@@ -440,8 +431,7 @@ class Tweets(object):
             request_query['user.fields'] = user_fields
         if place_fields is not None:
             request_query['place.fields'] = place_fields
-        r = self.client.request('/2/tweets/sample/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
+        r = self.client.request('/2/tweets/sample/stream', method='get', query=request_query, params=request_params, stream=True)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is None:
@@ -462,9 +452,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def get_tweets_sample10_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None,
-                                   tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                                   user_fields=None, place_fields=None):
+    def get_tweets_sample10_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Sample 10% stream.
 
         Streams a deterministic 10% of public Tweets.
@@ -479,17 +467,17 @@ class Tweets(object):
             YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp to which the Tweets will be provided.Example: 2021-02-14T18:40:40.000Z.
         end_time: string, optional
             YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Tweets will be provided.Example: 2021-02-14T18:40:40.000Z.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -498,8 +486,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObjectStream
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['partition'] = partition
@@ -521,8 +509,7 @@ class Tweets(object):
             request_query['user.fields'] = user_fields
         if place_fields is not None:
             request_query['place.fields'] = place_fields
-        r = self.client.request('/2/tweets/sample10/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
+        r = self.client.request('/2/tweets/sample10/stream', method='get', query=request_query, params=request_params, stream=True)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is None:
@@ -543,10 +530,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def tweets_fullarchive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
-                                  max_results=None, next_token=None, pagination_token=None, sort_order=None,
-                                  tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                                  user_fields=None, place_fields=None):
+    def tweets_fullarchive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None, max_results=None, next_token=None, pagination_token=None, sort_order=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Full-archive search.
 
         Returns Tweets that match a search query.
@@ -569,19 +553,19 @@ class Tweets(object):
             This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
         pagination_token: string, optional
             This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-        sort_order: string, optional
+        sort_order: {'recency', 'relevancy'}, optional
             This order in which to return results.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -590,8 +574,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['query'] = query
@@ -638,10 +622,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def tweets_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
-                             max_results=None, next_token=None, pagination_token=None, sort_order=None,
-                             tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None,
-                             place_fields=None):
+    def tweets_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None, max_results=None, next_token=None, pagination_token=None, sort_order=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Recent search.
 
         Returns Tweets from the last 7 days that match a search query.
@@ -664,19 +645,19 @@ class Tweets(object):
             This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
         pagination_token: string, optional
             This parameter is used to get the next 'page' of results. The value used with the parameter is pulled directly from the response provided by the API, and should not be modified.
-        sort_order: string, optional
+        sort_order: {'recency', 'relevancy'}, optional
             This order in which to return results.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -685,8 +666,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_query['query'] = query
@@ -733,8 +714,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def search_stream(self, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None,
-                      media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
+    def search_stream(self, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Filtered stream.
 
         Streams Tweets matching the stream's active rule set.
@@ -747,17 +727,17 @@ class Tweets(object):
             YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Tweets will be provided.Example: 2021-02-01T18:40:40.000Z.
         end_time: string, optional
             YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Tweets will be provided.Example: 2021-02-14T18:40:40.000Z.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -766,8 +746,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObjectStream
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         if backfill_minutes is not None:
@@ -788,8 +768,7 @@ class Tweets(object):
             request_query['user.fields'] = user_fields
         if place_fields is not None:
             request_query['place.fields'] = place_fields
-        r = self.client.request('/2/tweets/search/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
+        r = self.client.request('/2/tweets/search/stream', method='get', query=request_query, params=request_params, stream=True)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is None:
@@ -830,8 +809,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         if ids is not None:
@@ -840,8 +819,7 @@ class Tweets(object):
             request_query['max_results'] = max_results
         if pagination_token is not None:
             request_query['pagination_token'] = pagination_token
-        r = self.client.request('/2/tweets/search/stream/rules', method='get', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/tweets/search/stream/rules', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -872,14 +850,13 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         if dry_run is not None:
             request_query['dry_run'] = dry_run
-        r = self.client.request('/2/tweets/search/stream/rules', method='post', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/tweets/search/stream/rules', method='post', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -910,8 +887,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -930,8 +907,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def find_tweet_by_id(self, id, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                         user_fields=None, place_fields=None):
+    def find_tweet_by_id(self, id, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Tweet lookup by Tweet ID.
 
         Returns a variety of information about the Tweet specified by the requested ID.
@@ -940,17 +916,17 @@ class Tweets(object):
         ----------
         id: string
             A single Tweet ID.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -959,8 +935,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -991,9 +967,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def find_tweets_that_quote_a_tweet(self, id, max_results=None, pagination_token=None, exclude=None,
-                                       tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                                       user_fields=None, place_fields=None):
+    def find_tweets_that_quote_a_tweet(self, id, max_results=None, pagination_token=None, exclude=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Retrieve Tweets that quote a Tweet.
 
         Returns a variety of information about each Tweet that quotes the Tweet specified by the requested ID.
@@ -1006,19 +980,19 @@ class Tweets(object):
             The maximum number of results to be returned.
         pagination_token: string, optional
             This parameter is used to get a specified 'page' of results.
-        exclude: list of string, optional
+        exclude: list of {'replies', 'retweets'}, optional
             The set of entities to exclude (e.g. 'replies' or 'retweets').
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -1027,8 +1001,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -1081,8 +1055,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['tweet_id'] = tweet_id
@@ -1101,8 +1075,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def users_id_liked_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None,
-                              media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
+    def users_id_liked_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """Returns Tweet objects liked by the provided User ID.
 
         Returns a list of Tweets liked by the provided User ID.
@@ -1115,17 +1088,17 @@ class Tweets(object):
             The maximum number of results.
         pagination_token: string, optional
             This parameter is used to get the next 'page' of results.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -1134,8 +1107,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -1186,8 +1159,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -1224,14 +1197,13 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['tweet_id'] = tweet_id
-        r = self.client.request('/2/users/{id}/likes/{tweet_id}', method='delete', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/users/{id}/likes/{tweet_id}', method='delete', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -1246,9 +1218,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def users_id_mentions(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None,
-                          start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
-                          poll_fields=None, user_fields=None, place_fields=None):
+    def users_id_mentions(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """User mention timeline by User ID.
 
         Returns Tweet objects that mention username associated to the provided User ID.
@@ -1269,17 +1239,17 @@ class Tweets(object):
             YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Tweets will be provided. The since_id parameter takes precedence if it is also specified.Example: 2021-02-01T18:40:40.000Z.
         end_time: string, optional
             YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Tweets will be provided. The until_id parameter takes precedence if it is also specified.Example: 2021-02-14T18:40:40.000Z.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -1288,8 +1258,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -1348,8 +1318,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -1386,14 +1356,13 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['source_tweet_id'] = source_tweet_id
-        r = self.client.request('/2/users/{id}/retweets/{source_tweet_id}', method='delete', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/users/{id}/retweets/{source_tweet_id}', method='delete', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -1408,9 +1377,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def users_id_timeline(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None,
-                          start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
-                          poll_fields=None, user_fields=None, place_fields=None):
+    def users_id_timeline(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """User home timeline by User ID.
 
         Returns Tweet objects that appears in the provided User ID's home timeline.
@@ -1427,23 +1394,23 @@ class Tweets(object):
             The maximum number of results.
         pagination_token: string, optional
             This parameter is used to get the next 'page' of results.
-        exclude: list of string, optional
+        exclude: list of {'replies', 'retweets'}, optional
             The set of entities to exclude (e.g. 'replies' or 'retweets').
         start_time: string, optional
             YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Tweets will be provided. The since_id parameter takes precedence if it is also specified.Example: 2021-02-01T18:40:40.000Z.
         end_time: string, optional
             YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Tweets will be provided. The until_id parameter takes precedence if it is also specified.Example: 2021-02-14T18:40:40.000Z.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -1452,8 +1419,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
@@ -1483,8 +1450,7 @@ class Tweets(object):
             request_query['user.fields'] = user_fields
         if place_fields is not None:
             request_query['place.fields'] = place_fields
-        r = self.client.request('/2/users/{id}/timelines/reverse_chronological', method='get', query=request_query,
-                                params=request_params)
+        r = self.client.request('/2/users/{id}/timelines/reverse_chronological', method='get', query=request_query, params=request_params)
         content_type = r.headers.get('content-type')
         if r.status_code == 200:
             if content_type is not None and content_type.startswith('application/json'):
@@ -1499,9 +1465,7 @@ class Tweets(object):
                 raise TwitterProblem(r)
         raise RequestException(r)
 
-    def users_id_tweets(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None,
-                        start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
-                        poll_fields=None, user_fields=None, place_fields=None):
+    def users_id_tweets(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
         """User Tweets timeline by User ID.
 
         Returns a list of Tweets authored by the provided User ID.
@@ -1518,23 +1482,23 @@ class Tweets(object):
             The maximum number of results.
         pagination_token: string, optional
             This parameter is used to get the next 'page' of results.
-        exclude: list of string, optional
+        exclude: list of {'replies', 'retweets'}, optional
             The set of entities to exclude (e.g. 'replies' or 'retweets').
         start_time: string, optional
             YYYY-MM-DDTHH:mm:ssZ. The earliest UTC timestamp from which the Tweets will be provided. The since_id parameter takes precedence if it is also specified.Example: 2021-02-01T18:40:40.000Z.
         end_time: string, optional
             YYYY-MM-DDTHH:mm:ssZ. The latest UTC timestamp to which the Tweets will be provided. The until_id parameter takes precedence if it is also specified.Example: 2021-02-14T18:40:40.000Z.
-        tweet_fields: list of string, optional
+        tweet_fields: list of {'attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics', 'organic_metrics', 'possibly_sensitive', 'promoted_metrics', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld'}, optional
             A comma separated list of Tweet fields to display.
-        expansions: list of string, optional
+        expansions: list of {'attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id'}, optional
             A comma separated list of fields to expand.
-        media_fields: list of string, optional
+        media_fields: list of {'alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics', 'organic_metrics', 'preview_image_url', 'promoted_metrics', 'public_metrics', 'type', 'url', 'variants', 'width'}, optional
             A comma separated list of Media fields to display.
-        poll_fields: list of string, optional
+        poll_fields: list of {'duration_minutes', 'end_datetime', 'id', 'options', 'voting_status'}, optional
             A comma separated list of Poll fields to display.
-        user_fields: list of string, optional
+        user_fields: list of {'created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld'}, optional
             A comma separated list of User fields to display.
-        place_fields: list of string, optional
+        place_fields: list of {'contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type'}, optional
             A comma separated list of Place fields to display.
         
         Notes
@@ -1543,8 +1507,8 @@ class Tweets(object):
         
         Returns
         -------
-        response: Response
-            The response object of the request.
+        obj: TwitterObject
+            A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
