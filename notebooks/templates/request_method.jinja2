@@ -49,10 +49,10 @@
             request_query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
         {% if p.schema.type == 'list' and p.name != 'exclude' and p.schema.items.enum is not none -%}
         else:
-            request_params['{{ p.name }}'] = [{% if p.schema.items.type == 'string' %}'{{ p.schema.items.enum | join('\', \'') }}'{% else %}{{ p.schema.items.enum | join(', ') }}{% endif %}]
+            request_query['{{ p.name }}'] = [{% if p.schema.items.type == 'string' %}'{{ p.schema.items.enum | join('\', \'') }}'{% else %}{{ p.schema.items.enum | join(', ') }}{% endif %}]
         {% endif -%}
         {% else -%}
-        request_params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
+        request_query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
         {% endif -%}
         {%- endif -%}
         {%- endfor -%}
