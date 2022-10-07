@@ -25,13 +25,15 @@ def loads(s):
         Loaded repr.
     """
     if isinstance(s, requests.Response):
+        text = s.text
         if not s.encoding and s.content and len(s.content) > 3:
             encoding = guess_json_utf(s.content)
             if encoding is not None:
                 try:
-                    s = s.content.decode(encoding)
+                    text = s.content.decode(encoding)
                 except UnicodeDecodeError:
                     pass
+        s = text
     try:
         data = simplejson.loads(s)
     except simplejson.JSONDecodeError as ex:
