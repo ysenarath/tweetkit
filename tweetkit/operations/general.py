@@ -1,6 +1,6 @@
 """All methods related to general."""
-from tweetkit.exceptions import TwitterError, TwitterProblem, RequestException
-from tweetkit.schema import TwitterObject, TwitterObjectStream
+from tweetkit.exceptions import RequestException
+from tweetkit.models import TwitterObject
 
 __all__ = [
     'General'
@@ -9,7 +9,7 @@ __all__ = [
 
 class General(object):
     """Miscellaneous endpoints for general API functionality"""
-    
+
     def __init__(self, client):
         self.client = client
 
