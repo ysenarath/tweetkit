@@ -7,25 +7,44 @@ from tweetkit.exceptions import TwitterProblem
 from tweetkit.utils import json
 
 __all__ = [
-    'TwitterObject',
-    'TwitterObjectStream',
+    'TwitterResponse',
+    'TwitterStreamResponse',
 ]
 
 
-class TwitterObject(object):
-    """TwitterObject"""
+class TwitterResponse(object):
+    """TwitterResponse"""
 
-    def __init__(self, data):
-        data = json.loads(data)
-        errors = data.pop('errors', [])
-        try:
-            self._data = data['data']
-        except KeyError as ex:
-            # for loading result of endpoint '/2/openapi.json'
-            self._data = data
+    def __init__(self, content, **kwargs):
+        self._response = kwargs.get('response', None)
+        if isinstance(content, requests.Response):
+            self._response = content
+        self._content = json.loads(content)
+        errors = self._content.pop('errors', None)
         if isinstance(errors, collections.Mapping):
             errors = [errors]
-        self._errors = list(map(TwitterProblem, errors))
+        if errors is not None:
+            errors = list(map(TwitterProblem, errors))
+        self._errors = errors
+        self._meta = self._content.pop('meta', None)
+        self._includes = self._content.pop('includes', None)
+        try:
+            data = self._content['data']
+        except KeyError as ex:
+            # for loading result of endpoint '/2/openapi.json'
+            data = self._content
+        self._data = data
+
+    @property
+    def response(self):
+        """Gets base response of data object.
+
+        Returns
+        -------
+        response: requests.Response
+            The requests.Response object associated with this twitter response.
+        """
+        return self._response
 
     @property
     def errors(self):
@@ -37,17 +56,6 @@ class TwitterObject(object):
             A list of problem (Exception) objects.
         """
         return self._errors
-
-    def __getitem__(self, item):
-        return self._data[item]
-
-    def __setitem__(self, key, value):
-        self._data[key] = value
-
-    def __getattr__(self, item):
-        if item not in self._data:
-            raise AttributeError
-        return self[item]
 
     def get(self, item, default=None):
         """Gets item from the request content.
@@ -63,11 +71,24 @@ class TwitterObject(object):
         result: object
             The resulting item.
         """
+        if isinstance(self._data, list):
+            return [data.get(item, default) for data in self._data]
         return self._data.get(item, default)
 
+    def __getitem__(self, item):
+        """Gets value from 'data' with provided item as key."""
+        return self._data[item]
 
-class TwitterObjectStream(object):
-    """TwitterObjectStream"""
+    def __getattr__(self, item):
+        """Gets value from 'data' with provided attr as key."""
+        try:
+            return self[item]
+        except KeyError as ex:
+            raise AttributeError('\'{}\' object has no attribute \'{}\''.format(type(self).__name__, item))
+
+
+class TwitterStreamResponse(object):
+    """TwitterStreamResponse"""
 
     def __init__(self, iter):
         self._response = None
@@ -81,7 +102,7 @@ class TwitterObjectStream(object):
     def __iter__(self):
         for line in self._iter:
             if line is not None and len(line.strip()) > 0:
-                yield TwitterObject(line)
+                yield TwitterResponse(line, response=self._response)
 
     def tolist(self):
         """Converts stream to list of response objects.

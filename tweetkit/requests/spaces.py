@@ -1,6 +1,4 @@
 """All methods related to spaces."""
-from tweetkit.exceptions import ProblemOrError, RequestException
-from tweetkit.models import TwitterObject
 
 __all__ = [
     'Spaces'
@@ -13,7 +11,8 @@ class Spaces(object):
     def __init__(self, client):
         self.client = client
 
-    def find_spaces_by_ids(self, ids, space_fields=None, expansions=None, user_fields=None, topic_fields=None):
+    def find_spaces_by_ids(self, ids, space_fields=None, expansions=None, user_fields=None, topic_fields=None,
+                           data=None):
         """Space lookup up Space IDs.
 
         Returns a variety of information about the Spaces specified by the requested IDs.
@@ -30,6 +29,8 @@ class Spaces(object):
             A comma separated list of User fields to display.
         topic_fields: list[string], optional
             A comma separated list of Topic fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -63,27 +64,10 @@ class Spaces(object):
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        r = self.client.request('/2/spaces', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/spaces', method='get', query=request_query, params=request_params, data=data)
 
     def find_spaces_by_creator_ids(self, user_ids, space_fields=None, expansions=None, user_fields=None,
-                                   topic_fields=None):
+                                   topic_fields=None, data=None):
         """Space lookup by their creators.
 
         Returns a variety of information about the Spaces created by the provided User IDs.
@@ -100,6 +84,8 @@ class Spaces(object):
             A comma separated list of User fields to display.
         topic_fields: list[string], optional
             A comma separated list of Topic fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -133,27 +119,11 @@ class Spaces(object):
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        r = self.client.request('/2/spaces/by/creator_ids', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/spaces/by/creator_ids', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def search_spaces(self, query, state=None, max_results=None, space_fields=None, expansions=None, user_fields=None,
-                      topic_fields=None):
+                      topic_fields=None, data=None):
         """Search for Spaces.
 
         Returns Spaces that match the provided query.
@@ -174,6 +144,8 @@ class Spaces(object):
             A comma separated list of User fields to display.
         topic_fields: list[string], optional
             A comma separated list of Topic fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -211,26 +183,10 @@ class Spaces(object):
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        r = self.client.request('/2/spaces/search', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/spaces/search', method='get', query=request_query, params=request_params,
+                                   data=data)
 
-    def find_space_by_id(self, id, space_fields=None, expansions=None, user_fields=None, topic_fields=None):
+    def find_space_by_id(self, id, space_fields=None, expansions=None, user_fields=None, topic_fields=None, data=None):
         """Space lookup by Space ID.
 
         Returns a variety of information about the Space specified by the requested ID.
@@ -247,6 +203,8 @@ class Spaces(object):
             A comma separated list of User fields to display.
         topic_fields: list[string], optional
             A comma separated list of Topic fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -280,27 +238,11 @@ class Spaces(object):
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        r = self.client.request('/2/spaces/{id}', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/spaces/{id}', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def space_buyers(self, id, pagination_token=None, max_results=None, user_fields=None, expansions=None,
-                     tweet_fields=None):
+                     tweet_fields=None, data=None):
         """Retrieve the list of Users who purchased a ticket to the given space.
 
         Retrieves the list of Users who purchased a ticket to the given space.
@@ -319,6 +261,8 @@ class Spaces(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -350,31 +294,14 @@ class Spaces(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/spaces/{id}/buyers', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/spaces/{id}/buyers', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def space_tweets(self, id, max_results=None, tweet_fields=None, expansions=None, media_fields=None,
-                     poll_fields=None, user_fields=None, place_fields=None):
+                     poll_fields=None, user_fields=None, place_fields=None, data=None):
         """Retrieve Tweets from a Space.
 
         Retrieves Tweets shared in the specified Space.
@@ -397,6 +324,8 @@ class Spaces(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -416,8 +345,7 @@ class Spaces(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -430,8 +358,7 @@ class Spaces(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -448,21 +375,5 @@ class Spaces(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/spaces/{id}/tweets', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/spaces/{id}/tweets', method='get', query=request_query, params=request_params,
+                                   data=data)

@@ -1,6 +1,4 @@
 """All methods related to tweets."""
-from tweetkit.exceptions import ProblemOrError, RequestException
-from tweetkit.models import TwitterObject, TwitterObjectStream
 
 __all__ = [
     'Tweets'
@@ -14,7 +12,7 @@ class Tweets(object):
         self.client = client
 
     def lists_id_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None,
-                        media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
+                        media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
         """List Tweets timeline by List ID.
 
         Returns a list of Tweets associated with the provided List ID.
@@ -39,6 +37,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -60,8 +60,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -74,8 +73,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -92,27 +90,11 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/lists/{id}/tweets', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists/{id}/tweets', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def find_tweets_by_id(self, ids, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                          user_fields=None, place_fields=None):
+                          user_fields=None, place_fields=None, data=None):
         """Tweet lookup by Tweet IDs.
 
         Returns a variety of information about the Tweet specified by the requested ID.
@@ -133,6 +115,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -150,8 +134,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -164,8 +147,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -182,26 +164,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets', method='get', query=request_query, params=request_params, data=data)
 
-    def create_tweet(self):
+    def create_tweet(self, data):
         """Creation of a Tweet.
 
         Causes the User to create a Tweet under the authorized account.
@@ -216,28 +181,11 @@ class Tweets(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        r = self.client.request('/2/tweets', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 201:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets', method='post', query=request_query, params=request_params, data=data)
 
     def tweet_counts_full_archive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
                                          next_token=None, pagination_token=None, granularity=None,
-                                         search_count_fields=None):
+                                         search_count_fields=None, data=None):
         """Full archive search counts.
 
         Returns Tweet Counts that match a search query.
@@ -262,6 +210,8 @@ class Tweets(object):
             The granularity for the search counts results.
         search_count_fields: list[string], optional
             A comma separated list of SearchCount fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -292,27 +242,12 @@ class Tweets(object):
             request_query['search_count.fields'] = search_count_fields
         else:
             request_query['search_count.fields'] = ['end', 'start', 'tweet_count']
-        r = self.client.request('/2/tweets/counts/all', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/counts/all', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def tweet_counts_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
-                                   next_token=None, pagination_token=None, granularity=None, search_count_fields=None):
+                                   next_token=None, pagination_token=None, granularity=None, search_count_fields=None,
+                                   data=None):
         """Recent search counts.
 
         Returns Tweet Counts from the last 7 days that match a search query.
@@ -337,6 +272,8 @@ class Tweets(object):
             The granularity for the search counts results.
         search_count_fields: list[string], optional
             A comma separated list of SearchCount fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -367,28 +304,12 @@ class Tweets(object):
             request_query['search_count.fields'] = search_count_fields
         else:
             request_query['search_count.fields'] = ['end', 'start', 'tweet_count']
-        r = self.client.request('/2/tweets/counts/recent', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/counts/recent', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def get_tweets_firehose_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None,
                                    tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                                   user_fields=None, place_fields=None):
+                                   user_fields=None, place_fields=None, data=None):
         """Firehose stream.
 
         Streams 100% of public Tweets.
@@ -415,6 +336,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -438,8 +361,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -452,8 +374,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -470,34 +391,11 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets/firehose/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is None:
-                # The request has succeeded.
-                return TwitterObjectStream(r)
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is None:
-                # The request has failed.
-                return TwitterObjectStream(r)
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/firehose/stream', method='get', query=request_query,
+                                   params=request_params, data=data, stream=True)
 
     def sample_stream(self, backfill_minutes=None, tweet_fields=None, expansions=None, media_fields=None,
-                      poll_fields=None, user_fields=None, place_fields=None):
+                      poll_fields=None, user_fields=None, place_fields=None, data=None):
         """Sample stream.
 
         Streams a deterministic 1% of public Tweets.
@@ -518,6 +416,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -536,8 +436,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -550,8 +449,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -568,35 +466,12 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets/sample/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is None:
-                # The request has succeeded.
-                return TwitterObjectStream(r)
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is None:
-                # The request has failed.
-                return TwitterObjectStream(r)
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/sample/stream', method='get', query=request_query, params=request_params,
+                                   data=data, stream=True)
 
     def get_tweets_sample10_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None,
                                    tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                                   user_fields=None, place_fields=None):
+                                   user_fields=None, place_fields=None, data=None):
         """Sample 10% stream.
 
         Streams a deterministic 10% of public Tweets.
@@ -623,6 +498,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -646,8 +523,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -660,8 +536,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -678,36 +553,13 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets/sample10/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is None:
-                # The request has succeeded.
-                return TwitterObjectStream(r)
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is None:
-                # The request has failed.
-                return TwitterObjectStream(r)
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/sample10/stream', method='get', query=request_query,
+                                   params=request_params, data=data, stream=True)
 
     def tweets_fullarchive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
                                   max_results=None, next_token=None, pagination_token=None, sort_order=None,
                                   tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                                  user_fields=None, place_fields=None):
+                                  user_fields=None, place_fields=None, data=None):
         """Full-archive search.
 
         Returns Tweets that match a search query.
@@ -744,6 +596,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -777,8 +631,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -791,8 +644,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -809,29 +661,13 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets/search/all', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/search/all', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def tweets_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
                              max_results=None, next_token=None, pagination_token=None, sort_order=None,
                              tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None,
-                             place_fields=None):
+                             place_fields=None, data=None):
         """Recent search.
 
         Returns Tweets from the last 7 days that match a search query.
@@ -868,6 +704,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -901,8 +739,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -915,8 +752,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -933,27 +769,11 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets/search/recent', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/search/recent', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def search_stream(self, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None,
-                      media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
+                      media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
         """Filtered stream.
 
         Streams Tweets matching the stream's active rule set.
@@ -978,6 +798,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1000,8 +822,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -1014,8 +835,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -1032,33 +852,10 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets/search/stream', method='get', query=request_query, params=request_params,
-                                stream=True)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is None:
-                # The request has succeeded.
-                return TwitterObjectStream(r)
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is None:
-                # The request has failed.
-                return TwitterObjectStream(r)
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/search/stream', method='get', query=request_query, params=request_params,
+                                   data=data, stream=True)
 
-    def get_rules(self, ids=None, max_results=None, pagination_token=None):
+    def get_rules(self, ids=None, max_results=None, pagination_token=None, data=None):
         """Rules lookup.
 
         Returns rules from a User's active rule set. Users can fetch all of their rules or a subset, specified by the provided rule ids.
@@ -1071,6 +868,8 @@ class Tweets(object):
             The maximum number of results.
         pagination_token: string, optional
             This value is populated by passing the 'next_token' returned in a request to paginate through results.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1088,33 +887,18 @@ class Tweets(object):
             request_query['max_results'] = max_results
         if pagination_token is not None:
             request_query['pagination_token'] = pagination_token
-        r = self.client.request('/2/tweets/search/stream/rules', method='get', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/search/stream/rules', method='get', query=request_query,
+                                   params=request_params, data=data)
 
-    def add_or_delete_rules(self, dry_run=None):
+    def add_or_delete_rules(self, data, dry_run=None):
         """Add/Delete rules.
 
         Add or delete rules from a User's active rule set. Users can provide unique, optionally tagged rules to add. Users can delete their entire rule set or a subset specified by rule ids or values.
 
         Parameters
         ----------
+        data: dict
+            The request body.
         dry_run: boolean, optional
             Dry Run can be used with both the add and delete action, with the expected result given, but without actually taking any action in the system (meaning the end state will always be as it was when the request was submitted). This is particularly useful to validate rule changes.
         
@@ -1130,27 +914,10 @@ class Tweets(object):
         request_params, request_query = {}, {}
         if dry_run is not None:
             request_query['dry_run'] = dry_run
-        r = self.client.request('/2/tweets/search/stream/rules', method='post', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/search/stream/rules', method='post', query=request_query,
+                                   params=request_params, data=data)
 
-    def delete_tweet_by_id(self, id):
+    def delete_tweet_by_id(self, id, data=None):
         """Tweet delete by Tweet ID.
 
         Delete specified Tweet (in the path) by ID.
@@ -1159,6 +926,8 @@ class Tweets(object):
         ----------
         id: string
             The ID of the Tweet to be deleted.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1171,27 +940,11 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/tweets/{id}', method='delete', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/{id}', method='delete', query=request_query, params=request_params,
+                                   data=data)
 
     def find_tweet_by_id(self, id, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                         user_fields=None, place_fields=None):
+                         user_fields=None, place_fields=None, data=None):
         """Tweet lookup by Tweet ID.
 
         Returns a variety of information about the Tweet specified by the requested ID.
@@ -1212,6 +965,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1229,8 +984,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -1243,8 +997,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -1261,28 +1014,12 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets/{id}', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/{id}', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def find_tweets_that_quote_a_tweet(self, id, max_results=None, pagination_token=None, exclude=None,
                                        tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
-                                       user_fields=None, place_fields=None):
+                                       user_fields=None, place_fields=None, data=None):
         """Retrieve Tweets that quote a Tweet.
 
         Returns a variety of information about each Tweet that quotes the Tweet specified by the requested ID.
@@ -1309,6 +1046,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1332,8 +1071,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -1346,8 +1084,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -1364,26 +1101,10 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/tweets/{id}/quote_tweets', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/{id}/quote_tweets', method='get', query=request_query,
+                                   params=request_params, data=data)
 
-    def hide_reply_by_id(self, tweet_id):
+    def hide_reply_by_id(self, tweet_id, data=None):
         """Hide replies.
 
         Hides or unhides a reply to an owned conversation.
@@ -1392,6 +1113,8 @@ class Tweets(object):
         ----------
         tweet_id: string
             The ID of the reply that you want to hide or unhide.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1404,27 +1127,11 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['tweet_id'] = tweet_id
-        r = self.client.request('/2/tweets/{tweet_id}/hidden', method='put', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/{tweet_id}/hidden', method='put', query=request_query,
+                                   params=request_params, data=data)
 
     def users_id_liked_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None,
-                              media_fields=None, poll_fields=None, user_fields=None, place_fields=None):
+                              media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
         """Returns Tweet objects liked by the provided User ID.
 
         Returns a list of Tweets liked by the provided User ID.
@@ -1449,6 +1156,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1470,8 +1179,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -1484,8 +1192,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -1502,26 +1209,10 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/users/{id}/liked_tweets', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/liked_tweets', method='get', query=request_query,
+                                   params=request_params, data=data)
 
-    def users_id_like(self, id):
+    def users_id_like(self, id, data=None):
         """Causes the User (in the path) to like the specified Tweet.
 
         Causes the User (in the path) to like the specified Tweet. The User in the path must match the User context authorizing the request.
@@ -1530,6 +1221,8 @@ class Tweets(object):
         ----------
         id: string
             The ID of the authenticated source User that is requesting to like the Tweet.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1542,26 +1235,10 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/users/{id}/likes', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/likes', method='post', query=request_query, params=request_params,
+                                   data=data)
 
-    def users_id_unlike(self, id, tweet_id):
+    def users_id_unlike(self, id, tweet_id, data=None):
         """Causes the User (in the path) to unlike the specified Tweet.
 
         Causes the User (in the path) to unlike the specified Tweet. The User must match the User context authorizing the request.
@@ -1572,6 +1249,8 @@ class Tweets(object):
             The ID of the authenticated source User that is requesting to unlike the Tweet.
         tweet_id: string
             The ID of the Tweet that the User is requesting to unlike.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1585,29 +1264,12 @@ class Tweets(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['tweet_id'] = tweet_id
-        r = self.client.request('/2/users/{id}/likes/{tweet_id}', method='delete', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/likes/{tweet_id}', method='delete', query=request_query,
+                                   params=request_params, data=data)
 
     def users_id_mentions(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None,
                           start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
-                          poll_fields=None, user_fields=None, place_fields=None):
+                          poll_fields=None, user_fields=None, place_fields=None, data=None):
         """User mention timeline by User ID.
 
         Returns Tweet objects that mention username associated to the provided User ID.
@@ -1640,6 +1302,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1669,8 +1333,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -1683,8 +1346,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -1701,26 +1363,10 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/users/{id}/mentions', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/mentions', method='get', query=request_query, params=request_params,
+                                   data=data)
 
-    def users_id_retweets(self, id):
+    def users_id_retweets(self, id, data=None):
         """Causes the User (in the path) to retweet the specified Tweet.
 
         Causes the User (in the path) to retweet the specified Tweet. The User in the path must match the User context authorizing the request.
@@ -1729,6 +1375,8 @@ class Tweets(object):
         ----------
         id: string
             The ID of the authenticated source User that is requesting to retweet the Tweet.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1741,26 +1389,10 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/users/{id}/retweets', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/retweets', method='post', query=request_query, params=request_params,
+                                   data=data)
 
-    def users_id_unretweets(self, id, source_tweet_id):
+    def users_id_unretweets(self, id, source_tweet_id, data=None):
         """Causes the User (in the path) to unretweet the specified Tweet.
 
         Causes the User (in the path) to unretweet the specified Tweet. The User must match the User context authorizing the request.
@@ -1771,6 +1403,8 @@ class Tweets(object):
             The ID of the authenticated source User that is requesting to retweet the Tweet.
         source_tweet_id: string
             The ID of the Tweet that the User is requesting to unretweet.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1784,29 +1418,12 @@ class Tweets(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['source_tweet_id'] = source_tweet_id
-        r = self.client.request('/2/users/{id}/retweets/{source_tweet_id}', method='delete', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/retweets/{source_tweet_id}', method='delete', query=request_query,
+                                   params=request_params, data=data)
 
     def users_id_timeline(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None,
                           start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
-                          poll_fields=None, user_fields=None, place_fields=None):
+                          poll_fields=None, user_fields=None, place_fields=None, data=None):
         """User home timeline by User ID.
 
         Returns Tweet objects that appears in the provided User ID's home timeline.
@@ -1841,6 +1458,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1872,8 +1491,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -1886,8 +1504,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -1904,29 +1521,12 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/users/{id}/timelines/reverse_chronological', method='get', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/timelines/reverse_chronological', method='get', query=request_query,
+                                   params=request_params, data=data)
 
     def users_id_tweets(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None,
                         start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
-                        poll_fields=None, user_fields=None, place_fields=None):
+                        poll_fields=None, user_fields=None, place_fields=None, data=None):
         """User Tweets timeline by User ID.
 
         Returns a list of Tweets authored by the provided User ID.
@@ -1961,6 +1561,8 @@ class Tweets(object):
             A comma separated list of User fields to display.
         place_fields: list[string], optional
             A comma separated list of Place fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1992,8 +1594,7 @@ class Tweets(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         if expansions is not None:
@@ -2006,8 +1607,7 @@ class Tweets(object):
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'non_public_metrics',
-                                             'organic_metrics', 'preview_image_url', 'promoted_metrics',
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
                                              'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
@@ -2024,21 +1624,5 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        r = self.client.request('/2/users/{id}/tweets', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/tweets', method='get', query=request_query, params=request_params,
+                                   data=data)

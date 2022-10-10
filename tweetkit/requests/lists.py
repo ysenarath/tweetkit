@@ -1,6 +1,4 @@
 """All methods related to lists."""
-from tweetkit.exceptions import ProblemOrError, RequestException
-from tweetkit.models import TwitterObject
 
 __all__ = [
     'Lists'
@@ -13,7 +11,7 @@ class Lists(object):
     def __init__(self, client):
         self.client = client
 
-    def list_id_create(self):
+    def list_id_create(self, data=None):
         """Create List.
 
         Creates a new List.
@@ -28,26 +26,9 @@ class Lists(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        r = self.client.request('/2/lists', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists', method='post', query=request_query, params=request_params, data=data)
 
-    def list_id_delete(self, id):
+    def list_id_delete(self, id, data=None):
         """Delete List.
 
         Delete a List that you own.
@@ -56,6 +37,8 @@ class Lists(object):
         ----------
         id: string
             The ID of the List to delete.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -68,26 +51,10 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/lists/{id}', method='delete', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists/{id}', method='delete', query=request_query, params=request_params,
+                                   data=data)
 
-    def list_id_get(self, id, list_fields=None, expansions=None, user_fields=None):
+    def list_id_get(self, id, list_fields=None, expansions=None, user_fields=None, data=None):
         """List lookup by List ID.
 
         Returns a List.
@@ -102,6 +69,8 @@ class Lists(object):
             A comma separated list of fields to expand.
         user_fields: list[string], optional
             A comma separated list of User fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -129,26 +98,9 @@ class Lists(object):
             request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
-        r = self.client.request('/2/lists/{id}', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists/{id}', method='get', query=request_query, params=request_params, data=data)
 
-    def list_id_update(self, id):
+    def list_id_update(self, id, data=None):
         """Update List.
 
         Update a List that you own.
@@ -157,6 +109,8 @@ class Lists(object):
         ----------
         id: string
             The ID of the List to modify.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -169,26 +123,9 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/lists/{id}', method='put', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists/{id}', method='put', query=request_query, params=request_params, data=data)
 
-    def list_add_member(self, id):
+    def list_add_member(self, id, data=None):
         """Add a List member.
 
         Causes a User to become a member of a List.
@@ -197,6 +134,8 @@ class Lists(object):
         ----------
         id: string
             The ID of the List for which to add a member.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -209,26 +148,10 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/lists/{id}/members', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists/{id}/members', method='post', query=request_query, params=request_params,
+                                   data=data)
 
-    def list_remove_member(self, id, user_id):
+    def list_remove_member(self, id, user_id, data=None):
         """Remove a List member.
 
         Causes a User to be removed from the members of a List.
@@ -239,6 +162,8 @@ class Lists(object):
             The ID of the List to remove a member.
         user_id: string
             The ID of User that will be removed from the List.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -252,28 +177,11 @@ class Lists(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['user_id'] = user_id
-        r = self.client.request('/2/lists/{id}/members/{user_id}', method='delete', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists/{id}/members/{user_id}', method='delete', query=request_query,
+                                   params=request_params, data=data)
 
     def user_followed_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                            user_fields=None):
+                            user_fields=None, data=None):
         """Get User's Followed Lists.
 
         Returns a User's followed Lists.
@@ -292,6 +200,8 @@ class Lists(object):
             A comma separated list of fields to expand.
         user_fields: list[string], optional
             A comma separated list of User fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -323,27 +233,10 @@ class Lists(object):
             request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
-        r = self.client.request('/2/users/{id}/followed_lists', method='get', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/followed_lists', method='get', query=request_query,
+                                   params=request_params, data=data)
 
-    def list_user_follow(self, id):
+    def list_user_follow(self, id, data=None):
         """Follow a List.
 
         Causes a User to follow a List.
@@ -352,6 +245,8 @@ class Lists(object):
         ----------
         id: string
             The ID of the authenticated source User that will follow the List.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -364,27 +259,10 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/users/{id}/followed_lists', method='post', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/followed_lists', method='post', query=request_query,
+                                   params=request_params, data=data)
 
-    def list_user_unfollow(self, id, list_id):
+    def list_user_unfollow(self, id, list_id, data=None):
         """Unfollow a List.
 
         Causes a User to unfollow a List.
@@ -395,6 +273,8 @@ class Lists(object):
             The ID of the authenticated source User that will unfollow the List.
         list_id: string
             The ID of the List to unfollow.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -408,28 +288,11 @@ class Lists(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['list_id'] = list_id
-        r = self.client.request('/2/users/{id}/followed_lists/{list_id}', method='delete', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/followed_lists/{list_id}', method='delete', query=request_query,
+                                   params=request_params, data=data)
 
     def get_user_list_memberships(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                                  user_fields=None):
+                                  user_fields=None, data=None):
         """Get a User's List Memberships.
 
         Get a User's List Memberships.
@@ -448,6 +311,8 @@ class Lists(object):
             A comma separated list of fields to expand.
         user_fields: list[string], optional
             A comma separated list of User fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -479,28 +344,11 @@ class Lists(object):
             request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
-        r = self.client.request('/2/users/{id}/list_memberships', method='get', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/list_memberships', method='get', query=request_query,
+                                   params=request_params, data=data)
 
     def list_user_owned_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                              user_fields=None):
+                              user_fields=None, data=None):
         """Get a User's Owned Lists.
 
         Get a User's Owned Lists.
@@ -519,6 +367,8 @@ class Lists(object):
             A comma separated list of fields to expand.
         user_fields: list[string], optional
             A comma separated list of User fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -550,26 +400,10 @@ class Lists(object):
             request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
-        r = self.client.request('/2/users/{id}/owned_lists', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/owned_lists', method='get', query=request_query,
+                                   params=request_params, data=data)
 
-    def list_user_pinned_lists(self, id, list_fields=None, expansions=None, user_fields=None):
+    def list_user_pinned_lists(self, id, list_fields=None, expansions=None, user_fields=None, data=None):
         """Get a User's Pinned Lists.
 
         Get a User's Pinned Lists.
@@ -584,6 +418,8 @@ class Lists(object):
             A comma separated list of fields to expand.
         user_fields: list[string], optional
             A comma separated list of User fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -611,32 +447,18 @@ class Lists(object):
             request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
-        r = self.client.request('/2/users/{id}/pinned_lists', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/pinned_lists', method='get', query=request_query,
+                                   params=request_params, data=data)
 
-    def list_user_pin(self, id):
+    def list_user_pin(self, data, id):
         """Pin a List.
 
         Causes a User to pin a List.
 
         Parameters
         ----------
+        data: dict
+            The request body.
         id: string
             The ID of the authenticated source User that will pin the List.
         
@@ -651,26 +473,10 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/users/{id}/pinned_lists', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/pinned_lists', method='post', query=request_query,
+                                   params=request_params, data=data)
 
-    def list_user_unpin(self, id, list_id):
+    def list_user_unpin(self, id, list_id, data=None):
         """Unpin a List.
 
         Causes a User to remove a pinned List.
@@ -681,6 +487,8 @@ class Lists(object):
             The ID of the authenticated source User for whom to return results.
         list_id: string
             The ID of the List to unpin.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -694,22 +502,5 @@ class Lists(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['list_id'] = list_id
-        r = self.client.request('/2/users/{id}/pinned_lists/{list_id}', method='delete', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/pinned_lists/{list_id}', method='delete', query=request_query,
+                                   params=request_params, data=data)

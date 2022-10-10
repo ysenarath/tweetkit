@@ -1,6 +1,4 @@
 """All methods related to users."""
-from tweetkit.exceptions import ProblemOrError, RequestException
-from tweetkit.models import TwitterObject
 
 __all__ = [
     'Users'
@@ -14,7 +12,7 @@ class Users(object):
         self.client = client
 
     def list_get_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None):
+                           tweet_fields=None, data=None):
         """Returns User objects that follow a List by the provided List ID.
 
         Returns a list of Users that follow a List by the provided List ID.
@@ -33,6 +31,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -64,31 +64,14 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/lists/{id}/followers', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists/{id}/followers', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def list_get_members(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                         tweet_fields=None):
+                         tweet_fields=None, data=None):
         """Returns User objects that are members of a List by the provided List ID.
 
         Returns a list of Users that are members of a List by the provided List ID.
@@ -107,6 +90,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -138,31 +123,14 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/lists/{id}/members', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/lists/{id}/members', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def tweets_id_liking_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                               tweet_fields=None):
+                               tweet_fields=None, data=None):
         """Returns User objects that have liked the provided Tweet ID.
 
         Returns a list of Users that have liked the provided Tweet ID.
@@ -181,6 +149,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -212,31 +182,14 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/tweets/{id}/liking_users', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/{id}/liking_users', method='get', query=request_query,
+                                   params=request_params, data=data)
 
     def tweets_id_retweeting_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                                   tweet_fields=None):
+                                   tweet_fields=None, data=None):
         """Returns User objects that have retweeted the provided Tweet ID.
 
         Returns a list of Users that have retweeted the provided Tweet ID.
@@ -255,6 +208,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -286,30 +241,13 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=request_query,
+                                   params=request_params, data=data)
 
-    def find_users_by_id(self, ids, user_fields=None, expansions=None, tweet_fields=None):
+    def find_users_by_id(self, ids, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by IDs.
 
         This endpoint returns information about Users. Specify Users by their ID.
@@ -324,6 +262,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -351,30 +291,12 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users', method='get', query=request_query, params=request_params, data=data)
 
-    def find_users_by_username(self, usernames, user_fields=None, expansions=None, tweet_fields=None):
+    def find_users_by_username(self, usernames, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by usernames.
 
         This endpoint returns information about Users. Specify Users by their username.
@@ -389,6 +311,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -416,30 +340,12 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users/by', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/by', method='get', query=request_query, params=request_params, data=data)
 
-    def find_user_by_username(self, username, user_fields=None, expansions=None, tweet_fields=None):
+    def find_user_by_username(self, username, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by username.
 
         This endpoint returns information about a User. Specify User by username.
@@ -454,6 +360,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -481,31 +389,13 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users/by/username/{username}', method='get', query=request_query,
-                                params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/by/username/{username}', method='get', query=request_query,
+                                   params=request_params, data=data)
 
-    def find_my_user(self, user_fields=None, expansions=None, tweet_fields=None):
+    def find_my_user(self, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup me.
 
         This endpoint returns information about the requesting User.
@@ -518,6 +408,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -544,30 +436,12 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users/me', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/me', method='get', query=request_query, params=request_params, data=data)
 
-    def find_user_by_id(self, id, user_fields=None, expansions=None, tweet_fields=None):
+    def find_user_by_id(self, id, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by ID.
 
         This endpoint returns information about a User. Specify User by ID.
@@ -582,6 +456,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -609,31 +485,13 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params, data=data)
 
     def users_id_blocking(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                          tweet_fields=None):
+                          tweet_fields=None, data=None):
         """Returns User objects that are blocked by provided User ID.
 
         Returns a list of Users that are blocked by the provided User ID.
@@ -652,6 +510,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -683,36 +543,21 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users/{id}/blocking', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/blocking', method='get', query=request_query, params=request_params,
+                                   data=data)
 
-    def users_id_block(self, id):
+    def users_id_block(self, data, id):
         """Block User by User ID.
 
         Causes the User (in the path) to block the target User. The User (in the path) must match the User context authorizing the request.
 
         Parameters
         ----------
+        data: dict
+            The request body.
         id: string
             The ID of the authenticated source User that is requesting to block the target User.
         
@@ -727,27 +572,11 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/users/{id}/blocking', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/blocking', method='post', query=request_query, params=request_params,
+                                   data=data)
 
     def users_id_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None):
+                           tweet_fields=None, data=None):
         """Followers by User ID.
 
         Returns a list of Users who are followers of the specified User ID.
@@ -766,6 +595,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -797,31 +628,14 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users/{id}/followers', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/followers', method='get', query=request_query, params=request_params,
+                                   data=data)
 
     def users_id_following(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None):
+                           tweet_fields=None, data=None):
         """Following by User ID.
 
         Returns a list of Users that are being followed by the provided User ID.
@@ -840,6 +654,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -871,30 +687,13 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users/{id}/following', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/following', method='get', query=request_query, params=request_params,
+                                   data=data)
 
-    def users_id_follow(self, id):
+    def users_id_follow(self, id, data=None):
         """Follow User.
 
         Causes the User(in the path) to follow, or “request to follow” for protected Users, the target User. The User(in the path) must match the User context authorizing the request.
@@ -903,6 +702,8 @@ class Users(object):
         ----------
         id: string
             The ID of the authenticated source User that is requesting to follow the target User.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -915,27 +716,11 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/users/{id}/following', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/following', method='post', query=request_query, params=request_params,
+                                   data=data)
 
     def users_id_muting(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                        tweet_fields=None):
+                        tweet_fields=None, data=None):
         """Returns User objects that are muted by the provided User ID.
 
         Returns a list of Users that are muted by the provided User ID.
@@ -954,6 +739,8 @@ class Users(object):
             A comma separated list of fields to expand.
         tweet_fields: list[string], optional
             A comma separated list of Tweet fields to display.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -985,30 +772,13 @@ class Users(object):
         else:
             request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
                                              'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'non_public_metrics',
-                                             'organic_metrics', 'possibly_sensitive', 'promoted_metrics',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        r = self.client.request('/2/users/{id}/muting', method='get', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/muting', method='get', query=request_query, params=request_params,
+                                   data=data)
 
-    def users_id_mute(self, id):
+    def users_id_mute(self, id, data=None):
         """Mute User by User ID.
 
         Causes the User (in the path) to mute the target User. The User (in the path) must match the User context authorizing the request.
@@ -1017,6 +787,8 @@ class Users(object):
         ----------
         id: string
             The ID of the authenticated source User that is requesting to mute the target User.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1029,26 +801,10 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        r = self.client.request('/2/users/{id}/muting', method='post', query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{id}/muting', method='post', query=request_query, params=request_params,
+                                   data=data)
 
-    def users_id_unblock(self, source_user_id, target_user_id):
+    def users_id_unblock(self, source_user_id, target_user_id, data=None):
         """Unblock User by User ID.
 
         Causes the source User to unblock the target User. The source User must match the User context authorizing the request.
@@ -1059,6 +815,8 @@ class Users(object):
             The ID of the authenticated source User that is requesting to unblock the target User.
         target_user_id: string
             The ID of the User that the source User is requesting to unblock.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1072,27 +830,10 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
-        r = self.client.request('/2/users/{source_user_id}/blocking/{target_user_id}', method='delete',
-                                query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{source_user_id}/blocking/{target_user_id}', method='delete',
+                                   query=request_query, params=request_params, data=data)
 
-    def users_id_unfollow(self, source_user_id, target_user_id):
+    def users_id_unfollow(self, source_user_id, target_user_id, data=None):
         """Unfollow User.
 
         Causes the source User to unfollow the target User. The source User must match the User context authorizing the request.
@@ -1103,6 +844,8 @@ class Users(object):
             The ID of the authenticated source User that is requesting to unfollow the target User.
         target_user_id: string
             The ID of the User that the source User is requesting to unfollow.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1116,27 +859,10 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
-        r = self.client.request('/2/users/{source_user_id}/following/{target_user_id}', method='delete',
-                                query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{source_user_id}/following/{target_user_id}', method='delete',
+                                   query=request_query, params=request_params, data=data)
 
-    def users_id_unmute(self, source_user_id, target_user_id):
+    def users_id_unmute(self, source_user_id, target_user_id, data=None):
         """Unmute User by User ID.
 
         Causes the source User to unmute the target User. The source User must match the User context authorizing the request.
@@ -1147,6 +873,8 @@ class Users(object):
             The ID of the authenticated source User that is requesting to unmute the target User.
         target_user_id: string
             The ID of the User that the source User is requesting to unmute.
+        data: dict
+            The request body.
         
         Notes
         -----
@@ -1160,22 +888,5 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
-        r = self.client.request('/2/users/{source_user_id}/muting/{target_user_id}', method='delete',
-                                query=request_query, params=request_params)
-        content_type = r.headers.get('content-type')
-        if r.status_code == 200:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has succeeded.
-                return TwitterObject(r)
-        else:
-            if content_type is not None and content_type.startswith('application/json'):
-                # The request has failed.
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-            if content_type is not None and content_type.startswith('application/problem+json'):
-                # The request has failed.
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-        raise RequestException(r)
+        return self.client.request('/2/users/{source_user_id}/muting/{target_user_id}', method='delete',
+                                   query=request_query, params=request_params, data=data)
