@@ -1,4 +1,4 @@
-    def {{ request.operation_id }}(self{% if request.parameters %}, {% endif %}{% for p in request.parameters %}{{ p.name.replace('.', '_') }}{% if not p.required %}=None{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}):
+    def {{ request.operation_id }}(self{% if request.request_body.required %}, data{% endif %}{% if request.parameters %}, {% endif %}{% for p in request.parameters %}{{ p.name.replace('.', '_') }}{% if not p.required %}=None{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% if not request.request_body.required %}, data=None{% endif %}):
         """{{ request.summary }}{%- if not request.summary.endswith('.') -%}.{%- endif %}
 
         {% if request.description -%}
@@ -8,6 +8,10 @@
         {% if request.parameters -%}
         Parameters
         ----------
+        {%- if request.request_body.required %}
+        data: dict
+            The request body.
+        {%- endif -%}
         {%- for p in request.parameters %}
         {{ p.name.replace('.', '_') }}: {{ p.schema.complete_type }}{% if not p.required %}, optional{% endif %}
             {{ p.description }}
@@ -15,6 +19,10 @@
             Example: {{ p.example }}.
             {%- endif %}
         {%- endfor %}
+        {%- if not request.request_body.required %}
+        data: dict
+            The request body.
+        {%- endif %}
         
         {% endif -%}
 
@@ -33,9 +41,9 @@
         {%- if not p.required -%}
         if {{ p.name.replace('.', '_') }} is not None:
             request_params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
-        {% if p.schema.type == 'list' and p.schema.items.enum is not none -%}
+        {% if p.schema.type == 'list' and p.schema.items.public_enum is not none -%}
         else:
-            request_params['{{ p.name }}'] = ['{{ p.schema.items.enum | join('\', \'') }}']
+            request_params['{{ p.name }}'] = [{% if p.schema.items.type == 'string' %}'{{ p.schema.items.public_enum | join('\', \'') }}'{% else %}{{ p.schema.items.public_enum | join(', ') }}{% endif %}]
         {% endif -%}
         {%- else -%}
         request_params['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
@@ -47,44 +55,15 @@
         {%- if not p.required -%}
         if {{ p.name.replace('.', '_') }} is not None:
             request_query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
-        {% if p.schema.type == 'list' and p.name != 'exclude' and p.schema.items.enum is not none -%}
+        {% if p.schema.type == 'list' and p.name != 'exclude' and p.schema.items.public_enum is not none -%}
         else:
-            request_query['{{ p.name }}'] = [{% if p.schema.items.type == 'string' %}'{{ p.schema.items.enum | join('\', \'') }}'{% else %}{{ p.schema.items.enum | join(', ') }}{% endif %}]
+            request_query['{{ p.name }}'] = [{% if p.schema.items.type == 'string' %}'{{ p.schema.items.public_enum | join('\', \'') }}'{% else %}{{ p.schema.items.public_enum | join(', ') }}{% endif %}]
         {% endif -%}
         {% else -%}
         request_query['{{ p.name }}'] = {{ p.name.replace('.', '_') }}
         {% endif -%}
         {%- endif -%}
         {%- endfor -%}
-        r = self.client.request('{{ path }}', method='{{ request.method }}', query=request_query, params=request_params{% if request.x_twitter_streaming %}, stream={{ request.x_twitter_streaming }}{% endif %})
-        content_type = r.headers.get('content-type')
-        {%- for response in request.responses -%}
-        {%- if response.status_code != 'default' %}
-        if r.status_code == {{ response.status_code }}:
-        {%- else %}
-        else:
-        {%- endif -%}
-            {% if request.x_twitter_streaming %}
-            if content_type is None:
-                # {{ response.description }}
-                return TwitterObjectStream(r)
-            {%- endif -%}
-            {%- for content_type in response.content %}
-            if content_type is not None and content_type.startswith('{{ content_type }}'):
-                {% if response.content[content_type].name == 'Error' -%}
-                # {{ response.description }}
-                error = ProblemOrError(r)
-                if error is not None:
-                    raise error
-                {%- elif response.content[content_type].name == 'Problem' -%}
-                # {{ response.description }}
-                problem = ProblemOrError(r)
-                if problem is not None:
-                    raise problem
-                {%- else -%}
-                # {{ response.description }}
-                return TwitterObject(r)
-                {%- endif %}
-            {%- endfor -%}
-        {%- endfor %}
-        raise RequestException(r)
+        {%- set has_response_type = (path, request.method) in response_types -%}
+        return self.client.request('{{ path }}', method='{{ request.method }}', query=request_query, params=request_params, data=data{% if request.x_twitter_streaming %}, stream={{ request.x_twitter_streaming }}{% endif %}{% if has_response_type %}, dtype='{{ response_types[path, request.method]['type'] }}'{% endif %})
+        
