@@ -14,9 +14,9 @@ classifiers = [
 dynamic = ["version", "dependencies", "readme"]
 
 [tool.setuptools.packages]
-find = {namespaces = true}
+find = { namespaces = true }
 
 [tool.setuptools.dynamic]
-version = {attr = "tweetkit.__version__"}
-readme = {file = "README.md"}
-dependencies = {file = "requirements.txt"}
+version = { attr = "tweetkit.__version__" }
+readme = { file = "README.md" }
+dependencies = { file = "requirements.txt" }
