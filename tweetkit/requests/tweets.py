@@ -7,11 +7,12 @@ __all__ = [
 
 class Tweets(object):
     """Endpoints related to retrieving, searching, and modifying Tweets"""
-    
+
     def __init__(self, client):
         self.client = client
 
-    def lists_id_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def lists_id_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None,
+                        media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
         """List Tweets timeline by List ID.
 
         Returns a list of Tweets associated with the provided List ID.
@@ -57,15 +58,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -73,15 +82,19 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/lists/{id}/tweets', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/lists/{id}/tweets', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='Tweet')
 
-    def find_tweets_by_id(self, ids, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def find_tweets_by_id(self, ids, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
+                          user_fields=None, place_fields=None, data=None):
         """Tweet lookup by Tweet IDs.
 
         Returns a variety of information about the Tweet specified by the requested ID.
@@ -119,15 +132,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -135,13 +156,16 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets', method='get', query=request_query, params=request_params, data=data,
+                                   dtype='Tweet')
 
     def create_tweet(self, data):
         """Creation of a Tweet.
@@ -158,10 +182,12 @@ class Tweets(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        return self.client.request('/2/tweets', method='post', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/tweets', method='post', query=request_query, params=request_params, data=data,
+                                   dtype='data')
 
-    def tweet_counts_full_archive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None, next_token=None, pagination_token=None, granularity=None, search_count_fields=None, data=None):
+    def tweet_counts_full_archive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
+                                         next_token=None, pagination_token=None, granularity=None,
+                                         search_count_fields=None, data=None):
         """Full archive search counts.
 
         Returns Tweet Counts that match a search query.
@@ -218,10 +244,12 @@ class Tweets(object):
             request_query['search_count.fields'] = search_count_fields
         else:
             request_query['search_count.fields'] = ['end', 'start', 'tweet_count']
-        return self.client.request('/2/tweets/counts/all', method='get', query=request_query, params=request_params, data=data, dtype='SearchCount')
-        
+        return self.client.request('/2/tweets/counts/all', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='SearchCount')
 
-    def tweet_counts_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None, next_token=None, pagination_token=None, granularity=None, search_count_fields=None, data=None):
+    def tweet_counts_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
+                                   next_token=None, pagination_token=None, granularity=None, search_count_fields=None,
+                                   data=None):
         """Recent search counts.
 
         Returns Tweet Counts from the last 7 days that match a search query.
@@ -278,10 +306,12 @@ class Tweets(object):
             request_query['search_count.fields'] = search_count_fields
         else:
             request_query['search_count.fields'] = ['end', 'start', 'tweet_count']
-        return self.client.request('/2/tweets/counts/recent', method='get', query=request_query, params=request_params, data=data, dtype='SearchCount')
-        
+        return self.client.request('/2/tweets/counts/recent', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='SearchCount')
 
-    def get_tweets_firehose_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def get_tweets_firehose_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None,
+                                   tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
+                                   user_fields=None, place_fields=None, data=None):
         """Firehose stream.
 
         Streams 100% of public Tweets.
@@ -331,15 +361,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -347,15 +385,19 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets/firehose/stream', method='get', query=request_query, params=request_params, data=data, stream=True, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets/firehose/stream', method='get', query=request_query,
+                                   params=request_params, data=data, stream=True, dtype='Tweet')
 
-    def sample_stream(self, backfill_minutes=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def sample_stream(self, backfill_minutes=None, tweet_fields=None, expansions=None, media_fields=None,
+                      poll_fields=None, user_fields=None, place_fields=None, data=None):
         """Sample stream.
 
         Streams a deterministic 1% of public Tweets.
@@ -394,15 +436,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -410,15 +460,20 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets/sample/stream', method='get', query=request_query, params=request_params, data=data, stream=True, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets/sample/stream', method='get', query=request_query, params=request_params,
+                                   data=data, stream=True, dtype='Tweet')
 
-    def get_tweets_sample10_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def get_tweets_sample10_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None,
+                                   tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
+                                   user_fields=None, place_fields=None, data=None):
         """Sample 10% stream.
 
         Streams a deterministic 10% of public Tweets.
@@ -468,15 +523,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -484,15 +547,21 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets/sample10/stream', method='get', query=request_query, params=request_params, data=data, stream=True, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets/sample10/stream', method='get', query=request_query,
+                                   params=request_params, data=data, stream=True, dtype='Tweet')
 
-    def tweets_fullarchive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None, max_results=None, next_token=None, pagination_token=None, sort_order=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def tweets_fullarchive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
+                                  max_results=None, next_token=None, pagination_token=None, sort_order=None,
+                                  tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
+                                  user_fields=None, place_fields=None, data=None):
         """Full-archive search.
 
         Returns Tweets that match a search query.
@@ -562,15 +631,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -578,15 +655,21 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets/search/all', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets/search/all', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='Tweet')
 
-    def tweets_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None, max_results=None, next_token=None, pagination_token=None, sort_order=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def tweets_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
+                             max_results=None, next_token=None, pagination_token=None, sort_order=None,
+                             tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None,
+                             place_fields=None, data=None):
         """Recent search.
 
         Returns Tweets from the last 7 days that match a search query.
@@ -656,15 +739,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -672,15 +763,19 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets/search/recent', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets/search/recent', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='Tweet')
 
-    def search_stream(self, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def search_stream(self, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None,
+                      media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
         """Filtered stream.
 
         Streams Tweets matching the stream's active rule set.
@@ -727,15 +822,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -743,13 +846,16 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets/search/stream', method='get', query=request_query, params=request_params, data=data, stream=True, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets/search/stream', method='get', query=request_query, params=request_params,
+                                   data=data, stream=True, dtype='Tweet')
 
     def get_rules(self, ids=None, max_results=None, pagination_token=None, data=None):
         """Rules lookup.
@@ -783,8 +889,8 @@ class Tweets(object):
             request_query['max_results'] = max_results
         if pagination_token is not None:
             request_query['pagination_token'] = pagination_token
-        return self.client.request('/2/tweets/search/stream/rules', method='get', query=request_query, params=request_params, data=data, dtype='Rule')
-        
+        return self.client.request('/2/tweets/search/stream/rules', method='get', query=request_query,
+                                   params=request_params, data=data, dtype='Rule')
 
     def add_or_delete_rules(self, data, dry_run=None):
         """Add/Delete rules.
@@ -810,8 +916,8 @@ class Tweets(object):
         request_params, request_query = {}, {}
         if dry_run is not None:
             request_query['dry_run'] = dry_run
-        return self.client.request('/2/tweets/search/stream/rules', method='post', query=request_query, params=request_params, data=data, dtype='Rule')
-        
+        return self.client.request('/2/tweets/search/stream/rules', method='post', query=request_query,
+                                   params=request_params, data=data, dtype='Rule')
 
     def delete_tweet_by_id(self, id, data=None):
         """Tweet delete by Tweet ID.
@@ -836,10 +942,11 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        return self.client.request('/2/tweets/{id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/tweets/{id}', method='delete', query=request_query, params=request_params,
+                                   data=data, dtype='data')
 
-    def find_tweet_by_id(self, id, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def find_tweet_by_id(self, id, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
+                         user_fields=None, place_fields=None, data=None):
         """Tweet lookup by Tweet ID.
 
         Returns a variety of information about the Tweet specified by the requested ID.
@@ -877,15 +984,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -893,15 +1008,20 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets/{id}', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets/{id}', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='Tweet')
 
-    def find_tweets_that_quote_a_tweet(self, id, max_results=None, pagination_token=None, exclude=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def find_tweets_that_quote_a_tweet(self, id, max_results=None, pagination_token=None, exclude=None,
+                                       tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
+                                       user_fields=None, place_fields=None, data=None):
         """Retrieve Tweets that quote a Tweet.
 
         Returns a variety of information about each Tweet that quotes the Tweet specified by the requested ID.
@@ -951,15 +1071,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -967,13 +1095,16 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/tweets/{id}/quote_tweets', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/tweets/{id}/quote_tweets', method='get', query=request_query,
+                                   params=request_params, data=data, dtype='Tweet')
 
     def hide_reply_by_id(self, tweet_id, data=None):
         """Hide replies.
@@ -998,10 +1129,11 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['tweet_id'] = tweet_id
-        return self.client.request('/2/tweets/{tweet_id}/hidden', method='put', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/tweets/{tweet_id}/hidden', method='put', query=request_query,
+                                   params=request_params, data=data, dtype='data')
 
-    def users_id_liked_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def users_id_liked_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None,
+                              media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
         """Returns Tweet objects liked by the provided User ID.
 
         Returns a list of Tweets liked by the provided User ID.
@@ -1047,15 +1179,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -1063,13 +1203,16 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/users/{id}/liked_tweets', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/users/{id}/liked_tweets', method='get', query=request_query,
+                                   params=request_params, data=data, dtype='Tweet')
 
     def users_id_like(self, id, data=None):
         """Causes the User (in the path) to like the specified Tweet.
@@ -1094,8 +1237,8 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        return self.client.request('/2/users/{id}/likes', method='post', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/users/{id}/likes', method='post', query=request_query, params=request_params,
+                                   data=data, dtype='data')
 
     def users_id_unlike(self, id, tweet_id, data=None):
         """Causes the User (in the path) to unlike the specified Tweet.
@@ -1123,10 +1266,12 @@ class Tweets(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['tweet_id'] = tweet_id
-        return self.client.request('/2/users/{id}/likes/{tweet_id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/users/{id}/likes/{tweet_id}', method='delete', query=request_query,
+                                   params=request_params, data=data, dtype='data')
 
-    def users_id_mentions(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def users_id_mentions(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None,
+                          start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
+                          poll_fields=None, user_fields=None, place_fields=None, data=None):
         """User mention timeline by User ID.
 
         Returns Tweet objects that mention username associated to the provided User ID.
@@ -1188,15 +1333,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -1204,13 +1357,16 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/users/{id}/mentions', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/users/{id}/mentions', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='Tweet')
 
     def users_id_retweets(self, id, data=None):
         """Causes the User (in the path) to retweet the specified Tweet.
@@ -1235,8 +1391,8 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        return self.client.request('/2/users/{id}/retweets', method='post', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/users/{id}/retweets', method='post', query=request_query, params=request_params,
+                                   data=data, dtype='data')
 
     def users_id_unretweets(self, id, source_tweet_id, data=None):
         """Causes the User (in the path) to unretweet the specified Tweet.
@@ -1264,10 +1420,12 @@ class Tweets(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['source_tweet_id'] = source_tweet_id
-        return self.client.request('/2/users/{id}/retweets/{source_tweet_id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/users/{id}/retweets/{source_tweet_id}', method='delete', query=request_query,
+                                   params=request_params, data=data, dtype='data')
 
-    def users_id_timeline(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def users_id_timeline(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None,
+                          start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
+                          poll_fields=None, user_fields=None, place_fields=None, data=None):
         """User home timeline by User ID.
 
         Returns Tweet objects that appears in the provided User ID's home timeline.
@@ -1333,15 +1491,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -1349,15 +1515,20 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/users/{id}/timelines/reverse_chronological', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/users/{id}/timelines/reverse_chronological', method='get', query=request_query,
+                                   params=request_params, data=data, dtype='Tweet')
 
-    def users_id_tweets(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None, start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def users_id_tweets(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None,
+                        start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
+                        poll_fields=None, user_fields=None, place_fields=None, data=None):
         """User Tweets timeline by User ID.
 
         Returns a list of Tweets authored by the provided User ID.
@@ -1423,15 +1594,23 @@ class Tweets(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
+                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
+                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
+                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
+                                             'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
+                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
+                                           'in_reply_to_user_id', 'referenced_tweets.id',
+                                           'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
+                                             'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -1439,10 +1618,13 @@ class Tweets(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
-        return self.client.request('/2/users/{id}/tweets', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
-        
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
+                                             'name', 'place_type']
+        return self.client.request('/2/users/{id}/tweets', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='Tweet')

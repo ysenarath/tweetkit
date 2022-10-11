@@ -7,7 +7,7 @@ __all__ = [
 
 class Compliance(object):
     """Endpoints related to keeping Twitter data in your systems compliant"""
-    
+
     def __init__(self, client):
         self.client = client
 
@@ -43,9 +43,10 @@ class Compliance(object):
         if compliance_job_fields is not None:
             request_query['compliance_job.fields'] = compliance_job_fields
         else:
-            request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name', 'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
-        return self.client.request('/2/compliance/jobs', method='get', query=request_query, params=request_params, data=data, dtype='ComplianceJob')
-        
+            request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name',
+                                                      'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
+        return self.client.request('/2/compliance/jobs', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='ComplianceJob')
 
     def create_batch_compliance_job(self, data):
         """Create compliance job.
@@ -62,8 +63,8 @@ class Compliance(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        return self.client.request('/2/compliance/jobs', method='post', query=request_query, params=request_params, data=data, dtype='ComplianceJob')
-        
+        return self.client.request('/2/compliance/jobs', method='post', query=request_query, params=request_params,
+                                   data=data, dtype='ComplianceJob')
 
     def get_batch_compliance_job(self, id, compliance_job_fields=None, data=None):
         """Get Compliance Job.
@@ -93,9 +94,10 @@ class Compliance(object):
         if compliance_job_fields is not None:
             request_query['compliance_job.fields'] = compliance_job_fields
         else:
-            request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name', 'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
-        return self.client.request('/2/compliance/jobs/{id}', method='get', query=request_query, params=request_params, data=data, dtype='ComplianceJob')
-        
+            request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name',
+                                                      'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
+        return self.client.request('/2/compliance/jobs/{id}', method='get', query=request_query, params=request_params,
+                                   data=data, dtype='ComplianceJob')
 
     def get_tweets_compliance_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, data=None):
         """Tweets Compliance stream.
@@ -132,8 +134,8 @@ class Compliance(object):
             request_query['start_time'] = start_time
         if end_time is not None:
             request_query['end_time'] = end_time
-        return self.client.request('/2/tweets/compliance/stream', method='get', query=request_query, params=request_params, data=data, stream=True)
-        
+        return self.client.request('/2/tweets/compliance/stream', method='get', query=request_query,
+                                   params=request_params, data=data, stream=True)
 
     def get_users_compliance_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, data=None):
         """Users Compliance stream.
@@ -170,5 +172,5 @@ class Compliance(object):
             request_query['start_time'] = start_time
         if end_time is not None:
             request_query['end_time'] = end_time
-        return self.client.request('/2/users/compliance/stream', method='get', query=request_query, params=request_params, data=data, stream=True)
-        
+        return self.client.request('/2/users/compliance/stream', method='get', query=request_query,
+                                   params=request_params, data=data, stream=True)

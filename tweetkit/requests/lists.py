@@ -7,7 +7,7 @@ __all__ = [
 
 class Lists(object):
     """Endpoints related to retrieving, managing Lists"""
-    
+
     def __init__(self, client):
         self.client = client
 
@@ -26,8 +26,8 @@ class Lists(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        return self.client.request('/2/lists', method='post', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/lists', method='post', query=request_query, params=request_params, data=data,
+                                   dtype='data')
 
     def list_id_delete(self, id, data=None):
         """Delete List.
@@ -52,8 +52,8 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        return self.client.request('/2/lists/{id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/lists/{id}', method='delete', query=request_query, params=request_params,
+                                   data=data, dtype='data')
 
     def list_id_get(self, id, list_fields=None, expansions=None, user_fields=None, data=None):
         """List lookup by List ID.
@@ -87,7 +87,8 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -95,9 +96,11 @@ class Lists(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
-        return self.client.request('/2/lists/{id}', method='get', query=request_query, params=request_params, data=data, dtype='List')
-        
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
+        return self.client.request('/2/lists/{id}', method='get', query=request_query, params=request_params, data=data,
+                                   dtype='List')
 
     def list_id_update(self, id, data=None):
         """Update List.
@@ -122,8 +125,8 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        return self.client.request('/2/lists/{id}', method='put', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/lists/{id}', method='put', query=request_query, params=request_params, data=data,
+                                   dtype='data')
 
     def list_add_member(self, id, data=None):
         """Add a List member.
@@ -148,8 +151,8 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        return self.client.request('/2/lists/{id}/members', method='post', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/lists/{id}/members', method='post', query=request_query, params=request_params,
+                                   data=data, dtype='data')
 
     def list_remove_member(self, id, user_id, data=None):
         """Remove a List member.
@@ -177,10 +180,11 @@ class Lists(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['user_id'] = user_id
-        return self.client.request('/2/lists/{id}/members/{user_id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/lists/{id}/members/{user_id}', method='delete', query=request_query,
+                                   params=request_params, data=data, dtype='data')
 
-    def user_followed_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None, user_fields=None, data=None):
+    def user_followed_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
+                            user_fields=None, data=None):
         """Get User's Followed Lists.
 
         Returns a User's followed Lists.
@@ -220,7 +224,8 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -228,9 +233,11 @@ class Lists(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
-        return self.client.request('/2/users/{id}/followed_lists', method='get', query=request_query, params=request_params, data=data, dtype='List')
-        
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
+        return self.client.request('/2/users/{id}/followed_lists', method='get', query=request_query,
+                                   params=request_params, data=data, dtype='List')
 
     def list_user_follow(self, id, data=None):
         """Follow a List.
@@ -255,8 +262,8 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        return self.client.request('/2/users/{id}/followed_lists', method='post', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/users/{id}/followed_lists', method='post', query=request_query,
+                                   params=request_params, data=data, dtype='data')
 
     def list_user_unfollow(self, id, list_id, data=None):
         """Unfollow a List.
@@ -284,10 +291,11 @@ class Lists(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['list_id'] = list_id
-        return self.client.request('/2/users/{id}/followed_lists/{list_id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/users/{id}/followed_lists/{list_id}', method='delete', query=request_query,
+                                   params=request_params, data=data, dtype='data')
 
-    def get_user_list_memberships(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None, user_fields=None, data=None):
+    def get_user_list_memberships(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
+                                  user_fields=None, data=None):
         """Get a User's List Memberships.
 
         Get a User's List Memberships.
@@ -327,7 +335,8 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -335,11 +344,14 @@ class Lists(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
-        return self.client.request('/2/users/{id}/list_memberships', method='get', query=request_query, params=request_params, data=data, dtype='List')
-        
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
+        return self.client.request('/2/users/{id}/list_memberships', method='get', query=request_query,
+                                   params=request_params, data=data, dtype='List')
 
-    def list_user_owned_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None, user_fields=None, data=None):
+    def list_user_owned_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
+                              user_fields=None, data=None):
         """Get a User's Owned Lists.
 
         Get a User's Owned Lists.
@@ -379,7 +391,8 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -387,9 +400,11 @@ class Lists(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
-        return self.client.request('/2/users/{id}/owned_lists', method='get', query=request_query, params=request_params, data=data, dtype='List')
-        
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
+        return self.client.request('/2/users/{id}/owned_lists', method='get', query=request_query,
+                                   params=request_params, data=data, dtype='List')
 
     def list_user_pinned_lists(self, id, list_fields=None, expansions=None, user_fields=None, data=None):
         """Get a User's Pinned Lists.
@@ -423,7 +438,8 @@ class Lists(object):
         if list_fields is not None:
             request_query['list.fields'] = list_fields
         else:
-            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name', 'owner_id', 'private']
+            request_query['list.fields'] = ['created_at', 'description', 'follower_count', 'id', 'member_count', 'name',
+                                            'owner_id', 'private']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -431,9 +447,11 @@ class Lists(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
-        return self.client.request('/2/users/{id}/pinned_lists', method='get', query=request_query, params=request_params, data=data, dtype='List')
-        
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
+                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
+                                            'url', 'username', 'verified', 'withheld']
+        return self.client.request('/2/users/{id}/pinned_lists', method='get', query=request_query,
+                                   params=request_params, data=data, dtype='List')
 
     def list_user_pin(self, data, id):
         """Pin a List.
@@ -458,8 +476,8 @@ class Lists(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        return self.client.request('/2/users/{id}/pinned_lists', method='post', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/users/{id}/pinned_lists', method='post', query=request_query,
+                                   params=request_params, data=data, dtype='data')
 
     def list_user_unpin(self, id, list_id, data=None):
         """Unpin a List.
@@ -487,5 +505,5 @@ class Lists(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['list_id'] = list_id
-        return self.client.request('/2/users/{id}/pinned_lists/{list_id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
-        
+        return self.client.request('/2/users/{id}/pinned_lists/{list_id}', method='delete', query=request_query,
+                                   params=request_params, data=data, dtype='data')

@@ -67,8 +67,7 @@ class ObjectStore(object):
 
     def add(self, data, dtype=None):
         """Add to index."""
-        key = self.store_key[dtype]
-        idx = self.store.get(key)
+        idx = self.store.get(self.store_key.get(dtype))
         if idx is not None:
             if isinstance(data, collections.Sequence) and not isinstance(data, str):
                 for item in data:
