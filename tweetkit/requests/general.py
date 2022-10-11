@@ -7,7 +7,7 @@ __all__ = [
 
 class General(object):
     """Miscellaneous endpoints for general API functionality"""
-
+    
     def __init__(self, client):
         self.client = client
 
@@ -26,5 +26,5 @@ class General(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        return self.client.request('/2/openapi.json', method='get', query=request_query, params=request_params,
-                                   data=data)
+        return self.client.request('/2/openapi.json', method='get', query=request_query, params=request_params, data=data)
+        

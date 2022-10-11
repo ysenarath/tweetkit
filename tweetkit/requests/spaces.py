@@ -7,12 +7,11 @@ __all__ = [
 
 class Spaces(object):
     """Endpoints related to retrieving, managing Spaces"""
-
+    
     def __init__(self, client):
         self.client = client
 
-    def find_spaces_by_ids(self, ids, space_fields=None, expansions=None, user_fields=None, topic_fields=None,
-                           data=None):
+    def find_spaces_by_ids(self, ids, space_fields=None, expansions=None, user_fields=None, topic_fields=None, data=None):
         """Space lookup up Space IDs.
 
         Returns a variety of information about the Spaces specified by the requested IDs.
@@ -46,10 +45,7 @@ class Spaces(object):
         if space_fields is not None:
             request_query['space.fields'] = space_fields
         else:
-            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
-                                             'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
-                                             'scheduled_start', 'speaker_ids', 'started_at', 'state',
-                                             'subscriber_count', 'title', 'topic_ids', 'updated_at']
+            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id', 'invited_user_ids', 'is_ticketed', 'lang', 'participant_count', 'scheduled_start', 'speaker_ids', 'started_at', 'state', 'subscriber_count', 'title', 'topic_ids', 'updated_at']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -57,19 +53,15 @@ class Spaces(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if topic_fields is not None:
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        response_kwargs = {'dtype': 'Space'}
-        return self.client.request('/2/spaces', method='get', query=request_query, params=request_params, data=data,
-                                   response_kwargs=response_kwargs)
+        return self.client.request('/2/spaces', method='get', query=request_query, params=request_params, data=data, dtype='Space')
+        
 
-    def find_spaces_by_creator_ids(self, user_ids, space_fields=None, expansions=None, user_fields=None,
-                                   topic_fields=None, data=None):
+    def find_spaces_by_creator_ids(self, user_ids, space_fields=None, expansions=None, user_fields=None, topic_fields=None, data=None):
         """Space lookup by their creators.
 
         Returns a variety of information about the Spaces created by the provided User IDs.
@@ -103,10 +95,7 @@ class Spaces(object):
         if space_fields is not None:
             request_query['space.fields'] = space_fields
         else:
-            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
-                                             'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
-                                             'scheduled_start', 'speaker_ids', 'started_at', 'state',
-                                             'subscriber_count', 'title', 'topic_ids', 'updated_at']
+            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id', 'invited_user_ids', 'is_ticketed', 'lang', 'participant_count', 'scheduled_start', 'speaker_ids', 'started_at', 'state', 'subscriber_count', 'title', 'topic_ids', 'updated_at']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -114,19 +103,15 @@ class Spaces(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if topic_fields is not None:
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        response_kwargs = {'dtype': 'Space'}
-        return self.client.request('/2/spaces/by/creator_ids', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+        return self.client.request('/2/spaces/by/creator_ids', method='get', query=request_query, params=request_params, data=data, dtype='Space')
+        
 
-    def search_spaces(self, query, state=None, max_results=None, space_fields=None, expansions=None, user_fields=None,
-                      topic_fields=None, data=None):
+    def search_spaces(self, query, state=None, max_results=None, space_fields=None, expansions=None, user_fields=None, topic_fields=None, data=None):
         """Search for Spaces.
 
         Returns Spaces that match the provided query.
@@ -168,10 +153,7 @@ class Spaces(object):
         if space_fields is not None:
             request_query['space.fields'] = space_fields
         else:
-            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
-                                             'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
-                                             'scheduled_start', 'speaker_ids', 'started_at', 'state',
-                                             'subscriber_count', 'title', 'topic_ids', 'updated_at']
+            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id', 'invited_user_ids', 'is_ticketed', 'lang', 'participant_count', 'scheduled_start', 'speaker_ids', 'started_at', 'state', 'subscriber_count', 'title', 'topic_ids', 'updated_at']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -179,16 +161,13 @@ class Spaces(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if topic_fields is not None:
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        response_kwargs = {'dtype': 'Space'}
-        return self.client.request('/2/spaces/search', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+        return self.client.request('/2/spaces/search', method='get', query=request_query, params=request_params, data=data, dtype='Space')
+        
 
     def find_space_by_id(self, id, space_fields=None, expansions=None, user_fields=None, topic_fields=None, data=None):
         """Space lookup by Space ID.
@@ -224,10 +203,7 @@ class Spaces(object):
         if space_fields is not None:
             request_query['space.fields'] = space_fields
         else:
-            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id',
-                                             'invited_user_ids', 'is_ticketed', 'lang', 'participant_count',
-                                             'scheduled_start', 'speaker_ids', 'started_at', 'state',
-                                             'subscriber_count', 'title', 'topic_ids', 'updated_at']
+            request_query['space.fields'] = ['created_at', 'creator_id', 'ended_at', 'host_ids', 'id', 'invited_user_ids', 'is_ticketed', 'lang', 'participant_count', 'scheduled_start', 'speaker_ids', 'started_at', 'state', 'subscriber_count', 'title', 'topic_ids', 'updated_at']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -235,19 +211,15 @@ class Spaces(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if topic_fields is not None:
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        response_kwargs = {'dtype': 'Space'}
-        return self.client.request('/2/spaces/{id}', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+        return self.client.request('/2/spaces/{id}', method='get', query=request_query, params=request_params, data=data, dtype='Space')
+        
 
-    def space_buyers(self, id, pagination_token=None, max_results=None, user_fields=None, expansions=None,
-                     tweet_fields=None, data=None):
+    def space_buyers(self, id, pagination_token=None, max_results=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Retrieve the list of Users who purchased a ticket to the given space.
 
         Retrieves the list of Users who purchased a ticket to the given space.
@@ -287,9 +259,7 @@ class Spaces(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -297,17 +267,11 @@ class Spaces(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/spaces/{id}/buyers', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/spaces/{id}/buyers', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
-    def space_tweets(self, id, max_results=None, tweet_fields=None, expansions=None, media_fields=None,
-                     poll_fields=None, user_fields=None, place_fields=None, data=None):
+    def space_tweets(self, id, max_results=None, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
         """Retrieve Tweets from a Space.
 
         Retrieves Tweets shared in the specified Space.
@@ -349,23 +313,15 @@ class Spaces(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
-            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id',
-                                           'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id',
-                                           'in_reply_to_user_id', 'referenced_tweets.id',
-                                           'referenced_tweets.id.author_id']
+            request_query['expansions'] = ['attachments.media_keys', 'attachments.poll_ids', 'author_id', 'edit_history_tweet_ids', 'entities.mentions.username', 'geo.place_id', 'in_reply_to_user_id', 'referenced_tweets.id', 'referenced_tweets.id.author_id']
         if media_fields is not None:
             request_query['media.fields'] = media_fields
         else:
-            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url',
-                                             'public_metrics', 'type', 'url', 'variants', 'width']
+            request_query['media.fields'] = ['alt_text', 'duration_ms', 'height', 'media_key', 'preview_image_url', 'public_metrics', 'type', 'url', 'variants', 'width']
         if poll_fields is not None:
             request_query['poll.fields'] = poll_fields
         else:
@@ -373,14 +329,10 @@ class Spaces(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if place_fields is not None:
             request_query['place.fields'] = place_fields
         else:
-            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
-                                             'name', 'place_type']
-        response_kwargs = {'dtype': 'Tweet'}
-        return self.client.request('/2/spaces/{id}/tweets', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+            request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id', 'name', 'place_type']
+        return self.client.request('/2/spaces/{id}/tweets', method='get', query=request_query, params=request_params, data=data, dtype='Tweet')
+        

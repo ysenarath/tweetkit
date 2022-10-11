@@ -90,9 +90,8 @@ class Bookmarks(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/users/{id}/bookmarks', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+                                   data=data, dtype='Tweet')
 
     def post_users_id_bookmarks(self, data, id):
         """Add Tweet to Bookmarks.
@@ -117,9 +116,8 @@ class Bookmarks(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/bookmarks', method='post', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+                                   data=data, dtype='data')
 
     def users_id_bookmarks_delete(self, id, tweet_id, data=None):
         """Remove a bookmarked Tweet.
@@ -147,6 +145,5 @@ class Bookmarks(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['tweet_id'] = tweet_id
-        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/bookmarks/{tweet_id}', method='delete', query=request_query,
-                                   params=request_params, data=data, response_kwargs=response_kwargs)
+                                   params=request_params, data=data, dtype='data')

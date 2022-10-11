@@ -7,12 +7,11 @@ __all__ = [
 
 class Users(object):
     """Endpoints related to retrieving, managing relationships of Users"""
-
+    
     def __init__(self, client):
         self.client = client
 
-    def list_get_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None, data=None):
+    def list_get_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Returns User objects that follow a List by the provided List ID.
 
         Returns a list of Users that follow a List by the provided List ID.
@@ -52,9 +51,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -62,17 +59,11 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/lists/{id}/followers', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/lists/{id}/followers', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
-    def list_get_members(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                         tweet_fields=None, data=None):
+    def list_get_members(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Returns User objects that are members of a List by the provided List ID.
 
         Returns a list of Users that are members of a List by the provided List ID.
@@ -112,9 +103,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -122,17 +111,11 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/lists/{id}/members', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/lists/{id}/members', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
-    def tweets_id_liking_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                               tweet_fields=None, data=None):
+    def tweets_id_liking_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Returns User objects that have liked the provided Tweet ID.
 
         Returns a list of Users that have liked the provided Tweet ID.
@@ -172,9 +155,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -182,17 +163,11 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/tweets/{id}/liking_users', method='get', query=request_query,
-                                   params=request_params, data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/tweets/{id}/liking_users', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
-    def tweets_id_retweeting_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                                   tweet_fields=None, data=None):
+    def tweets_id_retweeting_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Returns User objects that have retweeted the provided Tweet ID.
 
         Returns a list of Users that have retweeted the provided Tweet ID.
@@ -232,9 +207,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -242,14 +215,9 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=request_query,
-                                   params=request_params, data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
     def find_users_by_id(self, ids, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by IDs.
@@ -283,9 +251,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -293,14 +259,9 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users', method='get', query=request_query, params=request_params, data=data,
-                                   response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
     def find_users_by_username(self, usernames, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by usernames.
@@ -334,9 +295,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -344,14 +303,9 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users/by', method='get', query=request_query, params=request_params, data=data,
-                                   response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users/by', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
     def find_user_by_username(self, username, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by username.
@@ -385,9 +339,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -395,14 +347,9 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users/by/username/{username}', method='get', query=request_query,
-                                   params=request_params, data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users/by/username/{username}', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
     def find_my_user(self, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup me.
@@ -433,9 +380,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -443,14 +388,9 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users/me', method='get', query=request_query, params=request_params, data=data,
-                                   response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users/me', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
     def find_user_by_id(self, id, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by ID.
@@ -484,9 +424,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -494,17 +432,11 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params, data=data,
-                                   response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
-    def users_id_blocking(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                          tweet_fields=None, data=None):
+    def users_id_blocking(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Returns User objects that are blocked by provided User ID.
 
         Returns a list of Users that are blocked by the provided User ID.
@@ -544,9 +476,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -554,14 +484,9 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users/{id}/blocking', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users/{id}/blocking', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
     def users_id_block(self, data, id):
         """Block User by User ID.
@@ -586,12 +511,10 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        response_kwargs = {'dtype': 'data'}
-        return self.client.request('/2/users/{id}/blocking', method='post', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+        return self.client.request('/2/users/{id}/blocking', method='post', query=request_query, params=request_params, data=data, dtype='data')
+        
 
-    def users_id_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None, data=None):
+    def users_id_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Followers by User ID.
 
         Returns a list of Users who are followers of the specified User ID.
@@ -631,9 +554,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -641,17 +562,11 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users/{id}/followers', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users/{id}/followers', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
-    def users_id_following(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None, data=None):
+    def users_id_following(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Following by User ID.
 
         Returns a list of Users that are being followed by the provided User ID.
@@ -691,9 +606,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -701,14 +614,9 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users/{id}/following', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users/{id}/following', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
     def users_id_follow(self, id, data=None):
         """Follow User.
@@ -733,12 +641,10 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        response_kwargs = {'dtype': 'data'}
-        return self.client.request('/2/users/{id}/following', method='post', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+        return self.client.request('/2/users/{id}/following', method='post', query=request_query, params=request_params, data=data, dtype='data')
+        
 
-    def users_id_muting(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                        tweet_fields=None, data=None):
+    def users_id_muting(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """Returns User objects that are muted by the provided User ID.
 
         Returns a list of Users that are muted by the provided User ID.
@@ -778,9 +684,7 @@ class Users(object):
         if user_fields is not None:
             request_query['user.fields'] = user_fields
         else:
-            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name',
-                                            'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
-                                            'url', 'username', 'verified', 'withheld']
+            request_query['user.fields'] = ['created_at', 'description', 'entities', 'id', 'location', 'name', 'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics', 'url', 'username', 'verified', 'withheld']
         if expansions is not None:
             request_query['expansions'] = expansions
         else:
@@ -788,14 +692,9 @@ class Users(object):
         if tweet_fields is not None:
             request_query['tweet.fields'] = tweet_fields
         else:
-            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id',
-                                             'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo',
-                                             'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
-                                             'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
-                                             'withheld']
-        response_kwargs = {'dtype': 'User'}
-        return self.client.request('/2/users/{id}/muting', method='get', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+            request_query['tweet.fields'] = ['attachments', 'author_id', 'context_annotations', 'conversation_id', 'created_at', 'edit_controls', 'edit_history_tweet_ids', 'entities', 'geo', 'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive', 'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text', 'withheld']
+        return self.client.request('/2/users/{id}/muting', method='get', query=request_query, params=request_params, data=data, dtype='User')
+        
 
     def users_id_mute(self, id, data=None):
         """Mute User by User ID.
@@ -820,9 +719,8 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
-        response_kwargs = {'dtype': 'data'}
-        return self.client.request('/2/users/{id}/muting', method='post', query=request_query, params=request_params,
-                                   data=data, response_kwargs=response_kwargs)
+        return self.client.request('/2/users/{id}/muting', method='post', query=request_query, params=request_params, data=data, dtype='data')
+        
 
     def users_id_unblock(self, source_user_id, target_user_id, data=None):
         """Unblock User by User ID.
@@ -850,10 +748,8 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
-        response_kwargs = {'dtype': 'data'}
-        return self.client.request('/2/users/{source_user_id}/blocking/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data,
-                                   response_kwargs=response_kwargs)
+        return self.client.request('/2/users/{source_user_id}/blocking/{target_user_id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
+        
 
     def users_id_unfollow(self, source_user_id, target_user_id, data=None):
         """Unfollow User.
@@ -881,10 +777,8 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
-        response_kwargs = {'dtype': 'data'}
-        return self.client.request('/2/users/{source_user_id}/following/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data,
-                                   response_kwargs=response_kwargs)
+        return self.client.request('/2/users/{source_user_id}/following/{target_user_id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
+        
 
     def users_id_unmute(self, source_user_id, target_user_id, data=None):
         """Unmute User by User ID.
@@ -912,7 +806,5 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
-        response_kwargs = {'dtype': 'data'}
-        return self.client.request('/2/users/{source_user_id}/muting/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data,
-                                   response_kwargs=response_kwargs)
+        return self.client.request('/2/users/{source_user_id}/muting/{target_user_id}', method='delete', query=request_query, params=request_params, data=data, dtype='data')
+        
