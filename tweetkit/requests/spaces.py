@@ -64,7 +64,9 @@ class Spaces(object):
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
-        return self.client.request('/2/spaces', method='get', query=request_query, params=request_params, data=data)
+        response_kwargs = {'dtype': 'Space'}
+        return self.client.request('/2/spaces', method='get', query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def find_spaces_by_creator_ids(self, user_ids, space_fields=None, expansions=None, user_fields=None,
                                    topic_fields=None, data=None):
@@ -119,8 +121,9 @@ class Spaces(object):
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
+        response_kwargs = {'dtype': 'Space'}
         return self.client.request('/2/spaces/by/creator_ids', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def search_spaces(self, query, state=None, max_results=None, space_fields=None, expansions=None, user_fields=None,
                       topic_fields=None, data=None):
@@ -183,8 +186,9 @@ class Spaces(object):
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
+        response_kwargs = {'dtype': 'Space'}
         return self.client.request('/2/spaces/search', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def find_space_by_id(self, id, space_fields=None, expansions=None, user_fields=None, topic_fields=None, data=None):
         """Space lookup by Space ID.
@@ -238,8 +242,9 @@ class Spaces(object):
             request_query['topic.fields'] = topic_fields
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
+        response_kwargs = {'dtype': 'Space'}
         return self.client.request('/2/spaces/{id}', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def space_buyers(self, id, pagination_token=None, max_results=None, user_fields=None, expansions=None,
                      tweet_fields=None, data=None):
@@ -297,8 +302,9 @@ class Spaces(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/spaces/{id}/buyers', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def space_tweets(self, id, max_results=None, tweet_fields=None, expansions=None, media_fields=None,
                      poll_fields=None, user_fields=None, place_fields=None, data=None):
@@ -375,5 +381,6 @@ class Spaces(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/spaces/{id}/tweets', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)

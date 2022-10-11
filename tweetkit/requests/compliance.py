@@ -45,8 +45,9 @@ class Compliance(object):
         else:
             request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name',
                                                       'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
+        response_kwargs = {'dtype': 'ComplianceJob'}
         return self.client.request('/2/compliance/jobs', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def create_batch_compliance_job(self, data):
         """Create compliance job.
@@ -63,8 +64,9 @@ class Compliance(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
+        response_kwargs = {'dtype': 'ComplianceJob'}
         return self.client.request('/2/compliance/jobs', method='post', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def get_batch_compliance_job(self, id, compliance_job_fields=None, data=None):
         """Get Compliance Job.
@@ -96,8 +98,9 @@ class Compliance(object):
         else:
             request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name',
                                                       'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
+        response_kwargs = {'dtype': 'ComplianceJob'}
         return self.client.request('/2/compliance/jobs/{id}', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def get_tweets_compliance_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, data=None):
         """Tweets Compliance stream.

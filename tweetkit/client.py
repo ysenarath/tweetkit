@@ -33,7 +33,7 @@ class TwitterClient(object):
         self.tweets = Tweets(self)
         self.users = Users(self)
 
-    def request(self, path, method='get', query=None, params=None, data=None, stream=False):
+    def request(self, path, method='get', query=None, params=None, data=None, stream=False, response_kwargs=None):
         """Create a request object and return.
 
         Parameters
@@ -44,12 +44,15 @@ class TwitterClient(object):
         params: dict, optional
         data: dict, optional
         stream: bool, optional
+        response_kwargs
 
         Returns
         -------
         request: Request
             Request object.
         """
+        if response_kwargs is None:
+            response_kwargs = {}
         formatted_path = path.format(**params)
         url = '{}/{}'.format(self.url.rstrip('/'), formatted_path.lstrip('/'))
         query = {k: ','.join(v) if isinstance(v, list) else v for k, v in query.items()}
@@ -58,9 +61,9 @@ class TwitterClient(object):
         if 200 <= r.status_code < 300:
             # The request has succeeded.
             if content_type is None and stream:
-                return TwitterStreamResponse(r)
+                return TwitterStreamResponse(r, **response_kwargs)
             elif content_type is not None and content_type.startswith('application/json'):
-                return TwitterResponse(r)
+                return TwitterResponse(r, **response_kwargs)
         else:
             error = None
             if content_type is not None and content_type.startswith(('application/json', 'application/problem+json')):

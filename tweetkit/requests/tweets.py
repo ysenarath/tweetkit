@@ -90,8 +90,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/lists/{id}/tweets', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def find_tweets_by_id(self, ids, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
                           user_fields=None, place_fields=None, data=None):
@@ -164,7 +165,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
-        return self.client.request('/2/tweets', method='get', query=request_query, params=request_params, data=data)
+        response_kwargs = {'dtype': 'Tweet'}
+        return self.client.request('/2/tweets', method='get', query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def create_tweet(self, data):
         """Creation of a Tweet.
@@ -181,7 +184,9 @@ class Tweets(object):
             A object with the response data.
         """
         request_params, request_query = {}, {}
-        return self.client.request('/2/tweets', method='post', query=request_query, params=request_params, data=data)
+        response_kwargs = {'dtype': 'data'}
+        return self.client.request('/2/tweets', method='post', query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def tweet_counts_full_archive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
                                          next_token=None, pagination_token=None, granularity=None,
@@ -242,8 +247,9 @@ class Tweets(object):
             request_query['search_count.fields'] = search_count_fields
         else:
             request_query['search_count.fields'] = ['end', 'start', 'tweet_count']
+        response_kwargs = {'dtype': 'SearchCount'}
         return self.client.request('/2/tweets/counts/all', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def tweet_counts_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
                                    next_token=None, pagination_token=None, granularity=None, search_count_fields=None,
@@ -304,8 +310,9 @@ class Tweets(object):
             request_query['search_count.fields'] = search_count_fields
         else:
             request_query['search_count.fields'] = ['end', 'start', 'tweet_count']
+        response_kwargs = {'dtype': 'SearchCount'}
         return self.client.request('/2/tweets/counts/recent', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def get_tweets_firehose_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None,
                                    tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
@@ -391,8 +398,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/tweets/firehose/stream', method='get', query=request_query,
-                                   params=request_params, data=data, stream=True)
+                                   params=request_params, data=data, stream=True, response_kwargs=response_kwargs)
 
     def sample_stream(self, backfill_minutes=None, tweet_fields=None, expansions=None, media_fields=None,
                       poll_fields=None, user_fields=None, place_fields=None, data=None):
@@ -466,8 +474,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/tweets/sample/stream', method='get', query=request_query, params=request_params,
-                                   data=data, stream=True)
+                                   data=data, stream=True, response_kwargs=response_kwargs)
 
     def get_tweets_sample10_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None,
                                    tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
@@ -553,8 +562,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/tweets/sample10/stream', method='get', query=request_query,
-                                   params=request_params, data=data, stream=True)
+                                   params=request_params, data=data, stream=True, response_kwargs=response_kwargs)
 
     def tweets_fullarchive_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
                                   max_results=None, next_token=None, pagination_token=None, sort_order=None,
@@ -661,8 +671,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/tweets/search/all', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def tweets_recent_search(self, query, start_time=None, end_time=None, since_id=None, until_id=None,
                              max_results=None, next_token=None, pagination_token=None, sort_order=None,
@@ -769,8 +780,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/tweets/search/recent', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def search_stream(self, backfill_minutes=None, start_time=None, end_time=None, tweet_fields=None, expansions=None,
                       media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
@@ -852,8 +864,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/tweets/search/stream', method='get', query=request_query, params=request_params,
-                                   data=data, stream=True)
+                                   data=data, stream=True, response_kwargs=response_kwargs)
 
     def get_rules(self, ids=None, max_results=None, pagination_token=None, data=None):
         """Rules lookup.
@@ -887,8 +900,9 @@ class Tweets(object):
             request_query['max_results'] = max_results
         if pagination_token is not None:
             request_query['pagination_token'] = pagination_token
+        response_kwargs = {'dtype': 'Rule'}
         return self.client.request('/2/tweets/search/stream/rules', method='get', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def add_or_delete_rules(self, data, dry_run=None):
         """Add/Delete rules.
@@ -914,8 +928,9 @@ class Tweets(object):
         request_params, request_query = {}, {}
         if dry_run is not None:
             request_query['dry_run'] = dry_run
+        response_kwargs = {'dtype': 'Rule'}
         return self.client.request('/2/tweets/search/stream/rules', method='post', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def delete_tweet_by_id(self, id, data=None):
         """Tweet delete by Tweet ID.
@@ -940,8 +955,9 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/tweets/{id}', method='delete', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def find_tweet_by_id(self, id, tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
                          user_fields=None, place_fields=None, data=None):
@@ -1014,8 +1030,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/tweets/{id}', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def find_tweets_that_quote_a_tweet(self, id, max_results=None, pagination_token=None, exclude=None,
                                        tweet_fields=None, expansions=None, media_fields=None, poll_fields=None,
@@ -1101,8 +1118,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/tweets/{id}/quote_tweets', method='get', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def hide_reply_by_id(self, tweet_id, data=None):
         """Hide replies.
@@ -1127,8 +1145,9 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['tweet_id'] = tweet_id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/tweets/{tweet_id}/hidden', method='put', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def users_id_liked_tweets(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None,
                               media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
@@ -1209,8 +1228,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/users/{id}/liked_tweets', method='get', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def users_id_like(self, id, data=None):
         """Causes the User (in the path) to like the specified Tweet.
@@ -1235,8 +1255,9 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/likes', method='post', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_unlike(self, id, tweet_id, data=None):
         """Causes the User (in the path) to unlike the specified Tweet.
@@ -1264,8 +1285,9 @@ class Tweets(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['tweet_id'] = tweet_id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/likes/{tweet_id}', method='delete', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def users_id_mentions(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None,
                           start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
@@ -1363,8 +1385,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/users/{id}/mentions', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_retweets(self, id, data=None):
         """Causes the User (in the path) to retweet the specified Tweet.
@@ -1389,8 +1412,9 @@ class Tweets(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/retweets', method='post', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_unretweets(self, id, source_tweet_id, data=None):
         """Causes the User (in the path) to unretweet the specified Tweet.
@@ -1418,8 +1442,9 @@ class Tweets(object):
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['source_tweet_id'] = source_tweet_id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/retweets/{source_tweet_id}', method='delete', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def users_id_timeline(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None,
                           start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
@@ -1521,8 +1546,9 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/users/{id}/timelines/reverse_chronological', method='get', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def users_id_tweets(self, id, since_id=None, until_id=None, max_results=None, pagination_token=None, exclude=None,
                         start_time=None, end_time=None, tweet_fields=None, expansions=None, media_fields=None,
@@ -1624,5 +1650,6 @@ class Tweets(object):
         else:
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
+        response_kwargs = {'dtype': 'Tweet'}
         return self.client.request('/2/users/{id}/tweets', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)

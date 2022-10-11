@@ -67,8 +67,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/lists/{id}/followers', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def list_get_members(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                          tweet_fields=None, data=None):
@@ -126,8 +127,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/lists/{id}/members', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def tweets_id_liking_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                                tweet_fields=None, data=None):
@@ -185,8 +187,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/tweets/{id}/liking_users', method='get', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def tweets_id_retweeting_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                                    tweet_fields=None, data=None):
@@ -244,8 +247,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def find_users_by_id(self, ids, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by IDs.
@@ -294,7 +298,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        return self.client.request('/2/users', method='get', query=request_query, params=request_params, data=data)
+        response_kwargs = {'dtype': 'User'}
+        return self.client.request('/2/users', method='get', query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def find_users_by_username(self, usernames, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by usernames.
@@ -343,7 +349,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        return self.client.request('/2/users/by', method='get', query=request_query, params=request_params, data=data)
+        response_kwargs = {'dtype': 'User'}
+        return self.client.request('/2/users/by', method='get', query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def find_user_by_username(self, username, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by username.
@@ -392,8 +400,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/users/by/username/{username}', method='get', query=request_query,
-                                   params=request_params, data=data)
+                                   params=request_params, data=data, response_kwargs=response_kwargs)
 
     def find_my_user(self, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup me.
@@ -439,7 +448,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        return self.client.request('/2/users/me', method='get', query=request_query, params=request_params, data=data)
+        response_kwargs = {'dtype': 'User'}
+        return self.client.request('/2/users/me', method='get', query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def find_user_by_id(self, id, user_fields=None, expansions=None, tweet_fields=None, data=None):
         """User lookup by ID.
@@ -488,7 +499,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
-        return self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params, data=data)
+        response_kwargs = {'dtype': 'User'}
+        return self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def users_id_blocking(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                           tweet_fields=None, data=None):
@@ -546,8 +559,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/users/{id}/blocking', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_block(self, data, id):
         """Block User by User ID.
@@ -572,8 +586,9 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/blocking', method='post', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                            tweet_fields=None, data=None):
@@ -631,8 +646,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/users/{id}/followers', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_following(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                            tweet_fields=None, data=None):
@@ -690,8 +706,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/users/{id}/following', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_follow(self, id, data=None):
         """Follow User.
@@ -716,8 +733,9 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/following', method='post', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_muting(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
                         tweet_fields=None, data=None):
@@ -775,8 +793,9 @@ class Users(object):
                                              'id', 'in_reply_to_user_id', 'lang', 'possibly_sensitive',
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
+        response_kwargs = {'dtype': 'User'}
         return self.client.request('/2/users/{id}/muting', method='get', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_mute(self, id, data=None):
         """Mute User by User ID.
@@ -801,8 +820,9 @@ class Users(object):
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{id}/muting', method='post', query=request_query, params=request_params,
-                                   data=data)
+                                   data=data, response_kwargs=response_kwargs)
 
     def users_id_unblock(self, source_user_id, target_user_id, data=None):
         """Unblock User by User ID.
@@ -830,8 +850,10 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{source_user_id}/blocking/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data)
+                                   query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def users_id_unfollow(self, source_user_id, target_user_id, data=None):
         """Unfollow User.
@@ -859,8 +881,10 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{source_user_id}/following/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data)
+                                   query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
 
     def users_id_unmute(self, source_user_id, target_user_id, data=None):
         """Unmute User by User ID.
@@ -888,5 +912,7 @@ class Users(object):
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
+        response_kwargs = {'dtype': 'data'}
         return self.client.request('/2/users/{source_user_id}/muting/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data)
+                                   query=request_query, params=request_params, data=data,
+                                   response_kwargs=response_kwargs)
