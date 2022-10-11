@@ -11,6 +11,7 @@ from tweetkit.exceptions import JSONDecodeError
 
 __all__ = [
     'loads',
+    'dumps',
     'dump',
 ]
 
@@ -52,7 +53,7 @@ def dumps(obj, *args, **kwargs):
 
     Parameters
     ----------
-    obj: dict or object
+    obj: typing.Mapping or typing.Sequence or object
         Object(s) to save.
     args: typing.Any
         Other arguments to simplejson.dump.
@@ -61,7 +62,8 @@ def dumps(obj, *args, **kwargs):
 
     Returns
     -------
-    None
+    s: str
+        The string representation of the input string object.
     """
     return simplejson.dumps(obj, *args, **kwargs)
 
