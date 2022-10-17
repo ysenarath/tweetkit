@@ -64,30 +64,6 @@ class TwitterResponse(object):
         """Gets includes."""
         return self._dtype
 
-    def __getitem__(self, item):
-        """Gets value from 'data' with provided item as key."""
-        if isinstance(self._data, list):
-            return [data[item] for data in self._data]
-        return self._data[item]
-
-    def get(self, item, default=None):
-        """Gets item from the request content.
-
-        Parameters
-        ----------
-        item: str
-            The key of item to get.
-        default: object
-            The default value if item is not present.
-        Returns
-        -------
-        result: object
-            The resulting item.
-        """
-        if isinstance(self._data, list):
-            return [data.get(item, default) for data in self._data]
-        return self._data.get(item, default)
-
 
 class TwitterStreamResponse(object):
     """TwitterStreamResponse"""
