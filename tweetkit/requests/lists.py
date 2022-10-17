@@ -1,4 +1,5 @@
 """All methods related to lists."""
+from tweetkit.models import Paginator, TwitterStreamResponse, TwitterResponse
 
 __all__ = [
     'Lists'
@@ -11,7 +12,7 @@ class Lists(object):
     def __init__(self, client):
         self.client = client
 
-    def list_id_create(self, data=None):
+    def list_id_create(self, data=None, **kwargs):
         """Create List.
 
         Creates a new List.
@@ -22,14 +23,14 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         return self.client.request('/2/lists', method='post', query=request_query, params=request_params, data=data,
-                                   dtype='data')
+                                   dtype='data', **kwargs)
 
-    def list_id_delete(self, id, data=None):
+    def list_id_delete(self, id, data=None, **kwargs):
         """Delete List.
 
         Delete a List that you own.
@@ -47,15 +48,15 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/lists/{id}', method='delete', query=request_query, params=request_params,
-                                   data=data, dtype='data')
+                                   data=data, dtype='data', **kwargs)
 
-    def list_id_get(self, id, list_fields=None, expansions=None, user_fields=None, data=None):
+    def list_id_get(self, id, list_fields=None, expansions=None, user_fields=None, data=None, **kwargs):
         """List lookup by List ID.
 
         Returns a List.
@@ -79,7 +80,7 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -100,9 +101,9 @@ class Lists(object):
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
         return self.client.request('/2/lists/{id}', method='get', query=request_query, params=request_params, data=data,
-                                   dtype='List')
+                                   dtype='List', **kwargs)
 
-    def list_id_update(self, id, data=None):
+    def list_id_update(self, id, data=None, **kwargs):
         """Update List.
 
         Update a List that you own.
@@ -120,15 +121,15 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/lists/{id}', method='put', query=request_query, params=request_params, data=data,
-                                   dtype='data')
+                                   dtype='data', **kwargs)
 
-    def list_add_member(self, id, data=None):
+    def list_add_member(self, id, data=None, **kwargs):
         """Add a List member.
 
         Causes a User to become a member of a List.
@@ -146,15 +147,15 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/lists/{id}/members', method='post', query=request_query, params=request_params,
-                                   data=data, dtype='data')
+                                   data=data, dtype='data', **kwargs)
 
-    def list_remove_member(self, id, user_id, data=None):
+    def list_remove_member(self, id, user_id, data=None, **kwargs):
         """Remove a List member.
 
         Causes a User to be removed from the members of a List.
@@ -174,17 +175,17 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['user_id'] = user_id
         return self.client.request('/2/lists/{id}/members/{user_id}', method='delete', query=request_query,
-                                   params=request_params, data=data, dtype='data')
+                                   params=request_params, data=data, dtype='data', **kwargs)
 
     def user_followed_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                            user_fields=None, data=None):
+                            user_fields=None, data=None, **kwargs):
         """Get User's Followed Lists.
 
         Returns a User's followed Lists.
@@ -212,7 +213,7 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -237,9 +238,9 @@ class Lists(object):
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
         return self.client.request('/2/users/{id}/followed_lists', method='get', query=request_query,
-                                   params=request_params, data=data, dtype='List')
+                                   params=request_params, data=data, dtype='List', **kwargs)
 
-    def list_user_follow(self, id, data=None):
+    def list_user_follow(self, id, data=None, **kwargs):
         """Follow a List.
 
         Causes a User to follow a List.
@@ -257,15 +258,15 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/users/{id}/followed_lists', method='post', query=request_query,
-                                   params=request_params, data=data, dtype='data')
+                                   params=request_params, data=data, dtype='data', **kwargs)
 
-    def list_user_unfollow(self, id, list_id, data=None):
+    def list_user_unfollow(self, id, list_id, data=None, **kwargs):
         """Unfollow a List.
 
         Causes a User to unfollow a List.
@@ -285,17 +286,17 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['list_id'] = list_id
         return self.client.request('/2/users/{id}/followed_lists/{list_id}', method='delete', query=request_query,
-                                   params=request_params, data=data, dtype='data')
+                                   params=request_params, data=data, dtype='data', **kwargs)
 
     def get_user_list_memberships(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                                  user_fields=None, data=None):
+                                  user_fields=None, data=None, **kwargs):
         """Get a User's List Memberships.
 
         Get a User's List Memberships.
@@ -323,7 +324,7 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -348,10 +349,10 @@ class Lists(object):
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
         return self.client.request('/2/users/{id}/list_memberships', method='get', query=request_query,
-                                   params=request_params, data=data, dtype='List')
+                                   params=request_params, data=data, dtype='List', **kwargs)
 
     def list_user_owned_lists(self, id, max_results=None, pagination_token=None, list_fields=None, expansions=None,
-                              user_fields=None, data=None):
+                              user_fields=None, data=None, **kwargs):
         """Get a User's Owned Lists.
 
         Get a User's Owned Lists.
@@ -379,7 +380,7 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -404,9 +405,9 @@ class Lists(object):
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
         return self.client.request('/2/users/{id}/owned_lists', method='get', query=request_query,
-                                   params=request_params, data=data, dtype='List')
+                                   params=request_params, data=data, dtype='List', **kwargs)
 
-    def list_user_pinned_lists(self, id, list_fields=None, expansions=None, user_fields=None, data=None):
+    def list_user_pinned_lists(self, id, list_fields=None, expansions=None, user_fields=None, data=None, **kwargs):
         """Get a User's Pinned Lists.
 
         Get a User's Pinned Lists.
@@ -430,7 +431,7 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -451,9 +452,9 @@ class Lists(object):
                                             'pinned_tweet_id', 'profile_image_url', 'protected', 'public_metrics',
                                             'url', 'username', 'verified', 'withheld']
         return self.client.request('/2/users/{id}/pinned_lists', method='get', query=request_query,
-                                   params=request_params, data=data, dtype='List')
+                                   params=request_params, data=data, dtype='List', **kwargs)
 
-    def list_user_pin(self, data, id):
+    def list_user_pin(self, data, id, **kwargs):
         """Pin a List.
 
         Causes a User to pin a List.
@@ -471,15 +472,15 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/users/{id}/pinned_lists', method='post', query=request_query,
-                                   params=request_params, data=data, dtype='data')
+                                   params=request_params, data=data, dtype='data', **kwargs)
 
-    def list_user_unpin(self, id, list_id, data=None):
+    def list_user_unpin(self, id, list_id, data=None, **kwargs):
         """Unpin a List.
 
         Causes a User to remove a pinned List.
@@ -499,11 +500,11 @@ class Lists(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['list_id'] = list_id
         return self.client.request('/2/users/{id}/pinned_lists/{list_id}', method='delete', query=request_query,
-                                   params=request_params, data=data, dtype='data')
+                                   params=request_params, data=data, dtype='data', **kwargs)

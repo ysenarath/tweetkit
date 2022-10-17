@@ -1,4 +1,5 @@
 """All methods related to bookmarks."""
+from tweetkit.models import Paginator, TwitterStreamResponse, TwitterResponse
 
 __all__ = [
     'Bookmarks'
@@ -12,7 +13,8 @@ class Bookmarks(object):
         self.client = client
 
     def get_users_id_bookmarks(self, id, max_results=None, pagination_token=None, tweet_fields=None, expansions=None,
-                               media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None):
+                               media_fields=None, poll_fields=None, user_fields=None, place_fields=None, data=None,
+                               **kwargs):
         """Bookmarks by User.
 
         Returns Tweet objects that have been bookmarked by the requesting User.
@@ -46,7 +48,7 @@ class Bookmarks(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -91,9 +93,9 @@ class Bookmarks(object):
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
         return self.client.request('/2/users/{id}/bookmarks', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='Tweet')
+                                   data=data, dtype='Tweet', **kwargs)
 
-    def post_users_id_bookmarks(self, data, id):
+    def post_users_id_bookmarks(self, data, id, **kwargs):
         """Add Tweet to Bookmarks.
 
         Adds a Tweet (ID in the body) to the requesting User's (in the path) bookmarks.
@@ -111,15 +113,15 @@ class Bookmarks(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/users/{id}/bookmarks', method='post', query=request_query, params=request_params,
-                                   data=data, dtype='data')
+                                   data=data, dtype='data', **kwargs)
 
-    def users_id_bookmarks_delete(self, id, tweet_id, data=None):
+    def users_id_bookmarks_delete(self, id, tweet_id, data=None, **kwargs):
         """Remove a bookmarked Tweet.
 
         Removes a Tweet from the requesting User's bookmarked Tweets.
@@ -139,11 +141,11 @@ class Bookmarks(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         request_params['tweet_id'] = tweet_id
         return self.client.request('/2/users/{id}/bookmarks/{tweet_id}', method='delete', query=request_query,
-                                   params=request_params, data=data, dtype='data')
+                                   params=request_params, data=data, dtype='data', **kwargs)

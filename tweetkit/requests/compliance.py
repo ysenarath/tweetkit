@@ -1,4 +1,5 @@
 """All methods related to compliance."""
+from tweetkit.models import Paginator, TwitterStreamResponse, TwitterResponse
 
 __all__ = [
     'Compliance'
@@ -11,7 +12,7 @@ class Compliance(object):
     def __init__(self, client):
         self.client = client
 
-    def list_batch_compliance_jobs(self, type, status=None, compliance_job_fields=None, data=None):
+    def list_batch_compliance_jobs(self, type, status=None, compliance_job_fields=None, data=None, **kwargs):
         """List Compliance Jobs.
 
         Returns recent Compliance Jobs for a given job type and optional job status.
@@ -33,7 +34,7 @@ class Compliance(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -46,9 +47,9 @@ class Compliance(object):
             request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name',
                                                       'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
         return self.client.request('/2/compliance/jobs', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='ComplianceJob')
+                                   data=data, dtype='ComplianceJob', **kwargs)
 
-    def create_batch_compliance_job(self, data):
+    def create_batch_compliance_job(self, data, **kwargs):
         """Create compliance job.
 
         Creates a compliance for the given job type.
@@ -59,14 +60,14 @@ class Compliance(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         return self.client.request('/2/compliance/jobs', method='post', query=request_query, params=request_params,
-                                   data=data, dtype='ComplianceJob')
+                                   data=data, dtype='ComplianceJob', **kwargs)
 
-    def get_batch_compliance_job(self, id, compliance_job_fields=None, data=None):
+    def get_batch_compliance_job(self, id, compliance_job_fields=None, data=None, **kwargs):
         """Get Compliance Job.
 
         Returns a single Compliance Job by ID.
@@ -86,7 +87,7 @@ class Compliance(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -97,9 +98,10 @@ class Compliance(object):
             request_query['compliance_job.fields'] = ['created_at', 'download_expires_at', 'download_url', 'id', 'name',
                                                       'resumable', 'status', 'type', 'upload_expires_at', 'upload_url']
         return self.client.request('/2/compliance/jobs/{id}', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='ComplianceJob')
+                                   data=data, dtype='ComplianceJob', **kwargs)
 
-    def get_tweets_compliance_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, data=None):
+    def get_tweets_compliance_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, data=None,
+                                     **kwargs):
         """Tweets Compliance stream.
 
         Streams 100% of compliance data for Tweets.
@@ -123,7 +125,7 @@ class Compliance(object):
         
         Returns
         -------
-        obj: TwitterObjectStream
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -135,9 +137,10 @@ class Compliance(object):
         if end_time is not None:
             request_query['end_time'] = end_time
         return self.client.request('/2/tweets/compliance/stream', method='get', query=request_query,
-                                   params=request_params, data=data, stream=True)
+                                   params=request_params, data=data, stream=True, **kwargs)
 
-    def get_users_compliance_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, data=None):
+    def get_users_compliance_stream(self, partition, backfill_minutes=None, start_time=None, end_time=None, data=None,
+                                    **kwargs):
         """Users Compliance stream.
 
         Streams 100% of compliance data for Users.
@@ -161,7 +164,7 @@ class Compliance(object):
         
         Returns
         -------
-        obj: TwitterObjectStream
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -173,4 +176,4 @@ class Compliance(object):
         if end_time is not None:
             request_query['end_time'] = end_time
         return self.client.request('/2/users/compliance/stream', method='get', query=request_query,
-                                   params=request_params, data=data, stream=True)
+                                   params=request_params, data=data, stream=True, **kwargs)

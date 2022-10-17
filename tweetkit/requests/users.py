@@ -1,4 +1,5 @@
 """All methods related to users."""
+from tweetkit.models import Paginator, TwitterStreamResponse, TwitterResponse
 
 __all__ = [
     'Users'
@@ -12,7 +13,7 @@ class Users(object):
         self.client = client
 
     def list_get_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None, data=None):
+                           tweet_fields=None, data=None, **kwargs):
         """Returns User objects that follow a List by the provided List ID.
 
         Returns a list of Users that follow a List by the provided List ID.
@@ -40,7 +41,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -68,10 +69,10 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/lists/{id}/followers', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='User')
+                                   data=data, dtype='User', **kwargs)
 
     def list_get_members(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                         tweet_fields=None, data=None):
+                         tweet_fields=None, data=None, **kwargs):
         """Returns User objects that are members of a List by the provided List ID.
 
         Returns a list of Users that are members of a List by the provided List ID.
@@ -99,7 +100,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -127,10 +128,10 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/lists/{id}/members', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='User')
+                                   data=data, dtype='User', **kwargs)
 
     def tweets_id_liking_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                               tweet_fields=None, data=None):
+                               tweet_fields=None, data=None, **kwargs):
         """Returns User objects that have liked the provided Tweet ID.
 
         Returns a list of Users that have liked the provided Tweet ID.
@@ -158,7 +159,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -186,10 +187,10 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/tweets/{id}/liking_users', method='get', query=request_query,
-                                   params=request_params, data=data, dtype='User')
+                                   params=request_params, data=data, dtype='User', **kwargs)
 
     def tweets_id_retweeting_users(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                                   tweet_fields=None, data=None):
+                                   tweet_fields=None, data=None, **kwargs):
         """Returns User objects that have retweeted the provided Tweet ID.
 
         Returns a list of Users that have retweeted the provided Tweet ID.
@@ -217,7 +218,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -245,9 +246,9 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/tweets/{id}/retweeted_by', method='get', query=request_query,
-                                   params=request_params, data=data, dtype='User')
+                                   params=request_params, data=data, dtype='User', **kwargs)
 
-    def find_users_by_id(self, ids, user_fields=None, expansions=None, tweet_fields=None, data=None):
+    def find_users_by_id(self, ids, user_fields=None, expansions=None, tweet_fields=None, data=None, **kwargs):
         """User lookup by IDs.
 
         This endpoint returns information about Users. Specify Users by their ID.
@@ -271,7 +272,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -295,9 +296,10 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users', method='get', query=request_query, params=request_params, data=data,
-                                   dtype='User')
+                                   dtype='User', **kwargs)
 
-    def find_users_by_username(self, usernames, user_fields=None, expansions=None, tweet_fields=None, data=None):
+    def find_users_by_username(self, usernames, user_fields=None, expansions=None, tweet_fields=None, data=None,
+                               **kwargs):
         """User lookup by usernames.
 
         This endpoint returns information about Users. Specify Users by their username.
@@ -321,7 +323,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -345,9 +347,10 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users/by', method='get', query=request_query, params=request_params, data=data,
-                                   dtype='User')
+                                   dtype='User', **kwargs)
 
-    def find_user_by_username(self, username, user_fields=None, expansions=None, tweet_fields=None, data=None):
+    def find_user_by_username(self, username, user_fields=None, expansions=None, tweet_fields=None, data=None,
+                              **kwargs):
         """User lookup by username.
 
         This endpoint returns information about a User. Specify User by username.
@@ -371,7 +374,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -395,9 +398,9 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users/by/username/{username}', method='get', query=request_query,
-                                   params=request_params, data=data, dtype='User')
+                                   params=request_params, data=data, dtype='User', **kwargs)
 
-    def find_my_user(self, user_fields=None, expansions=None, tweet_fields=None, data=None):
+    def find_my_user(self, user_fields=None, expansions=None, tweet_fields=None, data=None, **kwargs):
         """User lookup me.
 
         This endpoint returns information about the requesting User.
@@ -419,7 +422,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -442,9 +445,9 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users/me', method='get', query=request_query, params=request_params, data=data,
-                                   dtype='User')
+                                   dtype='User', **kwargs)
 
-    def find_user_by_id(self, id, user_fields=None, expansions=None, tweet_fields=None, data=None):
+    def find_user_by_id(self, id, user_fields=None, expansions=None, tweet_fields=None, data=None, **kwargs):
         """User lookup by ID.
 
         This endpoint returns information about a User. Specify User by ID.
@@ -468,7 +471,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -492,10 +495,10 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users/{id}', method='get', query=request_query, params=request_params, data=data,
-                                   dtype='User')
+                                   dtype='User', **kwargs)
 
     def users_id_blocking(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                          tweet_fields=None, data=None):
+                          tweet_fields=None, data=None, **kwargs):
         """Returns User objects that are blocked by provided User ID.
 
         Returns a list of Users that are blocked by the provided User ID.
@@ -523,7 +526,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -551,9 +554,9 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users/{id}/blocking', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='User')
+                                   data=data, dtype='User', **kwargs)
 
-    def users_id_block(self, data, id):
+    def users_id_block(self, data, id, **kwargs):
         """Block User by User ID.
 
         Causes the User (in the path) to block the target User. The User (in the path) must match the User context authorizing the request.
@@ -571,16 +574,16 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/users/{id}/blocking', method='post', query=request_query, params=request_params,
-                                   data=data, dtype='data')
+                                   data=data, dtype='data', **kwargs)
 
     def users_id_followers(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None, data=None):
+                           tweet_fields=None, data=None, **kwargs):
         """Followers by User ID.
 
         Returns a list of Users who are followers of the specified User ID.
@@ -608,7 +611,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -636,10 +639,10 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users/{id}/followers', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='User')
+                                   data=data, dtype='User', **kwargs)
 
     def users_id_following(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                           tweet_fields=None, data=None):
+                           tweet_fields=None, data=None, **kwargs):
         """Following by User ID.
 
         Returns a list of Users that are being followed by the provided User ID.
@@ -667,7 +670,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -695,9 +698,9 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users/{id}/following', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='User')
+                                   data=data, dtype='User', **kwargs)
 
-    def users_id_follow(self, id, data=None):
+    def users_id_follow(self, id, data=None, **kwargs):
         """Follow User.
 
         Causes the User(in the path) to follow, or “request to follow” for protected Users, the target User. The User(in the path) must match the User context authorizing the request.
@@ -715,16 +718,16 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/users/{id}/following', method='post', query=request_query, params=request_params,
-                                   data=data, dtype='data')
+                                   data=data, dtype='data', **kwargs)
 
     def users_id_muting(self, id, max_results=None, pagination_token=None, user_fields=None, expansions=None,
-                        tweet_fields=None, data=None):
+                        tweet_fields=None, data=None, **kwargs):
         """Returns User objects that are muted by the provided User ID.
 
         Returns a list of Users that are muted by the provided User ID.
@@ -752,7 +755,7 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -780,9 +783,9 @@ class Users(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/users/{id}/muting', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='User')
+                                   data=data, dtype='User', **kwargs)
 
-    def users_id_mute(self, id, data=None):
+    def users_id_mute(self, id, data=None, **kwargs):
         """Mute User by User ID.
 
         Causes the User (in the path) to mute the target User. The User (in the path) must match the User context authorizing the request.
@@ -800,15 +803,15 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['id'] = id
         return self.client.request('/2/users/{id}/muting', method='post', query=request_query, params=request_params,
-                                   data=data, dtype='data')
+                                   data=data, dtype='data', **kwargs)
 
-    def users_id_unblock(self, source_user_id, target_user_id, data=None):
+    def users_id_unblock(self, source_user_id, target_user_id, data=None, **kwargs):
         """Unblock User by User ID.
 
         Causes the source User to unblock the target User. The source User must match the User context authorizing the request.
@@ -828,16 +831,16 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
         return self.client.request('/2/users/{source_user_id}/blocking/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data, dtype='data')
+                                   query=request_query, params=request_params, data=data, dtype='data', **kwargs)
 
-    def users_id_unfollow(self, source_user_id, target_user_id, data=None):
+    def users_id_unfollow(self, source_user_id, target_user_id, data=None, **kwargs):
         """Unfollow User.
 
         Causes the source User to unfollow the target User. The source User must match the User context authorizing the request.
@@ -857,16 +860,16 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
         return self.client.request('/2/users/{source_user_id}/following/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data, dtype='data')
+                                   query=request_query, params=request_params, data=data, dtype='data', **kwargs)
 
-    def users_id_unmute(self, source_user_id, target_user_id, data=None):
+    def users_id_unmute(self, source_user_id, target_user_id, data=None, **kwargs):
         """Unmute User by User ID.
 
         Causes the source User to unmute the target User. The source User must match the User context authorizing the request.
@@ -886,11 +889,11 @@ class Users(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
         request_params['source_user_id'] = source_user_id
         request_params['target_user_id'] = target_user_id
         return self.client.request('/2/users/{source_user_id}/muting/{target_user_id}', method='delete',
-                                   query=request_query, params=request_params, data=data, dtype='data')
+                                   query=request_query, params=request_params, data=data, dtype='data', **kwargs)

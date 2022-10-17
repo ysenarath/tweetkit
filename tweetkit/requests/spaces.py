@@ -1,4 +1,5 @@
 """All methods related to spaces."""
+from tweetkit.models import Paginator, TwitterStreamResponse, TwitterResponse
 
 __all__ = [
     'Spaces'
@@ -12,7 +13,7 @@ class Spaces(object):
         self.client = client
 
     def find_spaces_by_ids(self, ids, space_fields=None, expansions=None, user_fields=None, topic_fields=None,
-                           data=None):
+                           data=None, **kwargs):
         """Space lookup up Space IDs.
 
         Returns a variety of information about the Spaces specified by the requested IDs.
@@ -38,7 +39,7 @@ class Spaces(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -65,10 +66,10 @@ class Spaces(object):
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
         return self.client.request('/2/spaces', method='get', query=request_query, params=request_params, data=data,
-                                   dtype='Space')
+                                   dtype='Space', **kwargs)
 
     def find_spaces_by_creator_ids(self, user_ids, space_fields=None, expansions=None, user_fields=None,
-                                   topic_fields=None, data=None):
+                                   topic_fields=None, data=None, **kwargs):
         """Space lookup by their creators.
 
         Returns a variety of information about the Spaces created by the provided User IDs.
@@ -94,7 +95,7 @@ class Spaces(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -121,10 +122,10 @@ class Spaces(object):
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
         return self.client.request('/2/spaces/by/creator_ids', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='Space')
+                                   data=data, dtype='Space', **kwargs)
 
     def search_spaces(self, query, state=None, max_results=None, space_fields=None, expansions=None, user_fields=None,
-                      topic_fields=None, data=None):
+                      topic_fields=None, data=None, **kwargs):
         """Search for Spaces.
 
         Returns Spaces that match the provided query.
@@ -154,7 +155,7 @@ class Spaces(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -185,9 +186,10 @@ class Spaces(object):
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
         return self.client.request('/2/spaces/search', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='Space')
+                                   data=data, dtype='Space', **kwargs)
 
-    def find_space_by_id(self, id, space_fields=None, expansions=None, user_fields=None, topic_fields=None, data=None):
+    def find_space_by_id(self, id, space_fields=None, expansions=None, user_fields=None, topic_fields=None, data=None,
+                         **kwargs):
         """Space lookup by Space ID.
 
         Returns a variety of information about the Space specified by the requested ID.
@@ -213,7 +215,7 @@ class Spaces(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -240,10 +242,10 @@ class Spaces(object):
         else:
             request_query['topic.fields'] = ['description', 'id', 'name']
         return self.client.request('/2/spaces/{id}', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='Space')
+                                   data=data, dtype='Space', **kwargs)
 
     def space_buyers(self, id, pagination_token=None, max_results=None, user_fields=None, expansions=None,
-                     tweet_fields=None, data=None):
+                     tweet_fields=None, data=None, **kwargs):
         """Retrieve the list of Users who purchased a ticket to the given space.
 
         Retrieves the list of Users who purchased a ticket to the given space.
@@ -271,7 +273,7 @@ class Spaces(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -299,10 +301,10 @@ class Spaces(object):
                                              'public_metrics', 'referenced_tweets', 'reply_settings', 'source', 'text',
                                              'withheld']
         return self.client.request('/2/spaces/{id}/buyers', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='User')
+                                   data=data, dtype='User', **kwargs)
 
     def space_tweets(self, id, max_results=None, tweet_fields=None, expansions=None, media_fields=None,
-                     poll_fields=None, user_fields=None, place_fields=None, data=None):
+                     poll_fields=None, user_fields=None, place_fields=None, data=None, **kwargs):
         """Retrieve Tweets from a Space.
 
         Retrieves Tweets shared in the specified Space.
@@ -334,7 +336,7 @@ class Spaces(object):
         
         Returns
         -------
-        obj: TwitterObject
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -377,4 +379,4 @@ class Spaces(object):
             request_query['place.fields'] = ['contained_within', 'country', 'country_code', 'full_name', 'geo', 'id',
                                              'name', 'place_type']
         return self.client.request('/2/spaces/{id}/tweets', method='get', query=request_query, params=request_params,
-                                   data=data, dtype='Tweet')
+                                   data=data, dtype='Tweet', **kwargs)
