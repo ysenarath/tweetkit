@@ -16,6 +16,11 @@ class TwitterResponse(object):
     """TwitterResponse"""
 
     def __init__(self, content, dtype=None, **kwargs):
+        self._response = None
+        if isinstance(content, requests.Response):
+            self._response = content
+        elif 'response' in kwargs:
+            self._response = kwargs['response']
         self._content = json.loads(content)
         try:
             data = self._content['data']
@@ -86,16 +91,6 @@ class TwitterStreamResponse(object):
 
     def __iter__(self):
         return self
-
-    def tolist(self):
-        """Converts stream to list of response objects.
-
-        Returns
-        -------
-        responses: list of Response
-            The stream as list.
-        """
-        return list(self)
 
     def close(self):
         """Close the object.
