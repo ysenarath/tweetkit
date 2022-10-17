@@ -16,9 +16,6 @@ class TwitterResponse(object):
     """TwitterResponse"""
 
     def __init__(self, content, dtype=None, **kwargs):
-        self._response = kwargs.get('response', None)
-        if isinstance(content, requests.Response):
-            self._response = content
         self._content = json.loads(content)
         try:
             data = self._content['data']
@@ -35,17 +32,6 @@ class TwitterResponse(object):
         self._meta = self._content.get('meta', dict())
         self._includes = self._content.get('includes', None)
         self._dtype = dtype
-
-    @property
-    def response(self):
-        """Gets base response of data object.
-
-        Returns
-        -------
-        response: requests.Response
-            The requests.Response object associated with this twitter response.
-        """
-        return self._response
 
     @property
     def data(self):
