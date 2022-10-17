@@ -4,48 +4,50 @@ import collections
 from tweetkit.utils import copy
 
 __all__ = [
-    'ObjectStore'
+    'TwitterExpansions',
 ]
 
+index_by = {
+    'media': 'media_key',
+    'places': 'id',
+    'polls': 'id',
+    'topics': 'id',
+    'tweets': 'id',
+    'users': 'id',
+    'lists': 'id',
+    'Space': 'id',
+}
 
-class ObjectStore(object):
-    """ObjectStore"""
+mappings = {
+    'Media': 'media',
+    'Place': 'places',
+    'Poll': 'polls',
+    'Topic': 'topics',
+    'Tweet': 'tweets',
+    'User': 'users',
+    'List': 'lists',
+    'Space': 'spaces',
+}
 
-    index_by = {
-        'media': 'media_key',
-        'places': 'id',
-        'polls': 'id',
-        'topics': 'id',
-        'tweets': 'id',
-        'users': 'id',
-        'lists': 'id',
-        'Space': 'id',
-    }
 
-    mappings = {
-        'Media': 'media',
-        'Place': 'places',
-        'Poll': 'polls',
-        'Topic': 'topics',
-        'Tweet': 'tweets',
-        'User': 'users',
-        'List': 'lists',
-        'Space': 'spaces',
-    }
+class TwitterExpansions(object):
+    """TwitterExpansions"""
 
-    def __init__(self, resp):
+    def __init__(self, includes):
+        if hasattr(includes, 'includes'):
+            includes = includes.includes
+        if includes is None:
+            includes = {}
+        for key in includes.keys():
+            self.add(includes[key], dtype=key)
         self.store = {}
         self._next_id = 0
-        if resp.includes is not None:
-            self.update(resp.includes)
-        self.add(resp.data, dtype=resp.dtype)
 
     @property
     def next_id(self):
         """next_id"""
-        next_id = self._next_id
         self._next_id += 1
-        return next_id
+        return self._next_id
 
     def add(self, data, dtype=None):
         """Add to index."""
@@ -53,32 +55,24 @@ class ObjectStore(object):
             for item in data:
                 self.add(item, dtype=dtype)
         elif isinstance(data, collections.Mapping):
-            if dtype in self.mappings:
-                store_key = self.mappings[dtype]
+            if dtype in mappings:
+                store_key = mappings[dtype]
             else:
                 store_key = dtype
             if store_key not in self.store:
                 self.store[store_key] = {}
-            if store_key in self.index_by:
-                id_ = data[self.index_by[store_key]]
+            if store_key in index_by:
+                id_ = data[index_by[store_key]]
             else:
                 id_ = self.next_id
             self.store[store_key][id_] = data
         else:
             raise TypeError('expected dict or list, found {}'.format(type(self.store).__name__))
 
-    def update(self, other):
-        """Updates from other."""
-        if isinstance(other, ObjectStore):
-            other = other.store
-        for key in other.keys():
-            self.add(other[key], dtype=key)
-        return self
-
-    def resolve(self, data, dtype=None):
-        """Resolve."""
+    def expand(self, data, dtype=None):
+        """expand"""
         if isinstance(data, collections.Sequence) and not isinstance(data, str):
-            return [self.resolve(item, dtype=dtype) for item in data]
+            return [self.expand(item, dtype=dtype) for item in data]
         if not isinstance(data, collections.MutableMapping):
             raise TypeError('expected list or dict, found {}'.format(type(data).__name__))
         data = copy.deepcopy(data)
@@ -104,7 +98,10 @@ class ObjectStore(object):
                 referenced_tweets_ = []
                 for referenced_tweet in referenced_tweets:
                     referenced_tweet_id = referenced_tweet['id']
-                    tweet_ = self.store['tweets'].get(referenced_tweet_id)
+                    if data['id'] == referenced_tweet_id:
+                        tweet_ = data
+                    else:
+                        tweet_ = self.store['tweets'].get(referenced_tweet_id)
                     referenced_tweet['tweet'] = tweet_
                     referenced_tweets_.append(tweet_)
                 data['referenced_tweets'] = referenced_tweets_
