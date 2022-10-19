@@ -3,6 +3,7 @@ import collections
 import io
 import json as simplejson
 import os
+import typing
 
 import requests
 from requests.utils import guess_json_utf
@@ -75,7 +76,7 @@ def dump(obj, fp, *args, **kwargs):
     ----------
     obj: dict or object
         Object(s) to save.
-    fp: str or typing.TextIO
+    fp: str, path object, file-like object, or None, default None
         Path or IO to save the object.
     args: typing.Any
         Other arguments to simplejson.dump.
@@ -86,7 +87,12 @@ def dump(obj, fp, *args, **kwargs):
     -------
     None
     """
-    is_jsonline = os.path.abspath(fp if isinstance(fp, str) else fp.name).endswith('.jsonl')
+    if hasattr(fp, 'name'):
+        is_jsonline = os.path.abspath(fp.name).endswith('.jsonl')
+    elif isinstance(fp, str):
+        is_jsonline = os.path.abspath(fp).endswith('.jsonl')
+    else:
+        is_jsonline = False
     if is_jsonline:
         output = io.StringIO()
         if not isinstance(obj, collections.Sequence):
