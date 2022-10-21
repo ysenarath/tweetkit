@@ -1,4 +1,4 @@
-    def {{ request.operation_id }}(self{% if request.request_body.required %}, data{% endif %}{% if request.parameters %}, {% endif %}{% for p in request.parameters %}{{ p.name.replace('.', '_') }}{% if not p.required %}=None{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% if not request.request_body.required %}, data=None{% endif %}):
+    def {{ request.operation_id }}(self{% if request.request_body.required %}, data{% endif %}{% if request.parameters %}, {% endif %}{% for p in request.parameters %}{{ p.name.replace('.', '_') }}{% if not p.required %}=None{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}{% if not request.request_body.required %}, data=None{% endif %}, **kwargs):
         """{{ request.summary }}{%- if not request.summary.endswith('.') -%}.{%- endif %}
 
         {% if request.description -%}
@@ -32,7 +32,7 @@
         
         Returns
         -------
-        obj: {% if request.x_twitter_streaming %}TwitterObjectStream{% else %}TwitterObject{% endif %}
+        session: TwitterStreamResponse or TwitterResponse or Paginator
             A object with the response data.
         """
         request_params, request_query = {}, {}
@@ -65,5 +65,5 @@
         {%- endif -%}
         {%- endfor -%}
         {%- set has_response_type = (path, request.method) in response_types -%}
-        return self.client.request('{{ path }}', method='{{ request.method }}', query=request_query, params=request_params, data=data{% if request.x_twitter_streaming %}, stream={{ request.x_twitter_streaming }}{% endif %}{% if has_response_type %}, dtype='{{ response_types[path, request.method]['type'] }}'{% endif %})
+        return self.client.request('{{ path }}', method='{{ request.method }}', query=request_query, params=request_params, data=data {% if request.x_twitter_streaming %}, stream={{ request.x_twitter_streaming }}{% endif %}{% if has_response_type %}, dtype='{{ response_types[path, request.method]['type'] }}'{% endif %}, **kwargs)
         
