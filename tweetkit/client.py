@@ -1,4 +1,5 @@
 """Twitter API v2"""
+
 from tweetkit.models import TwitterRequest
 from tweetkit.requests import Bookmarks, Compliance, General, Lists, Spaces, Tweets, Users
 
@@ -30,7 +31,31 @@ class TwitterClient(object):
 
     def request(self, url, method='get', query=None, params=None, data=None, stream=False, paginate=False,
                 **kwargs):
-        """make request and get response."""
+        """Make request and get response.
+
+        Parameters
+        ----------
+        url: str
+            Request URL.
+        method: str
+            Request method.
+        query: dict
+            Request query.
+        params: dict
+            Request params.
+        data: dict
+            Request data.
+        stream: bool
+            Whether to stream.
+        paginate: bool
+            Whether to paginate.
+        kwargs: typing.Any
+            Other keyword arguments.
+
+        Returns
+        -------
+        TwitterResponse or generator of TwitterResponse
+        """
         url = '{}/{}'.format(self.url, url.lstrip('/'))
         request = TwitterRequest(
             url, method=method, query=query, params=params, data=data,
