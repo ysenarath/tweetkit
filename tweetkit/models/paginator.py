@@ -1,4 +1,5 @@
 """Paginator"""
+import collections
 
 __all__ = [
     'Paginator',
@@ -31,3 +32,14 @@ class Paginator(object):
         self.next_token = None
         self.has_next = True
         return self
+
+    @property
+    def content(self):
+        """Iterator of objects."""
+        for response in self:
+            content = response.content
+            if isinstance(content, collections.Mapping):
+                yield content
+            else:
+                for item in content:
+                    yield item

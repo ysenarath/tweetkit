@@ -21,53 +21,121 @@ class TwitterResponse(object):
             self._response = content
         elif 'response' in kwargs:
             self._response = kwargs['response']
-        self._content = json.loads(content)
-        try:
-            data = self._content['data']
-        except KeyError as ex:
-            # for loading result of endpoint '/2/openapi.json'
-            data = self._content
-        self._data = data
-        errors = self._content.get('errors', None)
+        content = json.loads(content)
+        errors = content.get('errors', None)
         if isinstance(errors, collections.Mapping):
             errors = [errors]
-        if errors is not None:
-            errors = list(map(TwitterProblem, errors))
         self._errors = errors
-        self._meta = self._content.get('meta', dict())
-        self._includes = self._content.get('includes', None)
+        self._meta = content.get('meta', None)
+        self._includes = content.get('includes', None)
+        try:
+            data = content['data']
+        except KeyError as ex:
+            # for loading result of endpoint '/2/openapi.json'
+            data = content
+        self._data = data
         self._dtype = dtype
 
     @property
     def data(self):
-        """Gets data."""
+        """Gets data from the response.
+
+        Returns
+        -------
+        dict
+            The data of response.
+        """
         return self._data
 
     @property
     def includes(self):
-        """Gets includes."""
-        return self._includes
-
-    @property
-    def errors(self):
-        """Gets errors of the response data object.
+        """Gets includes from the response.
 
         Returns
         -------
-        errors: list of Problem
-            A list of problem (Exception) objects.
+        dict
+            The includes of response.
         """
-        return self._errors
-
-    @property
-    def meta(self):
-        """meta"""
-        return self._meta
+        return self._includes
 
     @property
     def dtype(self):
-        """Gets includes."""
+        """Gets data-type of the response.
+
+        Returns
+        -------
+        str
+            The data-type of response.
+        """
         return self._dtype
+
+    @property
+    def errors(self):
+        """Gets errors from the response.
+
+        Returns
+        -------
+        list of TwitterProblem
+            The errors of response.
+        """
+        if self._errors is not None:
+            return list(map(TwitterProblem, self._errors))
+        else:
+            return None
+
+    @property
+    def meta(self):
+        """Gets errors from the response.
+
+        Returns
+        -------
+        dict
+            The errors component of response.
+        """
+        return self._meta
+
+    def __repr__(self):
+        return self.to_json(indent=2)
+
+    def to_json(self, path_or_buf=None, *args, **kwarg):
+        """Convert the object to a JSON string.
+
+        Parameters
+        ----------
+        path_or_buf: str, path object, file-like object, or None, default None
+            String, path object (implementing os.PathLike[str]), or file-like
+            object implementing a write() function. If None, the result is
+            returned as a string.
+
+        Returns
+        -------
+        None or str
+            If path_or_buf is None, returns the resulting json format as a
+            string. Otherwise returns None.
+        """
+        if path_or_buf is not None:
+            return json.dump(self.content, path_or_buf, *args, **kwarg)
+        return json.dumps(self.content, *args, **kwarg)
+
+    @property
+    def content(self):
+        """Gets list of objects or object dict."""
+        content = {
+            'data': self._data,
+            'includes': self._includes,
+            'errors': self._errors,
+            'meta': self._meta,
+            'dtype': self._dtype,
+        }
+        if isinstance(content['data'], collections.Mapping):
+            return content
+        else:
+            results = []
+            for data in content['data']:
+                result = content.copy()
+                result['data'] = data
+                results.append(result)
+            return results
 
 
 class TwitterStreamResponse(object):
@@ -109,3 +177,14 @@ class TwitterStreamResponse(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
+
+    @property
+    def content(self):
+        """Iterator of objects."""
+        for response in self:
+            content = response.content
+            if isinstance(content, collections.Mapping):
+                yield content
+            else:
+                for item in content:
+                    yield item
