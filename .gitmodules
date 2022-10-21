@@ -1,0 +1,4 @@
+[submodule "docs/_build"]
+	path = docs/_build
+	url = https://github.com/ysenarath/tweetkit.git
+	branch = docs
