@@ -64,7 +64,8 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+#docs/_build/
+#docs/_source/*.rst
 
 # PyBuilder
 target/
@@ -104,10 +105,9 @@ venv.bak/
 .mypy_cache/
 
 # Other custom files
-output.txt
-tools/
 .vscode/
 .idea/
-venvl/
-venv/
-examples/secrets
+tools/
+secrets/
+/data/
+/docs/_build/doctrees/

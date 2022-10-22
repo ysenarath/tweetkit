@@ -1,0 +1,16 @@
+"""All methods related to {{ tag.name | lower }}."""
+from tweetkit.models import Paginator, TwitterStreamResponse, TwitterResponse
+
+__all__ = [
+    '{{ tag.name }}'
+]
+
+
+class {{ tag.name }}(object):
+    """{{ tag.description }}"""
+    
+    def __init__(self, client):
+        self.client = client
+{% for method in methods %}
+{{ method }}
+{% endfor %}

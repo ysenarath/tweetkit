@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools >= 61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tweetkit"
+description = "TweetKit"
+requires-python = ">=3.7"
+classifiers = [
+    'Programming Language :: Python :: 3',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: OS Independent',
+]
+dynamic = ["version", "dependencies", "readme"]
+
+[tool.setuptools.packages]
+find = { namespaces = true }
+
+[tool.setuptools.dynamic]
+version = { attr = "tweetkit.__version__" }
+readme = { file = "README.md" }
+dependencies = { file = "requirements.txt" }
