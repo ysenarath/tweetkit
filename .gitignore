@@ -64,8 +64,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-#docs/_build/
-#docs/_source/*.rst
+docs/_build/
 
 # PyBuilder
 target/
@@ -110,4 +109,3 @@ venv.bak/
 tools/
 secrets/
 /data/
-/docs/_build/doctrees/
