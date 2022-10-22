@@ -1,7 +1,7 @@
 import os
 import shutil
 
-html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '_build', 'html')
+html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '_build', 'html')
 
 
 def clean():
