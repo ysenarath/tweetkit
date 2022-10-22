@@ -17,7 +17,7 @@ clean:
 
 .PHONY: help Makefile
 
-apidoc:
+docs:
 	sphinx-apidoc -f -o ./$(SOURCEDIR) ../tweetkit
 
 # Catch-all target: route all unknown targets to Sphinx using the new

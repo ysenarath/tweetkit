@@ -52,3 +52,21 @@ napoleon_use_rtype = True
 napoleon_preprocess_types = False
 napoleon_type_aliases = None
 napoleon_attr_annotations = True
+
+html_logo = "_static/logo.svg"
+html_favicon = "_static/logo.svg"
+
+html_theme_options = {
+    "github_url": "https://github.com/ysenarath/tweetkit",
+    "external_links": [
+        {"name": "Get started", "url": "get_started.html"},
+    ],
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/ysenarath/tweetkit",
+            "icon": "fa-brands fa-square-github",
+            "type": "fontawesome",
+        },
+    ],
+}
