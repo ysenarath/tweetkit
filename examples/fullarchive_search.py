@@ -1,5 +1,4 @@
 import datetime
-import time
 
 from tweetkit.auth import BearerTokenAuth
 from tweetkit.client import TwitterClient
