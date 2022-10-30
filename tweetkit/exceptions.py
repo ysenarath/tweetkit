@@ -117,6 +117,8 @@ class TwitterProblem(TwitterRequestException):
         message: str
             The message.
         """
+        if 'detail' in self:
+            return self.get('detail')
         if 'title' in self:
             return self.get('title')
         return super(TwitterProblem, self).message
