@@ -94,6 +94,23 @@ class TwitterResponse(object):
         """
         return self._meta
 
+    def get(self, item, default=None):
+        """Gets item from data. Returns list if there are multiple objects in data.
+
+        Parameters
+        ----------
+        item: str
+            The key to extract the data.
+        default: typing.Any
+            The default return value.
+        Returns
+        -------
+        The data item referred by the provided key.
+        """
+        if isinstance(self.data, collections.Sequence) and not isinstance(self.data, str):
+            return list(map(lambda d: d.get(item, default), self.data))
+        return self.data.get(item, default)
+
     def __repr__(self):
         return self.to_json(indent=2)
 
@@ -153,7 +170,7 @@ class TwitterStreamResponse(object):
 
     def __next__(self):
         line = None
-        while line is not None and len(line.strip()) > 0:
+        while line is None or len(line.strip()) < 1:
             line = next(self._iter)
         return TwitterResponse(line, response=self._response, **self._kwargs)
 
