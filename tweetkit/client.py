@@ -1,5 +1,4 @@
 """Twitter API v2"""
-
 from tweetkit.models import TwitterRequest
 from tweetkit.requests import Bookmarks, Compliance, General, Lists, Spaces, Tweets, Users
 
@@ -28,6 +27,8 @@ class TwitterClient(object):
         self.spaces = Spaces(self)
         self.tweets = Tweets(self)
         self.users = Users(self)
+        # scheduler for request time management
+        self._request_scheduler = None
 
     def request(self, url, method='get', query=None, params=None, data=None, stream=False, paginate=False,
                 **kwargs):
@@ -59,6 +60,8 @@ class TwitterClient(object):
         url = '{}/{}'.format(self.url, url.lstrip('/'))
         request = TwitterRequest(
             url, method=method, query=query, params=params, data=data,
-            stream=stream, auth=self.auth, **kwargs
+            stream=stream, auth=self.auth, scheduler=self._request_scheduler, **kwargs
         )
-        return request.send(paginate=paginate)
+        response = request.send(paginate=paginate)
+        self._request_scheduler = request.scheduler
+        return response
