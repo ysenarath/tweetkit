@@ -1,3 +1,7 @@
+"""TweetKit Modules
+
+Includes implementations of TweetKit module methods.
+"""
 from tweetkit.models.expansions import TwitterExpansions
 from tweetkit.models.paginator import Paginator
 from tweetkit.models.request import TwitterRequest
