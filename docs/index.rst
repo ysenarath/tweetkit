@@ -1,13 +1,10 @@
-Welcome to TweetKit's documentation!
-====================================
+TweetKit Documentation
+======================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   getting_started/index
+   user_guide/index
+   api_reference/index
+   examples/index

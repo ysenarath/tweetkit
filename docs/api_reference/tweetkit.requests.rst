@@ -1,69 +1,64 @@
-tweetkit.requests package
-=========================
+Requests
+========
 
-Submodules
-----------
+.. automodule:: tweetkit.requests
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :ignore-module-all:
 
-tweetkit.requests.bookmarks module
-----------------------------------
+Bookmarks
+---------
 
 .. automodule:: tweetkit.requests.bookmarks
    :members:
    :undoc-members:
    :show-inheritance:
 
-tweetkit.requests.compliance module
------------------------------------
+Compliance
+----------
 
 .. automodule:: tweetkit.requests.compliance
    :members:
    :undoc-members:
    :show-inheritance:
 
-tweetkit.requests.general module
---------------------------------
+General
+-------
 
 .. automodule:: tweetkit.requests.general
    :members:
    :undoc-members:
    :show-inheritance:
 
-tweetkit.requests.lists module
-------------------------------
+Lists
+-----
 
 .. automodule:: tweetkit.requests.lists
    :members:
    :undoc-members:
    :show-inheritance:
 
-tweetkit.requests.spaces module
--------------------------------
+Spaces
+------
 
 .. automodule:: tweetkit.requests.spaces
    :members:
    :undoc-members:
    :show-inheritance:
 
-tweetkit.requests.tweets module
--------------------------------
+Tweets
+------
 
 .. automodule:: tweetkit.requests.tweets
    :members:
    :undoc-members:
    :show-inheritance:
 
-tweetkit.requests.users module
-------------------------------
+Users
+-----
 
 .. automodule:: tweetkit.requests.users
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: tweetkit.requests
    :members:
    :undoc-members:
    :show-inheritance:

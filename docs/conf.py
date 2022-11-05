@@ -29,8 +29,10 @@ extensions = [
     'sphinx.ext.napoleon',
 ]
 
+autosummary_generate = True
+
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "**.ipynb_checkpoints"]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
@@ -58,9 +60,7 @@ html_favicon = "_static/logo.svg"
 
 html_theme_options = {
     "github_url": "https://github.com/ysenarath/tweetkit",
-    "external_links": [
-        {"name": "Get started", "url": "get_started.html"},
-    ],
+    "navbar_center": ["navbar-nav"],
     "icon_links": [
         {
             "name": "GitHub",
@@ -69,4 +69,13 @@ html_theme_options = {
             "type": "fontawesome",
         },
     ],
+    "navigation_depth": 2,
+}
+
+html_sidebars = {
+    "index": [],
+}
+
+html_context = {
+    "theme_announcement": "",
 }
