@@ -54,18 +54,29 @@ class TwitterRequestException(TwitterException, requests.exceptions.RequestExcep
     def __init__(self, *args, **kwargs):
         """Initialize RequestException with `request` and `response` objects."""
         response = None
-        if 'response' in kwargs and isinstance(kwargs['response'], requests.Response):
-            response = kwargs.pop('response')
-        elif len(args) > 0 and isinstance(args[0], requests.Response):
+        if len(args) > 0 and isinstance(args[0], requests.Response):
             response, args = args[0], args[1:]
-        # process request
+            # remove response from kwargs if still exists
+            kwargs_response = None
+            if 'response' in kwargs:
+                kwargs_response = kwargs.pop('response')
+            if response is None:  # and kwargs_response is not None
+                response = kwargs_response
+        elif 'response' in kwargs and isinstance(kwargs['response'], requests.Response):
+            response = kwargs.pop('response')
+        # extract request if available as kwargs or through response
         request = kwargs.pop('request', None)
         if response is not None and not request and hasattr(response, 'request'):
             request = response.request
+        # update kwargs data by parsing response data
         if response is not None and isinstance(response, requests.Response):
             for key, value in json.loads(response).items():
                 if key is not None:
                     kwargs[key] = value
+        # extract dict data from arg if provided (if response is provided as arg it should be first)
+        if len(args) > 0 and isinstance(args[0], collections.Mapping):
+            data, args = args[0], args[1:]
+            kwargs.update(data)
         super(TwitterRequestException, self).__init__(*args, **kwargs, request=request, response=response)
 
     @property
