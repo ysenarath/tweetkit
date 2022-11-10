@@ -26,6 +26,9 @@ class Paginator(object):
         else:
             self.next_token = resp.meta.get('next_token')
             self.has_next = self.next_token is not None
+            # also stop when meta has result_count equals to zero
+            if resp.meta.get('result_count') == 0:
+                raise StopIteration()
             return resp
 
     def __iter__(self):
