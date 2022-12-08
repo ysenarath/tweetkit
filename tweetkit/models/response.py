@@ -4,6 +4,7 @@ import collections
 import requests
 
 from tweetkit.exceptions import TwitterProblem
+from tweetkit.models.expansions import TwitterExpansions
 from tweetkit.utils import json
 
 __all__ = [
@@ -137,21 +138,25 @@ class TwitterResponse(object):
     @property
     def content(self):
         """Gets list of objects or object dict."""
-        content = {
-            'data': self._data,
-            'includes': self._includes,
-            'errors': self._errors,
-            'meta': self._meta,
-            'dtype': self._dtype,
-        }
-        if isinstance(content['data'], collections.Mapping):
-            return content
+        if isinstance(self._data, collections.Mapping):
+            return {
+                'data': self._data,
+                'includes': self._includes,
+                'errors': self._errors,
+                'meta': self._meta,
+                'dtype': self._dtype,
+            }.copy()
         else:
+            expansions = TwitterExpansions(self._includes)
             results = []
-            for data in content['data']:
-                result = content.copy()
-                result['data'] = data
-                results.append(result)
+            for data in self._data:
+                results.append({
+                    'data': data,
+                    'includes': expansions.get_includes(data),
+                    'errors': self._errors,
+                    'meta': self._meta,
+                    'dtype': self._dtype,
+                }.copy())
             return results
 
 
