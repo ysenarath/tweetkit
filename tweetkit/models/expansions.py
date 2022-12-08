@@ -51,6 +51,8 @@ class TwitterExpansions(object):
 
     def add(self, data, dtype=None):
         """Add to index."""
+        if data is None:
+            return
         if isinstance(data, collections.Sequence):
             for item in data:
                 self.add(item, dtype=dtype)
@@ -67,7 +69,7 @@ class TwitterExpansions(object):
                 id_ = self.next_id
             self._includes[store_key][id_] = data
         else:
-            raise TypeError('expected dict or list, found {}'.format(type(self._includes).__name__))
+            raise TypeError('expected dict or list, found {}'.format(type(data).__name__))
 
     def get_includes(self, data):
         """Gets mapping of includes used in the provided data."""
