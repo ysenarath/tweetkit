@@ -15,7 +15,7 @@ index_by = {
     'tweets': 'id',
     'users': 'id',
     'lists': 'id',
-    'Space': 'id',
+    'spaces': 'id',
 }
 
 mappings = {
@@ -34,13 +34,13 @@ class TwitterExpansions(object):
     """TwitterExpansions"""
 
     def __init__(self, includes=None, **kwargs):
+        self._includes = {store_key: {} for store_key in index_by.keys()}
         if includes is None:
             includes = {}
         if 'includes' in includes:
             includes = includes['includes']
-        self._includes = {}
-        for key in includes.keys():
-            self.add(includes[key], dtype=key)
+        for key, value in includes.items():
+            self.add(value, dtype=key)
         self._next_id = 0
 
     @property
