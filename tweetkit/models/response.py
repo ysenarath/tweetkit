@@ -22,6 +22,7 @@ class TwitterResponse(object):
             self._response = content
         elif 'response' in kwargs:
             self._response = kwargs['response']
+        # json.loads handle Response objects, strings, and dict/Mapping
         content = json.loads(content)
         errors = content.get('errors', None)
         if isinstance(errors, collections.Mapping):
@@ -150,13 +151,15 @@ class TwitterResponse(object):
             expansions = TwitterExpansions(self._includes)
             results = []
             for data in self._data:
-                results.append({
-                    'data': data,
-                    'includes': expansions.get_includes(data),
-                    'errors': self._errors,
-                    'meta': self._meta,
-                    'dtype': self._dtype,
-                }.copy())
+                results.append(
+                    {
+                        'data': data,
+                        'includes': expansions.get_includes(data),  # include only relevant entities
+                        'errors': self._errors,
+                        'meta': self._meta,
+                        'dtype': self._dtype,
+                    }.copy()
+                )
             return results
 
 
@@ -175,12 +178,20 @@ class TwitterStreamResponse(object):
 
     def __next__(self):
         line = None
+        # handle heartbeats
         while line is None or len(line.strip()) < 1:
             line = next(self._iter)
-        return TwitterResponse(line, response=self._response, **self._kwargs)
+        data = json.loads(line)
+        return TwitterResponse(data, response=self._response, **self._kwargs)
 
     def __iter__(self):
         return self
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
 
     def close(self):
         """Close the object.
@@ -193,12 +204,6 @@ class TwitterStreamResponse(object):
             self._response.close()
             return True
         return False
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
 
     @property
     def content(self):

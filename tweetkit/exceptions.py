@@ -7,6 +7,7 @@ import requests
 __all__ = {
     'TwitterException',
     'TwitterRequestException',
+    'TwitterTimeoutException',
     'JSONDecodeError',
     'TwitterError',
     'TwitterProblem',
@@ -95,6 +96,10 @@ class TwitterRequestException(TwitterException, requests.exceptions.RequestExcep
         return None
 
 
+class TwitterTimeoutException(TwitterRequestException, requests.exceptions.Timeout):
+    pass
+
+
 class JSONDecodeError(TwitterException, simplejson.JSONDecodeError):
     """JSONDecodeError"""
     pass
@@ -148,7 +153,7 @@ class TwitterProblem(TwitterRequestException):
         return super(TwitterProblem, self).code
 
 
-def ProblemOrError(*args, **kwargs):
+def ProblemOrError(*args, **kwargs):  # noqa
     """Create Problem or Error.
 
     Returns

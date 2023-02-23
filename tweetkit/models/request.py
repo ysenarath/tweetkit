@@ -102,7 +102,7 @@ class TwitterRequest(object):
     """Request."""
 
     def __init__(self, url, method='get', query=None, params=None, data=None, stream=False, auth=None, scheduler=None,
-                 **kwargs):
+                 timeout=None, **kwargs):
         self.url = url
         self.method = method.upper()
         self.data = data
@@ -113,6 +113,10 @@ class TwitterRequest(object):
         if scheduler is None:
             scheduler = TwitterRequestScheduler()
         self.scheduler = scheduler
+        if timeout is None and stream:
+            timeout = 30
+        self.timeout = timeout
+        self.max_retries = 3
         self.kwargs = kwargs
         # timer
 
@@ -127,8 +131,9 @@ class TwitterRequest(object):
         r = requests.request(
             method=self.method, url=url,
             params=query, json=self.data,
-            stream=self.stream, auth=self.auth
-        )
+            stream=self.stream, auth=self.auth,
+            timeout=self.timeout,
+        )  # type: requests.Response
         # update after request
         self.scheduler.update(r)
         content_type = r.headers.get('content-type')
