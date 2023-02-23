@@ -1,9 +1,8 @@
 """Extended JSON functionality."""
-import collections
 import io
 import json as simplejson
 import os
-import typing
+from collections.abc import Sequence, Mapping
 
 import requests
 from requests.utils import guess_json_utf
@@ -40,6 +39,8 @@ def loads(s):
                 except UnicodeDecodeError:
                     pass
         s = text
+    elif isinstance(s, Mapping):
+        return s
     try:
         data = simplejson.loads(s)
     except simplejson.JSONDecodeError as ex:
@@ -95,7 +96,7 @@ def dump(obj, fp, *args, **kwargs):
         is_jsonline = False
     if is_jsonline:
         output = io.StringIO()
-        if not isinstance(obj, collections.Sequence):
+        if not isinstance(obj, Sequence):
             obj = obj,
         for item in obj:
             line = simplejson.dumps(item, *args, **kwargs)
