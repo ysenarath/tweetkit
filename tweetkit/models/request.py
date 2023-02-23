@@ -5,7 +5,7 @@ import time
 
 import requests
 
-from tweetkit.exceptions import ProblemOrError, TwitterRequestException
+from tweetkit.exceptions import ProblemOrError, TwitterRequestException, TwitterTimeoutException
 from tweetkit.models.paginator import Paginator
 from tweetkit.models.response import TwitterResponse, TwitterStreamResponse
 
@@ -116,7 +116,6 @@ class TwitterRequest(object):
         if timeout is None and stream:
             timeout = 30
         self.timeout = timeout
-        self.max_retries = 3
         self.kwargs = kwargs
         # timer
 
@@ -128,12 +127,15 @@ class TwitterRequest(object):
         query = {k: ','.join(v) if isinstance(v, list) else v for k, v in self.query.items()}
         # wait before request
         self.scheduler.wait()
-        r = requests.request(
-            method=self.method, url=url,
-            params=query, json=self.data,
-            stream=self.stream, auth=self.auth,
-            timeout=self.timeout,
-        )  # type: requests.Response
+        try:
+            r = requests.request(
+                method=self.method, url=url,
+                params=query, json=self.data,
+                stream=self.stream, auth=self.auth,
+                timeout=self.timeout,
+            )  # type: requests.Response
+        except requests.exceptions.Timeout as ex:
+            raise TwitterTimeoutException() from ex
         # update after request
         self.scheduler.update(r)
         content_type = r.headers.get('content-type')

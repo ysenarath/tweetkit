@@ -3,7 +3,7 @@ import collections
 
 import requests
 
-from tweetkit.exceptions import TwitterProblem
+from tweetkit.exceptions import TwitterProblem, TwitterTimeoutException
 from tweetkit.models.expansions import TwitterExpansions
 from tweetkit.utils import json
 
@@ -180,7 +180,10 @@ class TwitterStreamResponse(object):
         line = None
         # handle heartbeats
         while line is None or len(line.strip()) < 1:
-            line = next(self._iter)
+            try:
+                line = next(self._iter)
+            except requests.exceptions.Timeout as ex:
+                raise TwitterTimeoutException(self._response) from ex
         data = json.loads(line)
         return TwitterResponse(data, response=self._response, **self._kwargs)
 
